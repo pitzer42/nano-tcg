@@ -1,3 +1,4 @@
+import sys
 import asyncio
 
 
@@ -8,11 +9,11 @@ async def handler(reader, writer):
         await writer.drain()
 
 
-async def main():
+async def start_server(port):
     server = await asyncio.start_server(
         handler,
         '127.0.0.1',
-        8888
+        port
     )
 
     async with server:
@@ -20,4 +21,8 @@ async def main():
 
 
 if __name__ == '__main__':
-    asyncio.run(main())
+    if len(sys.argv) > 1:
+        port = int(sys.argv[1])
+    else:
+        port = 8888
+    asyncio.run(start_server(port))
