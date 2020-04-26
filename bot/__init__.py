@@ -1,12 +1,9 @@
 import asyncio
-
-
-def wrap_message(command: str) -> bytes:
-    return (command + '\n').encode()
+import protocol
 
 
 READ_FLAG = '$read'
-WRAPPED_READ_FLAG = wrap_message(READ_FLAG)
+WRAPPED_READ_FLAG = protocol.wrap_message(READ_FLAG)
 
 
 class TelnetBot:
@@ -36,7 +33,8 @@ class TelnetBot:
     async def send(self, *messages):
         responses = list()
         for message in messages:
-            wrapped_message = wrap_message(message)
+            wrapped_message = protocol.wrap_message(message)
+            # TODO: timeout
             if wrapped_message == WRAPPED_READ_FLAG:
                 response = await self._input.readline()
                 responses.append(response)

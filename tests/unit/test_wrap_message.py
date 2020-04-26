@@ -1,4 +1,4 @@
-from bot import wrap_message
+from protocol import wrap_message
 
 
 def test_wrap_messages_returns_bytes():

@@ -1,5 +1,6 @@
 import sys
 import asyncio
+import protocol
 
 
 async def start_chat(users):
@@ -20,14 +21,13 @@ lobby = dict()
 
 
 async def get_user_name(reader, writer):
-    INVALID_USER_NAME_MSG = b'invalid user name. Please, try again.\n'
+    request_name_message = protocol.wrap_message(protocol.REQUEST_NAME)
     while True:
+        writer.write(request_name_message)
+        await writer.drain()
         user_name = await reader.readline()
         user_name = user_name.decode().strip()
-        if user_name in lobby:
-            writer.write(INVALID_USER_NAME_MSG)
-            await writer.drain()
-        else:
+        if user_name not in lobby:
             return user_name
 
 

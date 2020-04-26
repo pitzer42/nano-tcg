@@ -5,6 +5,7 @@ from functools import partial
 from multiprocessing import Process
 
 import server
+import protocol
 
 from bot import TelnetBot, READ_FLAG
 
@@ -40,10 +41,14 @@ def bot_factory(running_server):
 async def test_invalid_user_name(bot_factory):
 
     async with bot_factory() as client_1:
-        client_1_log = await client_1.send('a')
+        client_1_log = await client_1.send(
+            READ_FLAG,
+            'a'
+        )
 
     async with bot_factory() as client_2:
         client_2_log = await client_2.send(
+            READ_FLAG,
             'a',
             READ_FLAG,
             'a',
@@ -51,15 +56,6 @@ async def test_invalid_user_name(bot_factory):
             'b'
         )
 
-    assert len(client_1_log) == 0
-    assert len(client_2_log) == 2
-
-
-
-
-
-
-
-
-
-
+    request_name_message = protocol.wrap_message(protocol.REQUEST_NAME)
+    assert client_1_log == [request_name_message] * 1
+    assert client_2_log == [request_name_message] * 3
