@@ -6,8 +6,7 @@ from multiprocessing import Process
 
 import server
 
-from bot import lang
-from bot import ClientBot
+from bot import ClientBot, READ_FLAG
 
 
 @pytest.fixture(scope='session')
@@ -33,38 +32,27 @@ async def running_server():
 
 
 @pytest.fixture
-def execute_client(running_server):
-
-    async def execute(*instructions):
-        bot = ClientBot()
-        bot.set_instructions(instructions)
-        await bot.connect(
-            *running_server
-        )
-        logs = await bot.run()
-        await bot.close()
-        return logs
-
-    return execute
+def bot_factory(running_server):
+    return partial(ClientBot, *running_server)
 
 
 @pytest.mark.asyncio
-async def test_invalid_user_name(execute_client):
+async def test_invalid_user_name(bot_factory):
 
-    client_log_1 = await execute_client(
-        'a'
-    )
+    async with bot_factory() as client_1:
+        client_1_log = await client_1.send('a')
 
-    client_log_2 = await execute_client(
-        'a',
-        lang.read_command,
-        'a',
-        lang.read_command,
-        'b'
-    )
+    async with bot_factory() as client_2:
+        client_2_log = await client_2.send(
+            'a',
+            READ_FLAG,
+            'a',
+            READ_FLAG,
+            'b'
+        )
 
-    assert len(client_log_1) == 0
-    assert len(client_log_2) == 2
+    assert len(client_1_log) == 0
+    assert len(client_2_log) == 2
 
 
 
