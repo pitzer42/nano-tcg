@@ -9,7 +9,7 @@ READ_FLAG = '$read'
 WRAPPED_READ_FLAG = wrap_message(READ_FLAG)
 
 
-class ClientBot:
+class TelnetBot:
 
     def __init__(self, host, port):
         self._host = host

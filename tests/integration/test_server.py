@@ -6,7 +6,7 @@ from multiprocessing import Process
 
 import server
 
-from bot import ClientBot, READ_FLAG
+from bot import TelnetBot, READ_FLAG
 
 
 @pytest.fixture(scope='session')
@@ -33,7 +33,7 @@ async def running_server():
 
 @pytest.fixture
 def bot_factory(running_server):
-    return partial(ClientBot, *running_server)
+    return partial(TelnetBot, *running_server)
 
 
 @pytest.mark.asyncio
