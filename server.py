@@ -15,18 +15,24 @@ async def start_chat(users):
                 j_writer.write(msg)
                 await j_writer.drain()
 
+
 lobby = dict()
 
 
-async def handler(reader, writer):
+async def get_user_name(reader, writer):
     INVALID_USER_NAME_MSG = b'invalid user name. Please, try again.\n'
-    user_name = await reader.readline()
-    user_name = user_name.decode().strip()
-    while user_name in lobby:
-        writer.write(INVALID_USER_NAME_MSG)
-        await writer.drain()
+    while True:
         user_name = await reader.readline()
         user_name = user_name.decode().strip()
+        if user_name in lobby:
+            writer.write(INVALID_USER_NAME_MSG)
+            await writer.drain()
+        else:
+            return user_name
+
+
+async def handler(reader, writer):
+    user_name = await get_user_name(reader, writer)
     lobby[user_name] = (reader, writer)
     while len(lobby.keys()) > 1:
         users = list(lobby.items())
@@ -38,22 +44,30 @@ async def handler(reader, writer):
         await start_chat(chat)
 
 
-
-
-async def start_server(port):
+async def start(port=8888):
     server = await asyncio.start_server(
         handler,
         '127.0.0.1',
         port
     )
-
     async with server:
         await server.serve_forever()
 
 
+def main(_port=8888):
+    asyncio.run(
+        start(
+            port=_port
+        )
+    )
+
+
 if __name__ == '__main__':
     if len(sys.argv) > 1:
-        port = int(sys.argv[1])
+        _port = int(sys.argv[1])
+        main_coroutine = start(
+            port=_port
+        )
     else:
-        port = 8888
-    asyncio.run(start_server(port))
+        main_coroutine = start()
+    asyncio.run(main_coroutine)
