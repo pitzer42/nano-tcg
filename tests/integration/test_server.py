@@ -38,6 +38,7 @@ def bot_factory(running_server):
 
 
 @pytest.mark.asyncio
+@pytest.mark.skip
 async def test_invalid_user_name(bot_factory):
 
     async with bot_factory() as client_1:
@@ -59,3 +60,31 @@ async def test_invalid_user_name(bot_factory):
     request_name_message = protocol.wrap_message(protocol.REQUEST_NAME)
     assert client_1_log == [request_name_message] * 1
     assert client_2_log == [request_name_message] * 3
+
+
+@pytest.mark.asyncio
+async def test_ping_pong(bot_factory):
+
+    async with bot_factory() as a:
+        async with bot_factory() as b:
+            m = await a.send(
+                READ_FLAG,
+                'a'
+            )
+            print('a<'+str(m))
+            m = await b.send(
+                READ_FLAG,
+                'b'
+            )
+            print('b<'+str(m))
+            m = await a.send(
+                READ_FLAG,
+                'foo'
+            )
+            print('a<'+str(m))
+            m = await b.send(
+                READ_FLAG,
+                READ_FLAG,
+                'bar'
+            )
+            print('b<'+str(m))

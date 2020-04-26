@@ -20,7 +20,22 @@ async def start_chat(users):
 lobby = dict()
 
 
-async def get_user_name(reader, writer):
+async def handle_ping_pong():
+    while True:
+        for origin_user, origin_io_pair in lobby.items():
+            origin_input, origin_output = origin_io_pair
+            origin_output.write(b'request_message\n')
+            await origin_output.drain()
+            message = await origin_input.readline()
+            for target_user, target_io_pair in lobby.items():
+                if origin_user == target_user:
+                    continue
+                _, target_writer = target_io_pair
+                target_writer.write(message)
+                await target_writer.drain()
+
+
+async def handle_get_user_name(reader, writer):
     request_name_message = protocol.wrap_message(protocol.REQUEST_NAME)
     while True:
         writer.write(request_name_message)
@@ -32,16 +47,10 @@ async def get_user_name(reader, writer):
 
 
 async def handler(reader, writer):
-    user_name = await get_user_name(reader, writer)
+    user_name = await handle_get_user_name(reader, writer)
     lobby[user_name] = (reader, writer)
-    while len(lobby.keys()) > 1:
-        users = list(lobby.items())
-        chat = users[:2]
-        for user in chat:
-            user_key = user[0]
-            del lobby[user_key]
-        # TODO: blocking?
-        await start_chat(chat)
+    if len(lobby.keys()) > 1:
+        await handle_ping_pong()
 
 
 async def start(port=8888):
