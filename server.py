@@ -1,82 +1,146 @@
 import sys
 import asyncio
 import protocol
+from channel import TcpChannel
+from models import Player, Match
 
-
-async def start_chat(users):
-    n = len(users)
-    while True:
-        for i in range(n):
-            i_user, i_pair = users[i]
-            i_reader, i_writer = i_pair
-            msg = await i_reader.readline()
-            for j in range(i, n):
-                j_user, j_pair = users[j]
-                j_reader, j_writer = j_pair
-                j_writer.write(msg)
-                await j_writer.drain()
+import random
 
 
 lobby = dict()
+matches = dict()
 
 
 async def handle_ping_pong():
     while True:
-        for origin_user, origin_io_pair in lobby.items():
-            origin_input, origin_output = origin_io_pair
-            origin_output.write(b'request_message\n')
-            await origin_output.drain()
-            message = await origin_input.readline()
-            for target_user, target_io_pair in lobby.items():
-                if origin_user == target_user:
+        for origin, origin_player in lobby.items():
+            await origin_player.channel.send('request_message')
+            message = await origin_player.receive()
+            for target, target_player in lobby.items():
+                if origin == target:
                     continue
-                _, target_writer = target_io_pair
-                target_writer.write(message)
-                await target_writer.drain()
+                await target_player.channel.send(message)
 
 
-async def handle_get_user_name(reader, writer):
-    request_name_message = protocol.wrap_message(protocol.REQUEST_NAME)
+async def handle_draw(player, n=1):
+    for i in range(n):
+        card = player.deck.pop()
+        player.hand.append(card)
+
+
+async def handle_deck_shuffle(player):
+    random.seed(player.name + str(lobby))
+    random.shuffle(player.deck)
+
+
+async def handle_top_i_hand(player, i):
+    card = player.hand.pop(i)
+    player.deck.append(card)
+
+async def handle_mulligan(player, n_mulligan):
+    for i in range(len(player.hand)):
+        await handle_top_i_hand(player, i)
+    await handle_deck_shuffle(player)
+    await handle_initial_draw(player, n_mulligan)
+
+
+async def handle_initial_draw(player, n_mulligan=0):
+    size = 7 - n_mulligan
+    if size <= 0:
+        return
+    await handle_draw(player, n=size)
+    await player.channel.send(str(player.hand))
+    await player.channel.send(protocol.PROMPT_MULLIGAN)
+    mulligan = await player.channel.receive()
+    if mulligan:
+        await handle_mulligan(
+            player,
+            n_mulligan=n_mulligan + 1
+        )
+
+
+async def handle_request_match(channel):
     while True:
-        writer.write(request_name_message)
-        await writer.drain()
-        user_name = await reader.readline()
-        user_name = user_name.decode().strip()
+        await channel.send(protocol.REQUEST_MATCH)
+        match_id = await channel.receive()
+        await channel.send(protocol.REQUEST_MATCH_PASSWORD)
+        password = await channel.receive()
+        if match_id not in matches:
+            match = Match(match_id, password)
+            matches[match_id] = match
+            return match
+        else:
+            match = matches[match_id]
+            if match.password == password:
+                return match
+
+
+
+async def handle_request_deck(channel):
+    await channel.send(protocol.REQUEST_DECK)
+    deck_file_lines = list()
+    while True:
+        line = await channel.receive()
+        if line == protocol.END_DECK:
+            break
+        deck_file_lines.append(line)
+    return deck_file_lines
+
+
+async def handle_get_user_name(channel):
+    while True:
+        await channel.send(protocol.REQUEST_NAME)
+        user_name = await channel.receive()
         if user_name not in lobby:
             return user_name
 
 
 async def handler(reader, writer):
-    user_name = await handle_get_user_name(reader, writer)
-    lobby[user_name] = (reader, writer)
-    if len(lobby.keys()) > 1:
-        await handle_ping_pong()
-
-
-async def start(port=8888):
-    server = await asyncio.start_server(
-        handler,
-        '127.0.0.1',
-        port
+    player = Player()
+    player.channel = TcpChannel.from_stream(
+        reader,
+        writer
     )
-    async with server:
-        await server.serve_forever()
+    player.name = await handle_get_user_name(player.channel)
+    lobby[player.name] = player
+
+    player.deck = await handle_request_deck(player.channel)
+    await player.channel.send(str(len(player.deck)))
+
+    match = await handle_request_match(player.channel)
+    match.players.append(player)
+
+    await player.channel.send('waiting for other player...')
+
+    if len(match.players) == 2:
+        for player in match.players:
+            await player.channel.send('start!')
+            random.seed(player.name + str(len(lobby)))
+            random.shuffle(player.deck)
+            await handle_initial_draw(player)
+            if len(player.hand) == 0:
+                await player.channel.send('loser')
 
 
-def main(_port=8888):
-    asyncio.run(
-        start(
-            port=_port
+def main(port=8888):
+
+    async def start(port):
+        server = await asyncio.start_server(
+            handler,
+            '127.0.0.1',
+            port
         )
+        async with server:
+            await server.serve_forever()
+
+    asyncio.run(
+        start(port)
     )
 
 
 if __name__ == '__main__':
     if len(sys.argv) > 1:
-        _port = int(sys.argv[1])
-        main_coroutine = start(
-            port=_port
-        )
+        port = int(sys.argv[1])
+        main(port)
     else:
-        main_coroutine = start()
-    asyncio.run(main_coroutine)
+        main()

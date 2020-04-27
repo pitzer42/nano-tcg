@@ -7,13 +7,20 @@ from multiprocessing import Process
 import server
 import protocol
 
-from bot import TelnetBot, READ_FLAG
+from bot import TestBot, READ_FLAG
 
 
-@pytest.fixture(scope='session')
+"""
+@pytest.fixture
 async def running_server():
+    yield '127.0.0.1', 9999
+"""
+
+@pytest.fixture
+async def running_server(unused_tcp_port):
+
     host = '127.0.0.1'
-    port = 8888
+    port = unused_tcp_port
     delay = 1
 
     start_test_server = partial(
@@ -34,57 +41,138 @@ async def running_server():
 
 @pytest.fixture
 def bot_factory(running_server):
-    return partial(TelnetBot, *running_server)
+    host, port = running_server
+    return partial(TestBot, host, port)
 
 
 @pytest.mark.asyncio
-@pytest.mark.skip
 async def test_invalid_user_name(bot_factory):
-
     async with bot_factory() as client_1:
         client_1_log = await client_1.send(
             READ_FLAG,
-            'a'
+            'test_invalid_user_name_a'
         )
 
     async with bot_factory() as client_2:
         client_2_log = await client_2.send(
             READ_FLAG,
-            'a',
+            'test_invalid_user_name_a',
             READ_FLAG,
-            'a',
+            'test_invalid_user_name_a',
             READ_FLAG,
-            'b'
+            'test_invalid_user_name_b'
         )
 
-    request_name_message = protocol.wrap_message(protocol.REQUEST_NAME)
-    assert client_1_log == [request_name_message] * 1
-    assert client_2_log == [request_name_message] * 3
+    assert client_1_log == [protocol.REQUEST_NAME] * 1
+    assert client_2_log == [protocol.REQUEST_NAME] * 3
 
 
 @pytest.mark.asyncio
-async def test_ping_pong(bot_factory):
+async def test_deck_request(bot_factory):
+    async with bot_factory() as a:
+        logs = await a.send(
+            READ_FLAG,
+            'test_deck_request',
+            READ_FLAG,
+            '4 Serra Angel',
+            '20 Plain',
+            protocol.END_DECK,
+            READ_FLAG
+        )
+
+    assert logs == [
+        protocol.REQUEST_NAME,
+        protocol.REQUEST_DECK,
+        '2'
+    ]
+
+
+@pytest.mark.asyncio
+async def test_request_match(bot_factory):
 
     async with bot_factory() as a:
         async with bot_factory() as b:
-            m = await a.send(
+
+            log_a = await a.send(
                 READ_FLAG,
-                'a'
+                'test_request_match_a',
+                READ_FLAG,
+                'serra angel',
+                protocol.END_DECK,
+                READ_FLAG,
+                READ_FLAG,
+                'match1',
+                READ_FLAG,
+                '123',
+                READ_FLAG
             )
-            print('a<'+str(m))
-            m = await b.send(
+
+            log_b = await b.send(
                 READ_FLAG,
-                'b'
+                'test_request_match_b',
+                READ_FLAG,
+                'slippery bogle',
+                protocol.END_DECK,
+                READ_FLAG,
+                READ_FLAG,
+                'match1',
+                READ_FLAG,
+                '123',
+                READ_FLAG
             )
-            print('b<'+str(m))
-            m = await a.send(
+
+            assert 'waiting for other player...' in log_a
+            assert 'waiting for other player...' in log_b
+
+
+@pytest.mark.asyncio
+async def test_request_mulligan(bot_factory):
+
+    async with bot_factory() as a:
+        async with bot_factory() as b:
+
+            deck = ['serra angel'] * 60
+            fa = await a.send(
                 READ_FLAG,
-                'foo'
+                'test_request_match_a',
+                READ_FLAG,
+                * deck,
+                protocol.END_DECK,
+                READ_FLAG,
+                READ_FLAG,
+                'match1',
+                READ_FLAG,
+                '123',
+                READ_FLAG
             )
-            print('a<'+str(m))
-            m = await b.send(
+
+            await b.send(
+                READ_FLAG,
+                'test_request_match_b',
+                READ_FLAG,
+                * deck,
+                protocol.END_DECK,
                 READ_FLAG,
                 READ_FLAG,
-                'bar'
+                'match1',
+                READ_FLAG,
+                '123',
+                READ_FLAG
             )
-            print('b<'+str(m))
+
+            log_a = await a.send(
+                READ_FLAG,
+                READ_FLAG,
+                READ_FLAG,
+                ''
+            )
+
+            log_b = await b.send(
+                READ_FLAG,
+                READ_FLAG,
+                READ_FLAG,
+                ''
+            )
+
+            assert protocol.PROMPT_MULLIGAN in log_a
+            assert protocol.PROMPT_MULLIGAN in log_b
