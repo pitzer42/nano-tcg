@@ -1,5 +1,5 @@
 import asyncio
-import protocol
+from modes.nano_magic import protocol
 
 
 class TcpChannel:

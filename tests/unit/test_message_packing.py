@@ -1,4 +1,4 @@
-from protocol import (
+from modes.nano_magic.protocol import (
     pack,
     unpack
 )

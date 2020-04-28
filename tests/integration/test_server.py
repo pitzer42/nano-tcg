@@ -5,7 +5,7 @@ from functools import partial
 from multiprocessing import Process
 
 import server
-import protocol
+from modes.nano_magic import protocol
 
 from bot import TestBot, READ_FLAG
 

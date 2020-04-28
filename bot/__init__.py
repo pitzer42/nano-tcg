@@ -1,4 +1,4 @@
-from channel import TcpChannel
+from channels import TcpChannel
 
 READ_FLAG = '$read'
 
