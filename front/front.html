@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.2/css/bulma.min.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/brython@3.8.8/brython.min.js"> </script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/brython@3.8.8/brython_stdlib.js"></script>
+    <title>Nano TCG</title>
+</head>
+
+<body onload="brython()">
+<section class="section">
+    <div class="container">
+        <h1 class="title">
+            Nano TCG
+        </h1>
+        <hr>
+        <div class="box is-primary">
+            <div class="columns is-desktop">
+                <div class="column">
+                    <input id="nameInput" class="input is-medium">
+                </div>
+                <div class="column">
+                    <button id="loginButton" class="button is-dark is-medium">Login</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script src="front.brython.js"></script>
+<script type="text/python">
+from front import client
+</script>
+</body>
+
+</html>
