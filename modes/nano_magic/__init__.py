@@ -40,6 +40,7 @@ async def accept(reader, writer):
                 await player.channel.send('loser')
 
 
+
 async def handle_get_user_name(channel):
     while True:
         await channel.send(protocol.REQUEST_NAME)

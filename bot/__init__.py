@@ -15,7 +15,14 @@ class TestBot:
         await self._channel.connect()
         return self
 
-    async def send(self, *messages):
+    async def send(self, message, *messages):
+
+        if len(messages) == 0:
+            messages = message.split()
+            print(messages)
+        else:
+            messages = message.split() + message
+
         responses = list()
         for message in messages:
             if message == READ_FLAG:
