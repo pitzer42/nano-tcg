@@ -42,11 +42,10 @@ def bot_factory(running_server):
 @pytest.mark.asyncio
 async def test_invalid_user_name(bot_factory):
     async with bot_factory() as client_1:
-        msgs = """
-            $read
-            test_invalid_user_name_a
-        """
-        client_1_log = await client_1.send(msgs)
+        client_1_log = await client_1.send(
+            READ_FLAG,
+            'test_invalid_user_name_a'
+        )
 
     async with bot_factory() as client_2:
         client_2_log = await client_2.send(
