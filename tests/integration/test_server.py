@@ -12,6 +12,9 @@ from bot import TestBot, READ_FLAG
 
 @pytest.fixture
 async def running_server(unused_tcp_port):
+    if False:
+        yield '127.0.0.1', 8888
+        return
 
     host = '127.0.0.1'
     port = unused_tcp_port
@@ -170,3 +173,75 @@ async def test_request_mulligan(bot_factory):
 
             assert protocol.PROMPT_MULLIGAN in log_a
             assert protocol.PROMPT_MULLIGAN in log_b
+
+
+@pytest.mark.asyncio
+async def test_request_main(bot_factory):
+
+    deck = ['serra angel'] * 60
+
+    async with bot_factory() as a:
+        async with bot_factory() as b:
+            log_a = await a.send(
+                READ_FLAG,
+                'test_request_match_a',
+                READ_FLAG,
+                *deck,
+                protocol.END_DECK,
+                READ_FLAG,
+                READ_FLAG,
+                'match1',
+                READ_FLAG,
+                '123',
+                READ_FLAG
+            )
+
+            log_b = await b.send(
+                READ_FLAG,
+                'test_request_match_b',
+                READ_FLAG,
+                *deck,
+                protocol.END_DECK,
+                READ_FLAG,
+                READ_FLAG,
+                'match1',
+                READ_FLAG,
+                '123',
+                READ_FLAG
+            )
+
+            """
+            start!
+            hand array
+            mulligan?
+            send something
+            firt?
+            """
+
+            log_a += await a.send(
+                READ_FLAG,
+                READ_FLAG,
+                READ_FLAG,
+                ''
+            )
+
+            log_b += await b.send(
+                READ_FLAG,
+                READ_FLAG,
+                READ_FLAG,
+                '',
+                READ_FLAG
+            )
+
+            log_a += await a.send(
+                READ_FLAG
+            )
+
+            log_b += await b.send(
+                READ_FLAG
+            )
+
+            print('=============================log_a')
+            print(log_a)
+            print('=============================log_b')
+            print(log_b)

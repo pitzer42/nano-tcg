@@ -39,7 +39,52 @@ async def accept(reader, writer):
             if len(player.hand) == 0:
                 await player.channel.send('loser')
 
+        current_player_index = 1# random.randint(0, 1)
+        other_player_index = 1 - current_player_index
 
+        while not await game_over(match):
+            current_player = match.players[current_player_index]
+            other_player = match.players[other_player_index]
+
+            await current_player.channel.send('your turn')
+
+            await upkeep(current_player)
+            await handle_draw(current_player)
+            await main_phase(current_player)
+            await begining_combat(current_player)
+            await declare_attackers(current_player)
+            await declare_blockers(other_player)
+            await combat(other_player)
+            await main_phase(current_player)
+            await end_step(current_player)
+            current_player_index = 1 - current_player_index
+            other_player_index = 1 - other_player_index
+
+
+async def game_over(match):
+    return False
+
+
+async def upkeep(player):
+    pass
+
+async def main_phase(player):
+    pass
+
+async def begining_combat(player):
+    pass
+
+async def declare_attackers(player):
+    pass
+
+async def declare_blockers(player):
+    pass
+
+async def combat(player):
+    pass
+
+async def end_step(player):
+    pass
 
 async def handle_get_user_name(channel):
     while True:
