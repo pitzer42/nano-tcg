@@ -1,4 +1,4 @@
-from channels import TcpChannel
+from channels.tcp import TcpChannel
 
 READ_FLAG = '$read'
 
@@ -6,7 +6,7 @@ READ_FLAG = '$read'
 class TestBot:
 
     def __init__(self, host, port):
-        self._channel = TcpChannel.from_address(
+        self._channel = TcpChannel(
             host,
             port
         )

@@ -1,6 +1,6 @@
 import random
 
-from channels import TcpChannel
+from channels.tcp import TcpChannel
 from modes.nano_magic import protocol
 from modes.nano_magic.models import (
     Player,
@@ -12,12 +12,9 @@ lobby = dict()
 matches = dict()
 
 
-async def accept(reader, writer):
+async def accept(channel):
     player = Player()
-    player.channel = TcpChannel.from_stream(
-        reader,
-        writer
-    )
+    player.channel = channel
 
     player.name = await handle_get_user_name(player.channel)
     lobby[player.name] = player
