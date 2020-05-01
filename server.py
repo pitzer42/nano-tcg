@@ -3,10 +3,20 @@ import asyncio
 
 from modes import nano_magic
 
+from channels.aio_stream import AioStreamChannel
+
 
 async def start(port, accept):
+    async def accept_stream(reader, writer):
+        await accept(
+            AioStreamChannel(
+                reader,
+                writer
+            )
+        )
+
     server = await asyncio.start_server(
-        accept,
+        accept_stream,
         '127.0.0.1',
         port
     )
