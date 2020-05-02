@@ -7,7 +7,7 @@ from channels.aio_stream import AioStreamChannel
 
 
 async def start(port, accept):
-    async def accept_stream(reader, writer):
+    async def accept_streams(reader, writer):
         await accept(
             AioStreamChannel(
                 reader,
@@ -16,7 +16,7 @@ async def start(port, accept):
         )
 
     server = await asyncio.start_server(
-        accept_stream,
+        accept_streams,
         '127.0.0.1',
         port
     )

@@ -3,27 +3,17 @@ from channels.tcp import TcpChannel
 READ_FLAG = '$read'
 
 
-class TestBot:
+class TestBot(TcpChannel):
 
     def __init__(self, host, port):
-        self._channel = TcpChannel(
-            host,
-            port
-        )
-
-    async def __aenter__(self):
-        await self._channel.connect()
-        return self
+        super(TestBot, self).__init__(host, port)
 
     async def send(self, *messages):
         responses = list()
         for message in messages:
             if message == READ_FLAG:
-                response = await self._channel.receive()
+                response = await super(TestBot, self).receive()
                 responses.append(response)
             else:
-                await self._channel.send(message)
+                await super(TestBot, self).send(message)
         return responses
-
-    async def __aexit__(self, exc_type, exc_val, exc_tb):
-        await self._channel.close()

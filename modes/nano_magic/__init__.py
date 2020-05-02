@@ -37,8 +37,8 @@ async def accept(channel):
     if len(player.hand) == 0:
         await player.channel.send('loser')
 
-    while True:
-        await asyncio.sleep(100)
+    # while True:
+      #  await asyncio.sleep(100)
 
     current_player_index = random.randint(0, 1)
     other_player_index = 1 - current_player_index

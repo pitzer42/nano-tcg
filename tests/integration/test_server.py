@@ -118,8 +118,8 @@ async def test_request_match(bot_factory):
                 READ_FLAG
             )
 
-            assert 'waiting for other player...' in log_a
-            assert 'waiting for other player...' in log_b
+            assert protocol.WAITING_OTHER_PLAYERS in log_a
+            assert protocol.WAITING_OTHER_PLAYERS in log_b
 
 
 @pytest.mark.asyncio
