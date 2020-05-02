@@ -7,7 +7,6 @@ from modes.nano_magic.models import (
     Match
 )
 
-
 lobby = dict()
 matches = dict()
 
@@ -36,7 +35,7 @@ async def accept(channel):
             if len(player.hand) == 0:
                 await player.channel.send('loser')
 
-        current_player_index = 1# random.randint(0, 1)
+        current_player_index = 1  # random.randint(0, 1)
         other_player_index = 1 - current_player_index
 
         while not await game_over(match):
@@ -65,23 +64,30 @@ async def game_over(match):
 async def upkeep(player):
     pass
 
+
 async def main_phase(player):
     pass
+
 
 async def begining_combat(player):
     pass
 
+
 async def declare_attackers(player):
     pass
+
 
 async def declare_blockers(player):
     pass
 
+
 async def combat(player):
     pass
 
+
 async def end_step(player):
     pass
+
 
 async def handle_get_user_name(channel):
     while True:

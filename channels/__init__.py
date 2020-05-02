@@ -13,12 +13,10 @@ class Channel:
         raise NotImplementedError()
 
     async def send(self, message: str):
-        packet = protocol.pack(message)
-        return await self._send(packet)
+        raise NotImplementedError()
 
     async def receive(self) -> str:
-        packet = await self._receive()
-        return protocol.unpack(packet)
+        raise NotImplementedError()
 
     async def __aexit__(self, exc_type, exc_val, exc_tb):
         await self.close()

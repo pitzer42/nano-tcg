@@ -5,8 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.2/css/bulma.min.css">
-    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/brython@3.8.8/brython.min.js"> </script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/brython@3.8.8/brython.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/brython@3.8.8/brython_stdlib.js"></script>
     <title>Nano TCG</title>
 </head>
@@ -18,21 +17,64 @@
             Nano TCG
         </h1>
         <hr>
-        <div class="box is-primary">
-            <div class="columns is-desktop">
+
+        <div id="loginContainer" class="box is-primary" style="display:none">
+            <div class="columns">
                 <div class="column">
-                    <input id="nameInput" class="input is-medium">
-                </div>
-                <div class="column">
-                    <button id="loginButton" class="button is-dark is-medium">Login</button>
+                    <h4 class="subtitle is-4">User name</h4>
+                    <input id="nameInput" class="input is-small">
+                    <br>
+                    <br>
+                    <button id="loginButton" class="button is-dark is-small">Login</button>
                 </div>
             </div>
         </div>
+
+        <div id="deckContainer" class="box is-primary" style="display:none">
+            <div class="columns">
+                <div class="column">
+                    <h4 class="subtitle is-4">Deck list</h4>
+                    <textarea id="deckInput" type="text" class="textarea"></textarea>
+                    <br>
+                    <button id="deckEndButton" class="button is-dark is-small">Ok</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="matchContainer" class="box is-primary" style="display:none">
+            <div class="columns">
+                <div class="column">
+                    <h4 class="subtitle is-4">Match</h4>
+                    name <input id="matchInput" type="text" class="input" label="name">
+                    <br>
+                    <br>
+                    password <input id="matchPasswordInput" type="password" class="input" label="password">
+                    <br>
+                    <br>
+                    <button id="matchButton" class="button is-dark is-small">Ok</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="columns is-centered" style="display:none">
+            <div class="column is-narrow">
+                <p id="waitContainer" class="button is-loading"></p>
+            </div>
+        </div>
+
     </div>
 </section>
 <script src="front.brython.js"></script>
 <script type="text/python">
-from front import client
+import front
+
+
+
+
+
+
+
+
 </script>
 </body>
 

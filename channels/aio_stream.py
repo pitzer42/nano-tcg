@@ -11,15 +11,16 @@ class AioStreamChannel(Channel):
     async def connect(self):
         pass
 
-    async def _send(self, packet: bytes):
-        self._writer.write(packet)
+    async def send(self, message: str):
+        message_bytes = (message + '\n').encode()
+        self._writer.write(message_bytes)
         await self._writer.drain()
 
-    async def _receive(self) -> bytes:
-        packet = await self._reader.readline()
-        if len(packet) == 0:
+    async def receive(self) -> str:
+        message_bytes = await self._reader.readline()
+        if len(message_bytes) == 0:
             raise ConnectionAbortedError()
-        return packet
+        return message_bytes.decode().strip()
 
     async def close(self):
         self._writer.close()
