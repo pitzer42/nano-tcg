@@ -30,8 +30,6 @@ async def accept(channel):
     while len(match.players) < 2:
         await asyncio.sleep(1)
 
-    await player.channel.send('start!')
-
     await handle_deck_shuffle(player)
     await handle_initial_draw(player)
     if len(player.hand) == 0:
