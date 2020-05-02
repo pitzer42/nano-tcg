@@ -1,6 +1,6 @@
 import asyncio
 
-from modes.nano_magic import protocol
+from gameplay.nano_magic import protocol
 
 
 class Channel:

@@ -7,7 +7,7 @@ import asyncio
 
 from multiprocessing import Process
 
-from modes.nano_magic import protocol
+from gameplay.nano_magic import protocol
 
 from tests.integration.tcp.bot import READ_FLAG, TcpBot
 

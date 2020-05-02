@@ -1,7 +1,7 @@
 import sys
 import asyncio
 
-from modes import nano_magic
+from gameplay import nano_magic
 
 from channels.aio_stream import AioStreamChannel
 
@@ -24,7 +24,7 @@ async def start(port, accept):
         await server.serve_forever()
 
 
-def main(port=8888, accept=nano_magic.accept):
+def main(port=8888, accept=nano_magic.play):
     asyncio.run(
         start(
             port,

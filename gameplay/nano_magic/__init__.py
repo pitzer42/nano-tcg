@@ -1,8 +1,8 @@
 import random
 import asyncio
 
-from modes.nano_magic import protocol
-from modes.nano_magic.models import (
+from gameplay.nano_magic import protocol
+from gameplay.nano_magic.models import (
     Player,
     Match
 )
@@ -11,7 +11,7 @@ lobby = dict()
 matches = dict()
 
 
-async def accept(channel):
+async def play(channel):
     player = Player()
     player.channel = channel
 

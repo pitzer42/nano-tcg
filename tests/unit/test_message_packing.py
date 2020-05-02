@@ -1,4 +1,4 @@
-from modes.nano_magic.protocol import (
+from gameplay.nano_magic.protocol import (
     pack,
     unpack
 )

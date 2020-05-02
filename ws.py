@@ -1,5 +1,5 @@
 from aiohttp import web
-from modes.nano_magic import accept
+from gameplay.nano_magic import play
 from channels.web_socket import WebSocketChannel
 
 
@@ -7,7 +7,7 @@ async def ws_server(request):
     ws = web.WebSocketResponse()
     await ws.prepare(request)
     channel = WebSocketChannel(ws)
-    await accept(channel)
+    await play(channel)
     print('websocket connection closed')
 
 
