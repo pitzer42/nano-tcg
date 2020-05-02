@@ -1,5 +1,7 @@
-from channels import Channel
 from aiohttp.web import WebSocketResponse
+
+from channels import Channel
+
 
 class WebSocketChannel(Channel):
 

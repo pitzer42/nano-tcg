@@ -1,8 +1,3 @@
-import asyncio
-
-from gameplay.nano_magic import protocol
-
-
 class Channel:
 
     async def __aenter__(self):

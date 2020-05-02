@@ -1,15 +1,11 @@
-import pytest
-
-from functools import partial
-
-import server
 import asyncio
-
+from functools import partial
 from multiprocessing import Process
 
-from gameplay.nano_magic import protocol
+import pytest
 
-from tests.integration.tcp.bot import READ_FLAG, TcpBot
+import server
+from tests.integration.tcp.bot import TcpBot
 
 
 @pytest.fixture

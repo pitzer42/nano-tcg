@@ -1,20 +1,11 @@
 import pytest
 
-from functools import partial
-
-import server
-import asyncio
-
-from multiprocessing import Process
-
 from gameplay.nano_magic import protocol
-
-from tests.integration.tcp.bot import READ_FLAG, TcpBot
+from tests.integration.tcp.bot import READ_FLAG
 
 
 @pytest.mark.asyncio
 async def test_full(tcp_bot_factory):
-
     client_a_name = test_full.__name__ + '_a'
     client_b_name = test_full.__name__ + '_b'
     deck = ['Storm Crow', 'Island'] * 4
@@ -23,7 +14,6 @@ async def test_full(tcp_bot_factory):
 
     async with tcp_bot_factory() as client_a:
         async with tcp_bot_factory() as client_b:
-
             logs_a = await client_a.send(
                 READ_FLAG,
                 client_a_name,
@@ -92,13 +82,11 @@ async def test_full(tcp_bot_factory):
 
 @pytest.mark.asyncio
 async def test_retry_request_name(tcp_bot_factory):
-
     client_a_name = test_full.__name__ + '_a'
     client_b_name = test_full.__name__ + '_b'
 
     async with tcp_bot_factory() as client_a:
         async with tcp_bot_factory() as client_b:
-
             logs_a = await client_a.send(
                 READ_FLAG,
                 client_a_name,

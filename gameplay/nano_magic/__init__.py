@@ -1,5 +1,5 @@
-import random
 import asyncio
+import random
 
 from gameplay.nano_magic import protocol
 from gameplay.nano_magic.models import (
@@ -36,7 +36,7 @@ async def play(channel):
         await player.channel.send('loser')
 
     # while True:
-      #  await asyncio.sleep(100)
+    #  await asyncio.sleep(100)
 
     current_player_index = random.randint(0, 1)
     other_player_index = 1 - current_player_index

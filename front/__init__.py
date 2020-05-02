@@ -1,7 +1,7 @@
 from browser import alert, document, websocket
 
-from front.components.login import LoginComponent
 from front.components.deck import DeckComponent
+from front.components.login import LoginComponent
 from front.components.match import MatchComponent
 from front.components.wait import WaitComponent
 
@@ -11,7 +11,6 @@ def on_open(evt):
 
 
 def on_message(evt):
-
     switch = {
         'request_name': login_component.show,
         'request_deck': deck_component.show,
@@ -51,6 +50,7 @@ def send_deck(*args, **kwargs):
 def send_match(*args, **kwargs):
     name = match_component.get_match_name()
     ws.send(name)
+
 
 def send_match_password(*args, **kwargs):
     password = match_component.get_match_password()
