@@ -1,6 +1,6 @@
 import random
+import asyncio
 
-from channels.tcp import TcpChannel
 from modes.nano_magic import protocol
 from modes.nano_magic.models import (
     Player,
@@ -25,36 +25,41 @@ async def accept(channel):
     match = await handle_request_match(player.channel)
     match.players.append(player)
 
-    await player.channel.send('waiting for other player...')
+    await player.channel.send(protocol.WAITING_OTHER_PLAYERS)
 
-    if len(match.players) == 2:
-        for player in match.players:
-            await player.channel.send('start!')
-            await handle_deck_shuffle(player)
-            await handle_initial_draw(player)
-            if len(player.hand) == 0:
-                await player.channel.send('loser')
+    while len(match.players) < 2:
+        await asyncio.sleep(1)
 
-        current_player_index = 1  # random.randint(0, 1)
-        other_player_index = 1 - current_player_index
+    await player.channel.send('start!')
 
-        while not await game_over(match):
-            current_player = match.players[current_player_index]
-            other_player = match.players[other_player_index]
+    await handle_deck_shuffle(player)
+    await handle_initial_draw(player)
+    if len(player.hand) == 0:
+        await player.channel.send('loser')
 
-            await current_player.channel.send('your turn')
+    while True:
+        await asyncio.sleep(100)
 
-            await upkeep(current_player)
-            await handle_draw(current_player)
-            await main_phase(current_player)
-            await begining_combat(current_player)
-            await declare_attackers(current_player)
-            await declare_blockers(other_player)
-            await combat(other_player)
-            await main_phase(current_player)
-            await end_step(current_player)
-            current_player_index = 1 - current_player_index
-            other_player_index = 1 - other_player_index
+    current_player_index = random.randint(0, 1)
+    other_player_index = 1 - current_player_index
+
+    while not await game_over(match):
+        current_player = match.players[current_player_index]
+        other_player = match.players[other_player_index]
+
+        await current_player.channel.send('your turn')
+
+        await upkeep(current_player)
+        await handle_draw(current_player)
+        await main_phase(current_player)
+        await begining_combat(current_player)
+        await declare_attackers(current_player)
+        await declare_blockers(other_player)
+        await combat(other_player)
+        await main_phase(current_player)
+        await end_step(current_player)
+        current_player_index = 1 - current_player_index
+        other_player_index = 1 - other_player_index
 
 
 async def game_over(match):

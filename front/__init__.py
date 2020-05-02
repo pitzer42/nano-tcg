@@ -15,13 +15,17 @@ def on_message(evt):
     switch = {
         'request_name': login_component.show,
         'request_deck': deck_component.show,
-        'request_match': match_component.show
+        'request_match': match_component.show,
+        'request_match_password': send_match_password,
+        'waiting_other_players': wait_component.show
     }
 
     key = evt.data
 
     if key in switch:
         switch[key]()
+    else:
+        alert(key)
 
 
 def on_close(evt):
@@ -45,12 +49,13 @@ def send_deck(*args, **kwargs):
 
 
 def send_match(*args, **kwargs):
-    match_component.hide()
     name = match_component.get_match_name()
     ws.send(name)
+
+def send_match_password(*args, **kwargs):
     password = match_component.get_match_password()
     ws.send(password)
-    wait_component.show()
+    match_component.hide()
 
 
 ws = websocket.WebSocket("ws://0.0.0.0:8080/ws")
