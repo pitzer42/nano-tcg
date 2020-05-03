@@ -30,6 +30,8 @@ def on_message(evt):
         mulligan_component.set_hand(cards)
         mulligan_component.show()
         wait_component.hide()
+    elif 'turn' in key:
+        alert(key)
 
 
 def on_close(evt):
@@ -61,6 +63,11 @@ def send_match_password(*args, **kwargs):
     ws.send(password)
     match_component.hide()
 
+def send_mulligan(*args, **kwargs):
+    ws.send('yes')
+
+def send_keep(*args, **kwargs):
+    ws.send('')
 
 ws = websocket.WebSocket("ws://0.0.0.0:8080/ws")
 
@@ -80,3 +87,6 @@ match_component.set_ok_action(send_match)
 wait_component = WaitComponent(document)
 
 mulligan_component = MulliganComponent(document)
+mulligan_component.set_mulligan_action(send_mulligan)
+mulligan_component.set_keep_action(send_keep)
+

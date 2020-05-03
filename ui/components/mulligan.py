@@ -25,6 +25,7 @@ class MulliganComponent(Component):
 
     def set_hand(self, cards):
         images = self._document[MulliganComponent._cards_mulligan_container_id]
+        images.innerHTML = ''
         self._element.appendChild(images)
 
         def foo(response):
@@ -46,3 +47,4 @@ class MulliganComponent(Component):
                 'https://api.scryfall.com/cards/named?exact=' + card.replace(' ', '+')
             )
             request.send()
+

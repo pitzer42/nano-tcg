@@ -35,8 +35,7 @@ async def play(channel):
     if len(player.hand) == 0:
         await player.channel.send('loser')
 
-    # while True:
-    #  await asyncio.sleep(100)
+    # Start Sync Session
 
     current_player_index = random.randint(0, 1)
     other_player_index = 1 - current_player_index
@@ -46,6 +45,9 @@ async def play(channel):
         other_player = match.players[other_player_index]
 
         await current_player.channel.send('your turn')
+
+        while True:
+            asyncio.sleep(1000)
 
         await upkeep(current_player)
         await handle_draw(current_player)
@@ -144,7 +146,7 @@ async def handle_initial_draw(player, n_mulligan=0):
 
 async def handle_mulligan(player, n_mulligan):
     for i in range(len(player.hand)):
-        await handle_top_i_hand(player, i)
+        await handle_top_i_hand(player, 0)
     await handle_deck_shuffle(player)
     await handle_initial_draw(player, n_mulligan)
 
