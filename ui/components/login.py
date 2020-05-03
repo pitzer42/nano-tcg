@@ -1,4 +1,4 @@
-from front.components import Component
+from ui.components import Component
 
 
 class LoginComponent(Component):
@@ -7,7 +7,10 @@ class LoginComponent(Component):
     _login_button = 'loginButton'
 
     def __init__(self, document):
-        super(LoginComponent, self).__init__(LoginComponent._login_container)
+        super(LoginComponent, self).__init__(
+            document,
+            LoginComponent._login_container
+        )
         self._name_input = document[LoginComponent._name_input]
         self._login_button = document[LoginComponent._login_button]
         self._first_try = True

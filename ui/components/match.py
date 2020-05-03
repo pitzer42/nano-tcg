@@ -1,4 +1,4 @@
-from front.components import Component
+from ui.components import Component
 
 
 class MatchComponent(Component):
@@ -8,7 +8,10 @@ class MatchComponent(Component):
     _match_buton = 'matchButton'
 
     def __init__(self, document):
-        super(MatchComponent, self).__init__(MatchComponent._match_container)
+        super(MatchComponent, self).__init__(
+            document,
+            MatchComponent._match_container
+        )
         self._input = document[MatchComponent._match_input]
         self._password_input = document[MatchComponent._match_password_input]
         self._ok = document[MatchComponent._match_buton]

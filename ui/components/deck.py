@@ -1,4 +1,4 @@
-from front.components import Component
+from ui.components import Component
 
 
 class DeckComponent(Component):
@@ -7,7 +7,10 @@ class DeckComponent(Component):
     _deck_end_button = 'deckEndButton'
 
     def __init__(self, document):
-        super(DeckComponent, self).__init__(DeckComponent._deck_container)
+        super(DeckComponent, self).__init__(
+            document,
+            DeckComponent._deck_container
+        )
         self._input = document[DeckComponent._deck_input]
         self._ok = document[DeckComponent._deck_end_button]
 

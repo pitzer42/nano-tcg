@@ -1,9 +1,10 @@
 from browser import alert, document, websocket
 
-from front.components.deck import DeckComponent
-from front.components.login import LoginComponent
-from front.components.match import MatchComponent
-from front.components.wait import WaitComponent
+from ui.components.deck import DeckComponent
+from ui.components.login import LoginComponent
+from ui.components.match import MatchComponent
+from ui.components.wait import WaitComponent
+from ui.components.mulligan import MulliganComponent
 
 
 def on_open(evt):
@@ -11,6 +12,7 @@ def on_open(evt):
 
 
 def on_message(evt):
+
     switch = {
         'request_name': login_component.show,
         'request_deck': deck_component.show,
@@ -23,12 +25,14 @@ def on_message(evt):
 
     if key in switch:
         switch[key]()
-    else:
-        alert(key)
+    elif '[' in key:
+        cards = list(key[2:-2].split("', '"))
+        mulligan_component.set_hand(cards)
+        mulligan_component.show()
+        wait_component.hide()
 
 
 def on_close(evt):
-    # websocket is closed
     alert("Connection is closed")
 
 
@@ -41,7 +45,7 @@ def send_name(*args, **kwargs):
 def send_deck(*args, **kwargs):
     deck_component.hide()
     deck = deck_component.get_deck()
-    deck = deck.split()
+    deck = deck.split('\n')
     for line in deck:
         ws.send(line)
     ws.send('end_deck')
@@ -74,3 +78,5 @@ match_component = MatchComponent(document)
 match_component.set_ok_action(send_match)
 
 wait_component = WaitComponent(document)
+
+mulligan_component = MulliganComponent(document)
