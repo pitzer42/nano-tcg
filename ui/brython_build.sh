@@ -1,2 +1,1 @@
-rm front.brython.js
-python -m brython --make_package front
+python -m brython --make_package ui
