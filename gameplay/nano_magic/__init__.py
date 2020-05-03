@@ -1,5 +1,5 @@
-import asyncio
 import random
+import asyncio
 
 from gameplay.nano_magic import protocol
 from gameplay.nano_magic.models import (
@@ -7,28 +7,15 @@ from gameplay.nano_magic.models import (
     Match
 )
 
-lobby = dict()
-matches = dict()
+from gameplay.nano_magic.player_setup import setup_player
+from gameplay.nano_magic.match_setup import setup_match
 
 
 async def play(channel):
-    player = Player()
-    player.channel = channel
-
-    player.name = await handle_get_user_name(player.channel)
-    lobby[player.name] = player
-
-    player.deck = await handle_request_deck(player.channel)
-    deck_size_ack = str(len(player.deck))
-    await player.channel.send(deck_size_ack)
-
-    match = await handle_request_match(player.channel)
-    match.players.append(player)
-
-    await player.channel.send(protocol.WAITING_OTHER_PLAYERS)
-
-    while len(match.players) < 2:
-        await asyncio.sleep(1)
+    player = Player(channel)
+    await setup_player(player)
+    await setup_match(player)
+    await player.match.run()
 
     await handle_deck_shuffle(player)
     await handle_initial_draw(player)
@@ -40,14 +27,17 @@ async def play(channel):
     current_player_index = random.randint(0, 1)
     other_player_index = 1 - current_player_index
 
-    while not await game_over(match):
-        current_player = match.players[current_player_index]
-        other_player = match.players[other_player_index]
+    current_player = player.match._players[current_player_index]
+    other_player = player.match._players[other_player_index]
+
+    while current_player == player:
+        current_player = player.match._players[current_player_index]
+        other_player = player.match._players[other_player_index]
 
         await current_player.channel.send('your turn')
 
         while True:
-            asyncio.sleep(1000)
+            await asyncio.sleep(1000)
 
         await upkeep(current_player)
         await handle_draw(current_player)
@@ -60,7 +50,6 @@ async def play(channel):
         await end_step(current_player)
         current_player_index = 1 - current_player_index
         other_player_index = 1 - other_player_index
-
 
 async def game_over(match):
     return False
@@ -102,31 +91,6 @@ async def handle_get_user_name(channel):
             return user_name
 
 
-async def handle_request_deck(channel):
-    await channel.send(protocol.REQUEST_DECK)
-    deck_file_lines = list()
-    while True:
-        line = await channel.receive()
-        if line == protocol.END_DECK:
-            break
-        deck_file_lines.append(line)
-    return deck_file_lines
-
-
-async def handle_request_match(channel):
-    while True:
-        await channel.send(protocol.REQUEST_MATCH)
-        match_id = await channel.receive()
-        await channel.send(protocol.REQUEST_MATCH_PASSWORD)
-        password = await channel.receive()
-        if match_id not in matches:
-            match = Match(match_id, password)
-            matches[match_id] = match
-            return match
-        else:
-            match = matches[match_id]
-            if match.password == password:
-                return match
 
 
 async def handle_initial_draw(player, n_mulligan=0):
@@ -147,13 +111,10 @@ async def handle_initial_draw(player, n_mulligan=0):
 async def handle_mulligan(player, n_mulligan):
     for i in range(len(player.hand)):
         await handle_top_i_hand(player, 0)
-    await handle_deck_shuffle(player)
     await handle_initial_draw(player, n_mulligan)
 
 
-async def handle_deck_shuffle(player):
-    random.seed(player.name + str(lobby))
-    random.shuffle(player.deck)
+
 
 
 async def handle_draw(player, n=1):

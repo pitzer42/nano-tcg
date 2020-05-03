@@ -2,4 +2,10 @@ todo
 parse .dck
 
 todo
-inspector
+log spector
+
+todo
+template based ui
+
+todo
+model based gameplay
