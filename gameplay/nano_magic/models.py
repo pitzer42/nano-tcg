@@ -61,7 +61,6 @@ class Match:
         # TODO
 
 
-
     async def draw_initial_hand(self, player: Player):
         hand_size = Match.INITIAL_HAND_SIZE
         player.draw(hand_size)

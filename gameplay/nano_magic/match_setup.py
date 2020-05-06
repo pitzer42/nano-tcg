@@ -13,6 +13,8 @@ async def setup_match(player: Player):
     await player.channel.send(protocol.WAITING_OTHER_PLAYERS)
     await player.match.is_ready()
 
+    print(player.match.name + ' ready')
+
 
 async def request_match(player: Player):
     while True:

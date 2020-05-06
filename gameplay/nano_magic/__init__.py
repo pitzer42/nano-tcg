@@ -15,7 +15,7 @@ async def play(channel):
     player = Player(channel)
     await setup_player(player)
     await setup_match(player)
-    await player.match.run()
+    await player.match.run(player)
 
     await handle_deck_shuffle(player)
     await handle_initial_draw(player)

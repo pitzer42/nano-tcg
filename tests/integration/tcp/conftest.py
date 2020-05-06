@@ -20,6 +20,9 @@ async def running_server(unused_tcp_port):
     port = unused_tcp_port
     startup_delay_secs = 1
 
+    # yield host, 8888
+    # return
+
     start_test_server = partial(server.main, port)
     server_process = Process(target=start_test_server)
     server_process.start()

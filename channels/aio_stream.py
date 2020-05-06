@@ -12,7 +12,7 @@ class AioStreamChannel(Channel):
         pass
 
     async def send(self, message: str):
-        message_bytes = (message + '\n').encode()
+        message_bytes = (str(message) + '\n').encode()
         self._writer.write(message_bytes)
         await self._writer.drain()
 
