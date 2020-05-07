@@ -1,5 +1,6 @@
 from browser import ajax, console
 
+import json
 from ui.components import Component
 
 
@@ -24,8 +25,14 @@ class MulliganComponent(Component):
         self._mulligan_button.bind('click', action)
 
     def show(self, cards):
-        console.log(type(cards))
-        return
+        """
+        4 Teferi, Time Raveler
+        4 Dovin's Veto
+        """
+        cards = cards.replace("'", "\'")
+
+        console.log(cards)
+        cards = json.loads(cards)
 
         super(MulliganComponent, self).show()
 

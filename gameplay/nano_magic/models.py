@@ -77,8 +77,8 @@ class Match:
             player.shuffle_hand_into_deck(hand_size)
             hand_size -= 1
             player.draw(hand_size)
-            await player.channel.send(player.hand)
-            mulligan = await player.channel.send(protocol.PROMPT_MULLIGAN)
+            message = protocol.PROMPT_MULLIGAN + ' ' + str(player.hand)
+            await player.channel.send(message)
 
 
 class Deck(list):

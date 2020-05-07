@@ -26,9 +26,12 @@ async def request_deck(player: Player):
         await player.channel.send(protocol.REQUEST_DECK)
         deck = await player.channel.receive()
         deck = parse(deck)
-        player.deck += deck
-        if protocol.END_DECK in deck:
+        if protocol.END_DECK == deck[-1]:
+            player.deck += deck[:-1]
             deck_size_ack = len(player.deck)
             await player.channel.send(deck_size_ack)
             return
+        else:
+            player.deck += deck
+
 
