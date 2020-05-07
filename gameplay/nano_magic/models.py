@@ -1,5 +1,6 @@
 import asyncio
 import random
+import json
 
 from gameplay.nano_magic import protocol
 from gameplay.nano_magic.deck_list import parse
@@ -70,15 +71,16 @@ class Match:
     async def draw_initial_hand(self, player: Player):
         hand_size = Match.INITIAL_HAND_SIZE
         player.draw(hand_size)
-        message = protocol.PROMPT_MULLIGAN + ' ' +str(player.hand)
+        message = protocol.PROMPT_MULLIGAN + ' ' +json.dumps(player.hand)
         await player.channel.send(message)
         mulligan = await player.channel.receive()
         while mulligan and hand_size > 0:
-            player.shuffle_hand_into_deck(hand_size)
+            player.shuffle_hand_into_deck()
             hand_size -= 1
             player.draw(hand_size)
-            message = protocol.PROMPT_MULLIGAN + ' ' + str(player.hand)
+            message = protocol.PROMPT_MULLIGAN + ' ' + json.dumps(player.hand)
             await player.channel.send(message)
+            mulligan = await player.channel.receive()
 
 
 class Deck(list):

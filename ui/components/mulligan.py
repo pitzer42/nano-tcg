@@ -29,9 +29,6 @@ class MulliganComponent(Component):
         4 Teferi, Time Raveler
         4 Dovin's Veto
         """
-        cards = cards.replace("'", "\'")
-
-        console.log(cards)
         cards = json.loads(cards)
 
         super(MulliganComponent, self).show()
