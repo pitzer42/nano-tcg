@@ -2,6 +2,13 @@ import asyncio
 import random
 
 from gameplay.nano_magic import protocol
+from gameplay.nano_magic.deck_list import parse
+
+
+class Card:
+
+    def __init__(self):
+        self.name = 'Card 1'
 
 
 class Player:
@@ -10,6 +17,7 @@ class Player:
         self.channel = channel
         self.name = ''
         self.hand = list()
+        self.board = list()
         self.deck = Deck()
         self.match = None
 
@@ -50,7 +58,7 @@ class Match:
     async def run(self, player: Player):
         player.deck.shuffle()
         await self.draw_initial_hand(player)
-        self._players.sort()
+        # self._players.sort() TypeError: '<' not supported between instances of 'Player' and 'Player'
         player_index = self._players.index(player)
 
         # keep all players alive
@@ -58,14 +66,13 @@ class Match:
             while True:
                 await asyncio.sleep(1000)
 
-        # TODO
-
 
     async def draw_initial_hand(self, player: Player):
         hand_size = Match.INITIAL_HAND_SIZE
         player.draw(hand_size)
-        await player.channel.send(player.hand)
-        mulligan = await player.channel.send(protocol.PROMPT_MULLIGAN)
+        message = protocol.PROMPT_MULLIGAN + ' ' +str(player.hand)
+        await player.channel.send(message)
+        mulligan = await player.channel.receive()
         while mulligan and hand_size > 0:
             player.shuffle_hand_into_deck(hand_size)
             hand_size -= 1

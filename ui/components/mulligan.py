@@ -1,4 +1,4 @@
-from browser import ajax
+from browser import ajax, console
 
 from ui.components import Component
 
@@ -23,7 +23,12 @@ class MulliganComponent(Component):
     def set_mulligan_action(self, action):
         self._mulligan_button.bind('click', action)
 
-    def set_hand(self, cards):
+    def show(self, cards):
+        console.log(type(cards))
+        return
+
+        super(MulliganComponent, self).show()
+
         images = self._document[MulliganComponent._cards_mulligan_container_id]
         images.innerHTML = ''
         self._element.appendChild(images)

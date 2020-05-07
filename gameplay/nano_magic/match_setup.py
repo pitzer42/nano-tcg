@@ -13,7 +13,23 @@ async def setup_match(player: Player):
     await player.channel.send(protocol.WAITING_OTHER_PLAYERS)
     await player.match.is_ready()
 
-    print(player.match.name + ' ready')
+    return
+
+    await player.channel.send(protocol.START)
+
+    player_index = player.match.index(player)
+
+    # Hold player connection
+    if player_index != 0:
+        while True:
+            await asyncio.sleep(1000)
+
+    await player.channel.send(protocol.MAIN_PHASE)
+    card_index = await player.channel.receive()
+    card = player.hand.pop(card_index)
+    player.board.append(card)
+    await player.channel.send(protocol.UPDATE_HAND + ' ' + str(player.hand))
+    await player.channel.send(protocol.UPDATE_BOARD + ' ' + str(player.board))
 
 
 async def request_match(player: Player):

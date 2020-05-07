@@ -15,10 +15,10 @@ class LoginComponent(Component):
         self._login_button = document[LoginComponent._login_button]
         self._first_try = True
 
-    def get_user_name(self):
+    def get_name(self):
         return self._name_input.value
 
-    def set_login_action(self, action):
+    def set_action(self, action):
         self._login_button.bind(
             'click',
             action

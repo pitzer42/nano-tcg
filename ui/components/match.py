@@ -17,10 +17,10 @@ class MatchComponent(Component):
         self._ok = document[MatchComponent._match_buton]
         self._first_try = True
 
-    def get_match_name(self):
+    def get_match(self):
         return self._input.value
 
-    def get_match_password(self):
+    def get_password(self):
         return self._password_input.value
 
     def set_ok_action(self, action):

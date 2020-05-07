@@ -16,7 +16,7 @@ class WebSocketChannel(Channel):
         await self._ws.close()
 
     async def send(self, message: str):
-        await self._ws.send_str(message)
+        await self._ws.send_str(str(message))
 
     async def receive(self) -> str:
         return await self._ws.receive_str()

@@ -17,7 +17,7 @@ class DeckComponent(Component):
     def get_deck(self):
         return self._input.value
 
-    def set_deck_end_action(self, action):
+    def set_action(self, action):
         self._ok.bind(
             'click',
             action
