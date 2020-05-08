@@ -1,10 +1,8 @@
-import pytest
-
-from gameplay.nano_magic.models import Deck
+from gameplay.nano_magic.deck import parse_deck_str
 
 
 def test_create_from_deck_list():
-    deck_list = """
+    deck_str = """
         4 Aether Vial
         2 Benthic Biomancer
         2 Botanical Sanctum
@@ -26,7 +24,7 @@ def test_create_from_deck_list():
     """
     expected_length = 60
 
-    deck = Deck.from_deck_list(deck_list)
+    deck = parse_deck_str(deck_str)
 
     assert len(deck) == expected_length
 

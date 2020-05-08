@@ -1,7 +1,25 @@
-def parse(deck: str):
+from channels import Channel
+from gameplay.nano_magic import protocol
+
+
+async def request_deck(channel: Channel):
+    await channel.send(protocol.REQUEST_DECK)
+    deck = list()
+    while True:
+        deck_str = await channel.receive()
+        cards = parse_deck_str(deck_str)
+        deck += cards
+        if cards[-1] == protocol.END_DECK:
+            deck.pop()
+            ack = len(deck)
+            await channel.send(ack)
+            return deck
+
+
+def parse_deck_str(deck_str: str):
     cards = list()
-    deck = deck.split('\n')
-    for deck_entry in deck:
+    deck_str = deck_str.split('\n')
+    for deck_entry in deck_str:
         deck_entry = deck_entry.strip().lower()
         if deck_entry == '':
             continue
@@ -20,8 +38,3 @@ def parse(deck: str):
         cards += [card] * quantity
 
     return cards
-        
-
-
-
-

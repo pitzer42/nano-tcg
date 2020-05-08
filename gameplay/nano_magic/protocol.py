@@ -1,3 +1,6 @@
+import json
+
+
 def pack(command: str) -> bytes:
     return (command + '\n').encode()
 
@@ -15,3 +18,11 @@ PROMPT_MULLIGAN = 'mulligan'
 WAITING_OTHER_PLAYERS = 'waiting_other_players'
 START = 'start'
 MAIN_PHASE = 'main_phase'
+
+
+def prompt_mulligan(hand: list):
+    return f'{PROMPT_MULLIGAN} {json.dumps(hand)}'
+
+
+def is_positive(response: str):
+    return response.lower() in ('', 'yes', 'y')

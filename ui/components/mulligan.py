@@ -1,6 +1,7 @@
-from browser import ajax, console
-
 import json
+
+from browser import ajax
+
 from ui.components import Component
 
 

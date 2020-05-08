@@ -1,4 +1,4 @@
-from gameplay.nano_magic.deck_list import parse
+from gameplay.nano_magic.deck import parse_deck_str
 
 
 def test_numbered_list_with_empty_lines_and_tabs():
@@ -40,6 +40,6 @@ def test_numbered_list_with_empty_lines_and_tabs():
         2 Stony Silence
         3 Surgical Extraction
     """
-    cards = parse(deck_list)
+    cards = parse_deck_str(deck_list)
 
     assert len(cards) == 75

@@ -6,7 +6,6 @@ from tests.integration.tcp.bot import READ_FLAG
 
 @pytest.mark.asyncio
 async def test_full(tcp_bot_factory):
-
     client_a_name = test_full.__name__ + '_a'
     client_b_name = test_full.__name__ + '_b'
 
@@ -28,7 +27,7 @@ async def test_full(tcp_bot_factory):
                 match,
                 READ_FLAG,
                 password,
-                READ_FLAG,
+                READ_FLAG
             )
 
             logs_b = await client_b.send(
@@ -42,7 +41,7 @@ async def test_full(tcp_bot_factory):
                 match,
                 READ_FLAG,
                 password,
-                READ_FLAG,
+                READ_FLAG
             )
 
             assert logs_a == logs_b
