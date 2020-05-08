@@ -4,8 +4,8 @@ from gameplay.nano_magic.models import (
     Match
 )
 
-from gameplay.nano_magic.player_setup import setup_player
-from gameplay.nano_magic.match_setup import setup_match
+from gameplay.nano_magic.login import setup_player
+from gameplay.nano_magic.match import setup_match
 
 
 async def play(channel):

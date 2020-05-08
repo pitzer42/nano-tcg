@@ -22,8 +22,8 @@ async def request_name(player: Player):
 
 
 async def request_deck(player: Player):
+    await player.channel.send(protocol.REQUEST_DECK)
     while True:
-        await player.channel.send(protocol.REQUEST_DECK)
         deck = await player.channel.receive()
         deck = parse(deck)
         if protocol.END_DECK == deck[-1]:

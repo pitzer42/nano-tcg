@@ -6,9 +6,10 @@ from tests.integration.tcp.bot import READ_FLAG
 
 @pytest.mark.asyncio
 async def test_full(tcp_bot_factory):
+
     client_a_name = test_full.__name__ + '_a'
     client_b_name = test_full.__name__ + '_b'
-    # TODO Change to str
+
     deck = ['4 Storm Crow', '4 Island']
     expected_deck_length = '8'
     match = 'm1'
@@ -54,32 +55,16 @@ async def test_full(tcp_bot_factory):
                 protocol.WAITING_OTHER_PLAYERS
             ]
 
-            # Read hands
-
-            await client_a.send(
-                READ_FLAG,
-            )
-
-            await client_b.send(
-                READ_FLAG,
-            )
-
-            # Back to common test steps
-
             logs_a = await client_a.send(
-                READ_FLAG,
-                ''
+                READ_FLAG
             )
 
             logs_b = await client_b.send(
-                READ_FLAG,
-                ''
+                READ_FLAG
             )
 
-            assert logs_a == logs_b
-            assert logs_a == [
-                protocol.PROMPT_MULLIGAN
-            ]
+            assert protocol.PROMPT_MULLIGAN in logs_a[-1]
+            assert protocol.PROMPT_MULLIGAN in logs_b[-1]
 
 
 @pytest.mark.asyncio
