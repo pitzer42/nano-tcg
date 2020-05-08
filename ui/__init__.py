@@ -49,11 +49,20 @@ wait_component = WaitComponent(document)
 
 
 def send_mulligan(*args, **kwargs):
+    mulligan_component.hide()
+    wait_component.show()
     ws.send('yes')
 
 
 def send_keep(*args, **kwargs):
+    mulligan_component.hide()
+    wait_component.show()
     ws.send('')
+
+
+def show_mulligan_component(hand):
+    wait_component.hide()
+    mulligan_component.show(hand)
 
 
 mulligan_component = MulliganComponent(document)
@@ -66,7 +75,7 @@ COMMAND_SWITCH = {
     'request_match': match_component.show,
     'request_match_password': send_match_password,
     'waiting_other_players': wait_component.show,
-    'mulligan': mulligan_component.show,
+    'mulligan': show_mulligan_component,
     'start': console.log,
     # 'update_hand': game_hand.show,
     # 'update_board': game_board.show,

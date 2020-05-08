@@ -10,6 +10,7 @@ from gameplay.nano_magic.match import draw_initial_hand
 
 lobby = dict()
 matches = dict()
+match_counter = dict()
 
 
 async def play(channel: Channel):
@@ -27,8 +28,15 @@ async def play(channel: Channel):
         matches.__getitem__,
     )
     matches[match_id] = match_password
+    if match_id in match_counter:
+        match_counter[match_id] = True
+    else:
+        match_counter[match_id] = False
 
     await channel.send(protocol.WAITING_OTHER_PLAYERS)
+
+    while not match_counter[match_id]:
+        await asyncio.sleep(1)
 
     initial_hand = await draw_initial_hand(channel, deck)
 
