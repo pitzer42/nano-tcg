@@ -23,14 +23,20 @@ async def request_match(player: Channel, is_unique, get_password):
                 return id, password
 
 
-async def draw_initial_hand(player: Channel, deck, hand_size=INITIAL_HAND_SIZE):
-    shuffle(deck)
+async def draw_initial_hand(channel: Channel, deck, hand_size=INITIAL_HAND_SIZE):
     hand = list()
-    draw(hand_size, deck, hand)
-    mulligan = await prompt_mulligan(player, hand)
-    if hand_size > 1 and mulligan:
-        draw(hand_size, hand, deck)
-        return await draw_initial_hand(player, deck, hand_size - 1)
+    if hand_size > 0:
+        shuffle(deck)
+        draw(hand_size, deck, hand)
+        if hand_size > 1:
+            mulligan = await prompt_mulligan(channel, hand)
+            if mulligan:
+                # place hand into deck
+                draw(hand_size, hand, deck)
+                return await draw_initial_hand(
+                    channel,
+                    deck,
+                    hand_size - 1)
     return hand
 
 

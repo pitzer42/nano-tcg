@@ -18,6 +18,7 @@ PROMPT_MULLIGAN = 'mulligan'
 WAITING_OTHER_PLAYERS = 'waiting_other_players'
 START = 'start'
 MAIN_PHASE = 'main_phase'
+POSITIVES = ['', 'y', 'yes']
 
 
 def prompt_mulligan(hand: list):
@@ -25,4 +26,4 @@ def prompt_mulligan(hand: list):
 
 
 def is_positive(response: str):
-    return response.lower() in ('', 'yes', 'y')
+    return response.lower() in POSITIVES
