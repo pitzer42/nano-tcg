@@ -9,7 +9,7 @@ async def request_deck(channel: Channel):
         deck_str = await channel.receive()
         cards = parse_deck_str(deck_str)
         deck += cards
-        if cards[-1] == protocol.END_DECK:
+        if len(cards) > 0 and cards[-1] == protocol.END_DECK:
             deck.pop()
             ack = len(deck)
             await channel.send(ack)
