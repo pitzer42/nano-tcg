@@ -5,75 +5,81 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.2/css/bulma.min.css">
+    <link rel="import" href="/home/arthur/PycharmProjects/nano_tcg/ui/templates.html">
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/brython@3.8.8/brython.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/brython@3.8.8/brython_stdlib.js"></script>
     <title>Nano TCG</title>
+
+    <!-- <templates> -->
+
+    <template id="LoginViewComponent">
+        <div id="LoginView" class="box is-primary">
+            <div class="columns">
+                <div class="column">
+                    <h4 class="subtitle is-4">User name</h4>
+                    <input id="nameInput" class="input is-small">
+                    <br>
+                    <br>
+                    <button id="loginButton" class="button is-dark is-small">Login</button>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="DeckViewComponent">
+        <div id="DeckView" class="box is-primary">
+            <div class="columns">
+                <div class="column">
+                    <h4 class="subtitle is-4">Deck list</h4>
+                    <textarea id="deckInput" type="text" class="textarea"></textarea>
+                    <br>
+                    <button id="deckEndButton" class="button is-dark is-small">Ok</button>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="MatchViewComponent">
+        <div id="MatchView" class="box is-primary">
+            <div class="columns">
+                <div class="column">
+                    <h4 class="subtitle is-4">Match</h4>
+                    name <input id="matchInput" type="text" class="input" label="name">
+                    <br>
+                    <br>
+                    password <input id="matchPasswordInput" type="password" class="input" label="password">
+                    <br>
+                    <br>
+                    <button id="matchButton" class="button is-dark is-small">Ok</button>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="WaitViewComponent">
+        <div id="WaitView" class="columns is-centered">
+            <div class="column is-narrow">
+                <p class="button is-loading is-info"></p>
+            </div>
+        </div>
+    </template>
+
+    <template id="MulliganViewComponent">
+        <div id="MulliganView">
+            <div id="cardsMulliganContainer">
+            </div>
+            <div>
+                <button id="ḱeepButton" class="button is-success">Keep</button>
+                <button id="mulliganButton" class="button is-danger">Mulligan</button>
+            </div>
+        </div>
+    </template>
+
+    <!-- </templates> -->
+
 </head>
 
 <body onload="brython()">
-
-<template id="LoginViewComponent">
-    <div id="LoginView" class="box is-primary">
-        <div class="columns">
-            <div class="column">
-                <h4 class="subtitle is-4">User name</h4>
-                <input id="nameInput" class="input is-small">
-                <br>
-                <br>
-                <button id="loginButton" class="button is-dark is-small">Login</button>
-            </div>
-        </div>
-    </div>
-</template>
-
-<template id="DeckViewComponent">
-    <div id="DeckView" class="box is-primary">
-        <div class="columns">
-            <div class="column">
-                <h4 class="subtitle is-4">Deck list</h4>
-                <textarea id="deckInput" type="text" class="textarea"></textarea>
-                <br>
-                <button id="deckEndButton" class="button is-dark is-small">Ok</button>
-            </div>
-        </div>
-    </div>
-</template>
-
-<template id="MatchViewComponent">
-    <div id="MatchView" class="box is-primary">
-        <div class="columns">
-            <div class="column">
-                <h4 class="subtitle is-4">Match</h4>
-                name <input id="matchInput" type="text" class="input" label="name">
-                <br>
-                <br>
-                password <input id="matchPasswordInput" type="password" class="input" label="password">
-                <br>
-                <br>
-                <button id="matchButton" class="button is-dark is-small">Ok</button>
-            </div>
-        </div>
-    </div>
-</template>
-
-<template id="WaitViewComponent">
-    <div id="WaitView" class="columns is-centered">
-        <div class="column is-narrow">
-            <p class="button is-loading is-info"></p>
-        </div>
-    </div>
-</template>
-
-<template id="MulliganViewComponent">
-    <div id="MulliganView">
-        <div id="cardsMulliganContainer">
-        </div>
-        <div>
-            <button id="ḱeepButton" class="button is-success">Keep</button>
-            <button id="mulliganButton" class="button is-danger">Mulligan</button>
-        </div>
-    </div>
-</template>
 
 <section class="section">
     <div id="ViewRoot" class="container">
@@ -87,6 +93,8 @@
 <script src="ui.brython.js"></script>
 <script type="text/python">
 import ui
+
+
 </script>
 </body>
 </html>
