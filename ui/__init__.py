@@ -1,4 +1,4 @@
-from browser import document, websocket, console
+from browser import document, console
 
 from ui.components.deck import DeckView
 from ui.components.login import LoginView
@@ -8,18 +8,6 @@ from ui.components.wait import WaitView
 from ui.events import WSEvents
 
 SERVER_ADDRESS = 'ws://0.0.0.0:8080/ws'
-
-events = WSEvents(SERVER_ADDRESS)
-
-events.on('request_name', login_component.show)
-events.on('request_deck', deck_component.show)
-events.on('request_match', match_component.show)
-events.on('request_match_password', send_match_password)
-events.on('waiting_other_players', wait_component.show)
-events.on('mulligan', show_mulligan_component)
-events.on('start', console.log)
-events.on('update_hand', console.log)
-events.on('update_board', console.log)
 
 
 def send_name(*args, **kwargs):
@@ -69,7 +57,7 @@ def send_mulligan(*args, **kwargs):
 def send_keep(*args, **kwargs):
     mulligan_component.hide()
     wait_component.show()
-    ws.send('')
+    ws.send('no')
 
 
 def show_mulligan_component(hand):
@@ -80,3 +68,18 @@ def show_mulligan_component(hand):
 mulligan_component = MulliganView(document)
 mulligan_component.set_mulligan_action(send_mulligan)
 mulligan_component.set_keep_action(send_keep)
+
+events = WSEvents(SERVER_ADDRESS)
+
+events.on('request_name', login_component.show)
+events.on('request_deck', deck_component.show)
+events.on('request_match', match_component.show)
+events.on('request_match_password', send_match_password)
+events.on('waiting_other_players', wait_component.show)
+events.on('mulligan', show_mulligan_component)
+events.on('start', console.log)
+
+events.on('set_hand', console.log)
+events.on('update_board', console.log)
+
+ws = events._ws # TODO fix

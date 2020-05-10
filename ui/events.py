@@ -1,11 +1,13 @@
+from browser import console
 from browser.websocket import WebSocket
 
 COMMAND_ARGS_SEPARATOR = ' '
 
+
 class WSEvents:
 
     def __init__(self, address):
-        self._ws = WebSocket(SERVER_ADDRESS)
+        self._ws = WebSocket(address)
         self._ws.bind(
             'message',
             self.dispatch)
@@ -18,9 +20,12 @@ class WSEvents:
             self._events[event] = actions
         actions.append(action)
 
-    def dispatch(self, message: str):
-        command, args = self.parse(message)
-        actions = self._events.get(command_key)
+    def dispatch(self, event):
+
+        console.log(event.data)
+
+        command, args = self.parse(event.data)
+        actions = self._events.get(command)
         if actions:
             if args:
                 for action in actions:
@@ -31,15 +36,10 @@ class WSEvents:
 
     def parse(self, message: str) -> tuple:
         try:
-            split_index = event.data.index(COMMAND_ARGS_SEPARATOR)
-            command = event.data[:split_index]
-            args = event.data[split_index + 1:]
+            split_index = message.index(COMMAND_ARGS_SEPARATOR)
+            command = message[:split_index]
+            args = message[split_index + 1:]
         except ValueError:
-            command = event.data
+            command = message
             args = None
         return command, args
-
-
-
-
-

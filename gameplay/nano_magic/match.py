@@ -40,6 +40,11 @@ async def draw_initial_hand(channel: Channel, deck, hand_size=INITIAL_HAND_SIZE)
     return hand
 
 
+async def set_hand(channel: Channel, hand: list):
+    message = protocol.set_hand(hand)
+    await channel.send(message)
+
+
 def draw(n, deck, hand):
     drawn = deck[-n:]
     del deck[-n:]

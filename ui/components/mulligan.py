@@ -1,8 +1,9 @@
 import json
 
-from browser import ajax
+
 
 from ui.components import Component
+from ui.scryfall import get_images_url
 
 
 class MulliganView(Component):
@@ -22,32 +23,19 @@ class MulliganView(Component):
     def set_mulligan_action(self, action):
         self._mulligan_button.bind('click', action)
 
-    def show(self, cards):
+    def show(self, cards: str):
+
+        def display_image(image_url):
+            img = self._document.createElement('img')
+            img.src = image_url
+            image_container.appendChild(img)
+
+        image_container = self._document[MulliganView._cards_mulligan_container_id]
+        image_container.innerHTML = ''
+        self._element.appendChild(image_container) # TODO remove?
         cards = json.loads(cards)
 
-        super(MulliganView, self).show()
-
-        images = self._document[MulliganView._cards_mulligan_container_id]
-        images.innerHTML = ''
-        self._element.appendChild(images)
-
-        def foo(response):
-            start = response.text.index('small')
-            start += len('small') + 3
-            end = response.text.index(',', start)
-            end -= 1
-            sub = response.text[start:end]
-
-            img = self._document.createElement('img')
-            img.src = sub
-            images.appendChild(img)
-
         for card in cards:
-            request = ajax.Ajax()
-            request.bind('complete', foo)
-            request.open(
-                'GET',
-                'https://api.scryfall.com/cards/named?exact=' + card.replace(' ', '+')
-            )
-            request.send()
+            get_images_url(card, display_image)
 
+        super(MulliganView, self).show()

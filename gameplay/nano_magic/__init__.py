@@ -5,7 +5,7 @@ from gameplay.nano_magic import protocol
 
 from gameplay.nano_magic.login import request_name
 from gameplay.nano_magic.deck import request_deck
-from gameplay.nano_magic.match import request_match
+from gameplay.nano_magic.match import request_match, set_hand
 from gameplay.nano_magic.match import draw_initial_hand
 
 lobby = dict()
@@ -39,5 +39,7 @@ async def play(channel: Channel):
         await asyncio.sleep(1)
 
     initial_hand = await draw_initial_hand(channel, deck)
+
+    await set_hand(channel, initial_hand)
 
     await asyncio.sleep(1000)
