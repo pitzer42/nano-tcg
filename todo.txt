@@ -15,3 +15,6 @@ quickly clicking on "mulligan" button breaks the ui
 
 todo
 jinja for rendering html templates from python packages into ui html
+
+todo
+unit test ui
