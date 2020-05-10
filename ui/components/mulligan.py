@@ -7,15 +7,15 @@ from ui.scryfall import get_images_url
 
 
 class MulliganView(Component):
-    _wait_container = 'mulliganContainer'
-    _keep_button_id = 'ḱeepButton'
-    _mulligan_button_id = 'mulliganButton'
-    _cards_mulligan_container_id = 'cardsMulliganContainer'
+    wait_container = 'mulliganContainer'
+    keep_button = 'ḱeepButton'
+    mulligan_button = 'mulliganButton'
+    cards_mulligan_container = 'cardsMulliganContainer'
 
     def __init__(self, document):
         super(MulliganView, self).__init__(document)
-        self._keep_button = document[MulliganView._keep_button_id]
-        self._mulligan_button = document[MulliganView._mulligan_button_id]
+        self._keep_button = document[MulliganView.keep_button]
+        self._mulligan_button = document[MulliganView.mulligan_button]
 
     def set_keep_action(self, action):
         self._keep_button.bind('click', action)
@@ -30,7 +30,7 @@ class MulliganView(Component):
             img.src = image_url
             image_container.appendChild(img)
 
-        image_container = self._document[MulliganView._cards_mulligan_container_id]
+        image_container = self._document[MulliganView.cards_mulligan_container]
         image_container.innerHTML = ''
         self._element.appendChild(image_container) # TODO remove?
         cards = json.loads(cards)
