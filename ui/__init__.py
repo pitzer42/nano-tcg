@@ -5,6 +5,7 @@ from ui.components.login import LoginView
 from ui.components.match import MatchView
 from ui.components.mulligan import MulliganView
 from ui.components.wait import WaitView
+from ui.components.board import BoardView
 from ui.events import WSEvents
 
 SERVER_ADDRESS = 'ws://0.0.0.0:8080/ws'
@@ -69,6 +70,10 @@ mulligan_component = MulliganView(document)
 mulligan_component.set_mulligan_action(send_mulligan)
 mulligan_component.set_keep_action(send_keep)
 
+
+board_view = BoardView(document)
+
+
 events = WSEvents(SERVER_ADDRESS)
 
 events.on('request_name', login_component.show)
@@ -79,7 +84,7 @@ events.on('waiting_other_players', wait_component.show)
 events.on('mulligan', show_mulligan_component)
 events.on('start', console.log)
 
-events.on('set_hand', console.log)
+events.on('set_hand', board_view.set_hand)
 events.on('update_board', console.log)
 
 ws = events._ws # TODO fix
