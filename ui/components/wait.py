@@ -1,11 +1,7 @@
 from ui.components import Component
 
 
-class WaitComponent(Component):
-    _wait_container = 'waitContainer'
+class WaitView(Component):
 
     def __init__(self, document):
-        super(WaitComponent, self).__init__(
-            document,
-            WaitComponent._wait_container
-        )
+        super(WaitView, self).__init__(document)

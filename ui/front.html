@@ -11,66 +11,76 @@
 </head>
 
 <body onload="brython()">
+
+<template id="LoginViewComponent">
+    <div id="LoginView" class="box is-primary">
+        <div class="columns">
+            <div class="column">
+                <h4 class="subtitle is-4">User name</h4>
+                <input id="nameInput" class="input is-small">
+                <br>
+                <br>
+                <button id="loginButton" class="button is-dark is-small">Login</button>
+            </div>
+        </div>
+    </div>
+</template>
+
+<template id="DeckViewComponent">
+    <div id="DeckView" class="box is-primary">
+        <div class="columns">
+            <div class="column">
+                <h4 class="subtitle is-4">Deck list</h4>
+                <textarea id="deckInput" type="text" class="textarea"></textarea>
+                <br>
+                <button id="deckEndButton" class="button is-dark is-small">Ok</button>
+            </div>
+        </div>
+    </div>
+</template>
+
+<template id="MatchViewComponent">
+    <div id="MatchView" class="box is-primary">
+        <div class="columns">
+            <div class="column">
+                <h4 class="subtitle is-4">Match</h4>
+                name <input id="matchInput" type="text" class="input" label="name">
+                <br>
+                <br>
+                password <input id="matchPasswordInput" type="password" class="input" label="password">
+                <br>
+                <br>
+                <button id="matchButton" class="button is-dark is-small">Ok</button>
+            </div>
+        </div>
+    </div>
+</template>
+
+<template id="WaitViewComponent">
+    <div id="WaitView" class="columns is-centered">
+        <div class="column is-narrow">
+            <p class="button is-loading is-info"></p>
+        </div>
+    </div>
+</template>
+
+<template id="MulliganViewComponent">
+    <div id="MulliganView">
+        <div id="cardsMulliganContainer">
+        </div>
+        <div>
+            <button id="ḱeepButton" class="button is-success">Keep</button>
+            <button id="mulliganButton" class="button is-danger">Mulligan</button>
+        </div>
+    </div>
+</template>
+
 <section class="section">
-    <div class="container">
+    <div id="ViewRoot" class="container">
         <h1 class="title">
             Nano TCG
         </h1>
         <hr>
-
-        <div id="loginContainer" class="box is-primary" style="display:none">
-            <div class="columns">
-                <div class="column">
-                    <h4 class="subtitle is-4">User name</h4>
-                    <input id="nameInput" class="input is-small">
-                    <br>
-                    <br>
-                    <button id="loginButton" class="button is-dark is-small">Login</button>
-                </div>
-            </div>
-        </div>
-
-        <div id="deckContainer" class="box is-primary" style="display:none">
-            <div class="columns">
-                <div class="column">
-                    <h4 class="subtitle is-4">Deck list</h4>
-                    <textarea id="deckInput" type="text" class="textarea"></textarea>
-                    <br>
-                    <button id="deckEndButton" class="button is-dark is-small">Ok</button>
-                </div>
-            </div>
-        </div>
-
-        <div id="matchContainer" class="box is-primary" style="display:none">
-            <div class="columns">
-                <div class="column">
-                    <h4 class="subtitle is-4">Match</h4>
-                    name <input id="matchInput" type="text" class="input" label="name">
-                    <br>
-                    <br>
-                    password <input id="matchPasswordInput" type="password" class="input" label="password">
-                    <br>
-                    <br>
-                    <button id="matchButton" class="button is-dark is-small">Ok</button>
-                </div>
-            </div>
-        </div>
-
-        <div id="waitContainer" class="columns is-centered" style="display:none">
-            <div class="column is-narrow">
-                <p class="button is-loading is-info"></p>
-            </div>
-        </div>
-
-        <div id="mulliganContainer" style="display:none">
-            <div id="cardsMulliganContainer">
-            </div>
-            <div>
-                <button id="ḱeepButton" class="button is-success">Keep</button>
-                <button id="mulliganButton" class="button is-danger">Mulligan</button>
-            </div>
-        </div>
-
     </div>
 </section>
 

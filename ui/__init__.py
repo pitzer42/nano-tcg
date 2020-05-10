@@ -1,10 +1,10 @@
 from browser import document, websocket, console
 
-from ui.components.deck import DeckComponent
-from ui.components.login import LoginComponent
-from ui.components.match import MatchComponent
-from ui.components.mulligan import MulliganComponent
-from ui.components.wait import WaitComponent
+from ui.components.deck import DeckView
+from ui.components.login import LoginView
+from ui.components.match import MatchView
+from ui.components.mulligan import MulliganView
+from ui.components.wait import WaitView
 
 COMMAND_ARGS_SEPARATOR = ' '
 SERVER_ADDRESS = 'ws://0.0.0.0:8080/ws'
@@ -16,7 +16,7 @@ def send_name(*args, **kwargs):
     ws.send(name)
 
 
-login_component = LoginComponent(document)
+login_component = LoginView(document)
 login_component.set_action(send_name)
 
 
@@ -27,7 +27,7 @@ def send_deck(*args, **kwargs):
     ws.send(deck)
 
 
-deck_component = DeckComponent(document)
+deck_component = DeckView(document)
 deck_component.set_action(send_deck)
 
 
@@ -42,10 +42,10 @@ def send_match_password(*args, **kwargs):
     ws.send(password)
 
 
-match_component = MatchComponent(document)
+match_component = MatchView(document)
 match_component.set_ok_action(send_match)
 
-wait_component = WaitComponent(document)
+wait_component = WaitView(document)
 
 
 def send_mulligan(*args, **kwargs):
@@ -65,7 +65,7 @@ def show_mulligan_component(hand):
     mulligan_component.show(hand)
 
 
-mulligan_component = MulliganComponent(document)
+mulligan_component = MulliganView(document)
 mulligan_component.set_mulligan_action(send_mulligan)
 mulligan_component.set_keep_action(send_keep)
 

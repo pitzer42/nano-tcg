@@ -1,20 +1,16 @@
 from ui.components import Component
 
 
-class MatchComponent(Component):
-    _match_container = 'matchContainer'
+class MatchView(Component):
     _match_input = 'matchInput'
     _match_password_input = 'matchPasswordInput'
     _match_buton = 'matchButton'
 
     def __init__(self, document):
-        super(MatchComponent, self).__init__(
-            document,
-            MatchComponent._match_container
-        )
-        self._input = document[MatchComponent._match_input]
-        self._password_input = document[MatchComponent._match_password_input]
-        self._ok = document[MatchComponent._match_buton]
+        super(MatchView, self).__init__(document)
+        self._input = document[MatchView._match_input]
+        self._password_input = document[MatchView._match_password_input]
+        self._ok = document[MatchView._match_buton]
         self._first_try = True
 
     def get_match(self):
@@ -30,7 +26,7 @@ class MatchComponent(Component):
         )
 
     def show(self):
-        super(MatchComponent, self).show()
+        super(MatchView, self).show()
         if not self._first_try:
             self._input.classList.add('is-danger')
             self._input.classList.add('is-outlined')

@@ -1,18 +1,14 @@
 from ui.components import Component
 
 
-class DeckComponent(Component):
-    _deck_container = 'deckContainer'
+class DeckView(Component):
     _deck_input = 'deckInput'
     _deck_end_button = 'deckEndButton'
 
     def __init__(self, document):
-        super(DeckComponent, self).__init__(
-            document,
-            DeckComponent._deck_container
-        )
-        self._input = document[DeckComponent._deck_input]
-        self._ok = document[DeckComponent._deck_end_button]
+        super(DeckView, self).__init__(document)
+        self._input = document[DeckView._deck_input]
+        self._ok = document[DeckView._deck_end_button]
 
     def get_deck(self):
         return self._input.value
