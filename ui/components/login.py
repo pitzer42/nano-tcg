@@ -2,7 +2,6 @@ from ui.components import Component
 
 
 class LoginView(Component):
-
     name_input = 'nameInput'
     login_button = 'loginButton'
 

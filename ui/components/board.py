@@ -5,9 +5,8 @@ from ui.scryfall import get_images_url
 
 
 class BoardView(Component):
-
     hand = 'BoardHandContainer'
-    
+
     def __init__(self, document):
         super(BoardView, self).__init__(document)
         self.hand = document[BoardView.hand]
@@ -25,5 +24,3 @@ class BoardView(Component):
             get_images_url(card, display_image)
 
         super(BoardView, self).show()
-
-

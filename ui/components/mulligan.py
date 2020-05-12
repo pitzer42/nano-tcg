@@ -1,7 +1,5 @@
 import json
 
-
-
 from ui.components import Component
 from ui.scryfall import get_images_url
 
@@ -24,7 +22,6 @@ class MulliganView(Component):
         self._mulligan_button.bind('click', action)
 
     def show(self, cards: str):
-
         def display_image(image_url):
             img = self._document.createElement('img')
             img.src = image_url
@@ -32,7 +29,7 @@ class MulliganView(Component):
 
         image_container = self._document[MulliganView.cards_mulligan_container]
         image_container.innerHTML = ''
-        self._element.appendChild(image_container) # TODO remove?
+        self._element.appendChild(image_container)  # TODO remove?
         cards = json.loads(cards)
 
         for card in cards:

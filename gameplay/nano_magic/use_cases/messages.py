@@ -1,15 +1,8 @@
 import json
 
+INITIAL_HAND_SIZE = 7
 
-def pack(command: str) -> bytes:
-    return (command + '\n').encode()
-
-
-def unpack(message: bytes) -> str:
-    return message.decode().strip()
-
-
-REQUEST_NAME = 'request_name'
+REQUEST_PLAYER_ID = 'request_name'
 REQUEST_DECK = 'request_deck'
 END_DECK = 'end_deck'
 REQUEST_MATCH = 'request_match'
@@ -26,9 +19,9 @@ def prompt_mulligan(hand: list):
     return f'{PROMPT_MULLIGAN} {json.dumps(hand)}'
 
 
-def is_positive(response: str):
-    return response.lower() in POSITIVES
-
-
 def set_hand(hand: list):
     return f'{SET_HAND} {json.dumps(hand)}'
+
+
+def is_positive(response: str):
+    return response.lower() in POSITIVES

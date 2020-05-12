@@ -1,6 +1,6 @@
 import pytest
 
-from gameplay.nano_magic import protocol
+from gameplay.nano_magic.use_cases import messages
 from tests.integration.tcp.bot import READ_FLAG
 
 
@@ -21,7 +21,7 @@ async def test_full(tcp_bot_factory):
                 client_a_name,
                 READ_FLAG,
                 *deck,
-                protocol.END_DECK,
+                messages.END_DECK,
                 READ_FLAG,
                 READ_FLAG,
                 match,
@@ -35,7 +35,7 @@ async def test_full(tcp_bot_factory):
                 client_b_name,
                 READ_FLAG,
                 *deck,
-                protocol.END_DECK,
+                messages.END_DECK,
                 READ_FLAG,
                 READ_FLAG,
                 match,
@@ -46,12 +46,12 @@ async def test_full(tcp_bot_factory):
 
             assert logs_a == logs_b
             assert logs_a == [
-                protocol.REQUEST_NAME,
-                protocol.REQUEST_DECK,
+                messages.REQUEST_PLAYER_ID,
+                messages.REQUEST_DECK,
                 expected_deck_length,
-                protocol.REQUEST_MATCH,
-                protocol.REQUEST_MATCH_PASSWORD,
-                protocol.WAITING_OTHER_PLAYERS
+                messages.REQUEST_MATCH,
+                messages.REQUEST_MATCH_PASSWORD,
+                messages.WAITING_OTHER_PLAYERS
             ]
 
             logs_a = await client_a.send(
@@ -62,8 +62,8 @@ async def test_full(tcp_bot_factory):
                 READ_FLAG
             )
 
-            assert protocol.PROMPT_MULLIGAN in logs_a[-1]
-            assert protocol.PROMPT_MULLIGAN in logs_b[-1]
+            assert messages.PROMPT_MULLIGAN in logs_a[-1]
+            assert messages.PROMPT_MULLIGAN in logs_b[-1]
 
 
 @pytest.mark.asyncio
@@ -80,8 +80,8 @@ async def test_retry_request_name(tcp_bot_factory):
             )
 
             assert logs_a == [
-                protocol.REQUEST_NAME,
-                protocol.REQUEST_DECK
+                messages.REQUEST_PLAYER_ID,
+                messages.REQUEST_DECK
             ]
 
             logs_b = await client_b.send(
@@ -95,8 +95,8 @@ async def test_retry_request_name(tcp_bot_factory):
             )
 
             assert logs_b == [
-                protocol.REQUEST_NAME,
-                protocol.REQUEST_NAME,
-                protocol.REQUEST_NAME,
-                protocol.REQUEST_DECK
+                messages.REQUEST_PLAYER_ID,
+                messages.REQUEST_PLAYER_ID,
+                messages.REQUEST_PLAYER_ID,
+                messages.REQUEST_DECK
             ]

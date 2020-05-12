@@ -1,10 +1,4 @@
-from unittest.mock import AsyncMock
-
 import pytest
-
-from gameplay.nano_magic.deck import request_deck, parse_deck_str
-from gameplay.nano_magic.protocol import END_DECK
-
 
 @pytest.fixture
 def cards() -> list:
@@ -69,33 +63,3 @@ def deck_list() -> str:
 @pytest.fixture
 def deck_length(cards) -> str:
     return len(cards)
-
-
-def test_parse_deck(deck_list, cards, deck_length):
-    _cards = parse_deck_str(deck_list)
-    _deck_length = len(_cards)
-    assert _cards == cards
-    assert _deck_length == deck_length
-
-
-@pytest.mark.asyncio
-async def test_request_deck_single_response_quantity_and_blank_lines(deck_list, cards, deck_length):
-    response = deck_list + END_DECK + '\n'
-    channel = AsyncMock()
-    channel.receive.return_value = response
-    _cards = await request_deck(channel)
-    assert END_DECK not in cards
-    assert _cards == cards
-    channel.send_was_called_with(deck_length)
-
-
-@pytest.mark.asyncio
-async def test_request_deck_iterative_response_quantity_and_blank_lines(deck_list, cards, deck_length):
-    response = deck_list.split('\n')
-    response.append(END_DECK + '\n')
-    channel = AsyncMock()
-    channel.receive.side_effect = response
-    _cards = await request_deck(channel)
-    assert END_DECK not in cards
-    assert _cards == cards
-    channel.send_was_called_with(deck_length)

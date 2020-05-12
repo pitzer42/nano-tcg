@@ -1,5 +1,4 @@
 class Component:
-
     root = 'ViewRoot'
 
     def __init__(self, document, template_id=None):
