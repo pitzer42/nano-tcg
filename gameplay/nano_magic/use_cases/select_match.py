@@ -1,41 +1,21 @@
-from channels import Channel
+from gameplay.nano_magic.use_cases.client import Client
 
 from gameplay.nano_magic.entities.match import Match
-from gameplay.nano_magic.entities.player import Player
-from gameplay.nano_magic.use_cases.messages import REQUEST_MATCH, REQUEST_MATCH_PASSWORD, WAITING_OTHER_PLAYERS
 
-matches = dict()
+from gameplay.nano_magic.entities.match import Match
 
 
-async def select_match(channel: Channel):
-    match_id, match_password = await request_match(
-        channel,
-        lambda i: i not in matches,
-        lambda i: matches[i].password,
-    )
-    if match_id in matches:
-        return matches[match_id]
-    else:
-        match = Match(match_id, match_password)
-        matches[match_id] = match
-        return match
-
-
-async def request_match(player: Channel, is_unique, get_password):
+async def select_match(client: Client, matches: dict):
     while True:
-        await player.send(REQUEST_MATCH)
-        id = await player.receive()
-        await player.send(REQUEST_MATCH_PASSWORD)
-        password = await player.receive()
-        if is_unique(id):
-            return id, password
+        match_id = await client.request_match_id()
+        match_password = await client.request_match_password()
+        match = matches.get(match_id)
+        if match:
+            if match.check_password(match_password):
+                return match
         else:
-            right_password = get_password(id)
-            if right_password == password:
-                return id, password
-
-
-async def join_match(player: Player, match: Match):
-    match.join(player)
-    await player.send(WAITING_OTHER_PLAYERS)
-    await match.is_ready()
+            match = Match(
+                match_id,
+                match_password)
+            matches[match_id] = match
+            return match

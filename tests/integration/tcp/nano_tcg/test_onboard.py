@@ -1,6 +1,6 @@
 import pytest
 
-from gameplay.nano_magic.use_cases import messages
+from gameplay.nano_magic.adapters import messages
 from tests.integration.tcp.bot import READ_FLAG
 
 
@@ -23,7 +23,6 @@ async def test_full(tcp_bot_factory):
                 *deck,
                 messages.END_DECK,
                 READ_FLAG,
-                READ_FLAG,
                 match,
                 READ_FLAG,
                 password,
@@ -37,7 +36,6 @@ async def test_full(tcp_bot_factory):
                 *deck,
                 messages.END_DECK,
                 READ_FLAG,
-                READ_FLAG,
                 match,
                 READ_FLAG,
                 password,
@@ -48,7 +46,6 @@ async def test_full(tcp_bot_factory):
             assert logs_a == [
                 messages.REQUEST_PLAYER_ID,
                 messages.REQUEST_DECK,
-                expected_deck_length,
                 messages.REQUEST_MATCH,
                 messages.REQUEST_MATCH_PASSWORD,
                 messages.WAITING_OTHER_PLAYERS

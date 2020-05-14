@@ -2,7 +2,7 @@ from unittest.mock import AsyncMock
 
 import pytest
 
-from gameplay.nano_magic.use_cases import messages
+from gameplay.nano_magic.adapters import messages
 from gameplay.nano_magic.use_cases.initial_hand import _prompt_mulligan, draw_initial_hand
 
 

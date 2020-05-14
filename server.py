@@ -3,14 +3,17 @@ import sys
 
 from channels.aio_stream import AioStreamChannel
 from gameplay import nano_magic
+from gameplay.nano_magic.adapters.client_channel import ClientChannel
 
 
 async def start(port, accept):
     async def accept_streams(reader, writer):
         await accept(
-            AioStreamChannel(
-                reader,
-                writer
+            ClientChannel(
+                AioStreamChannel(
+                    reader,
+                    writer
+                )
             )
         )
 
@@ -19,6 +22,7 @@ async def start(port, accept):
         '127.0.0.1',
         port
     )
+
     async with server:
         await server.serve_forever()
 

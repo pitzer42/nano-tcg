@@ -2,7 +2,7 @@ from unittest.mock import AsyncMock
 
 import pytest
 
-from gameplay.nano_magic.use_cases.messages import END_DECK
+from gameplay.nano_magic.adapters.messages import END_DECK
 from gameplay.nano_magic.use_cases.select_deck import select_deck
 
 

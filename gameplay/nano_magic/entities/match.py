@@ -22,3 +22,6 @@ class Match:
 
     async def is_ready(self):
         await self._is_ready.wait()
+
+    def check_password(self, password):
+        return self.password == password
