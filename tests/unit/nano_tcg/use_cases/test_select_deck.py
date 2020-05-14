@@ -2,8 +2,8 @@ from unittest.mock import AsyncMock
 
 import pytest
 
-from gameplay.nano_magic.adapters.messages import END_DECK
-from gameplay.nano_magic.use_cases.select_deck import select_deck
+from nano_magic.adapters import END_DECK
+from nano_magic.use_cases import select_deck
 
 
 @pytest.mark.asyncio

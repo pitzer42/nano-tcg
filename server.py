@@ -2,8 +2,8 @@ import asyncio
 import sys
 
 from channels.aio_stream import AioStreamChannel
-from gameplay import nano_magic
-from gameplay.nano_magic.adapters.client_channel import ClientChannel
+import nano_magic
+from nano_magic.adapters import ClientChannel
 
 
 async def start(port, accept):

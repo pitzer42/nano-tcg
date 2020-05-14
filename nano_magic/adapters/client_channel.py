@@ -1,8 +1,8 @@
 from typing import Iterable
 
 from channels import Channel
-from gameplay.nano_magic.adapters import messages
-from gameplay.nano_magic.use_cases.client import Client
+from nano_magic.adapters import messages
+from nano_magic.use_cases.client import Client
 
 
 class ClientChannel(Client):

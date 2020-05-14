@@ -1,8 +1,8 @@
 from typing import List
 
-from gameplay.nano_magic.entities import draw
-from gameplay.nano_magic.entities.deck import shuffle
-from gameplay.nano_magic.use_cases.client import Client
+from nano_magic.entities import draw
+from nano_magic.entities import shuffle
+from nano_magic.use_cases.client import Client
 
 INITIAL_HAND_SIZE = 7
 

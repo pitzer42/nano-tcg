@@ -1,7 +1,7 @@
 from aiohttp import web
 
 from channels.web_socket import WebSocketChannel
-from gameplay.nano_magic import play
+from nano_magic import play
 
 
 async def ws_server(request):

@@ -1,6 +1,6 @@
-from gameplay.nano_magic.entities.player import Player
+from nano_magic.entities import Player
 
-from gameplay.nano_magic.use_cases.client import Client
+from nano_magic.use_cases.client import Client
 
 
 async def login(client: Client, players):

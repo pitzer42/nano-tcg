@@ -2,7 +2,7 @@ from unittest.mock import AsyncMock
 
 import pytest
 
-from gameplay.nano_magic.use_cases.login import request_player_id
+from nano_magic.use_cases import request_player_id
 
 
 @pytest.mark.asyncio

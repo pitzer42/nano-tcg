@@ -1,8 +1,6 @@
-from gameplay.nano_magic.use_cases.client import Client
+from nano_magic.use_cases.client import Client
 
-from gameplay.nano_magic.entities.match import Match
-
-from gameplay.nano_magic.entities.match import Match
+from nano_magic.entities import Match
 
 
 async def select_match(client: Client, matches: dict):

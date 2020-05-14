@@ -2,8 +2,8 @@ from unittest.mock import AsyncMock
 
 import pytest
 
-from gameplay.nano_magic.adapters import messages
-from gameplay.nano_magic.use_cases.initial_hand import _prompt_mulligan, draw_initial_hand
+from nano_magic.adapters import messages
+from nano_magic.use_cases import _prompt_mulligan, draw_initial_hand
 
 
 @pytest.mark.asyncio
@@ -29,26 +29,7 @@ async def test_hand_size_zero_is_stop_condition():
     assert player.deck == original_deck
 
 
-@pytest.mark.asyncio
-async def test_deck_was_shuffled_before_draw_initial_hand():
-    """
-    assert that the deck order changed more than a epsilon ratio
-    """
-    episolon = 0.5
-    epoches = 3
-    hand_size = 7
-    deck_size = 60
-    player = AsyncMock()
-    player.deck = list(range(deck_size))
-    original_deck = list(player.deck)
-    positives = 0
 
-    for i in range(epoches):
-        hand = await draw_initial_hand(player, hand_size)
-        if player.deck != original_deck[:-hand_size]:
-            positives += 1
-
-    assert (positives / epoches) > episolon
 
 
 @pytest.mark.asyncio

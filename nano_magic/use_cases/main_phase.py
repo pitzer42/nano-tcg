@@ -1,7 +1,7 @@
 from typing import List
 
-from gameplay.nano_magic.entities import move
-from gameplay.nano_magic.use_cases.client import Client
+from nano_magic.entities import move
+from nano_magic.use_cases.client import Client
 
 
 async def play_card(foo: Client, hand: List[str], board: List[str]):

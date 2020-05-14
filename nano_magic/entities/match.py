@@ -1,7 +1,7 @@
 from asyncio import Event
 from typing import List
 
-from gameplay.nano_magic.entities.player import Player
+from nano_magic.entities.player import Player
 
 
 class Match:
@@ -11,17 +11,24 @@ class Match:
         self.id = match_id
         self.password = password
         self.players: List[Player] = list()
-        self._is_ready: Event = Event()
+        self._is_ready = False
+        self._to_be_ready: Event = Event()
+
+    @property
+    def is_ready(self):
+        return self._is_ready
+
+    @property
+    async def to_be_ready(self):
+        await self._to_be_ready.wait()
 
     def join(self, player: Player):
         self.players.append(player)
         n_players = len(self.players)
         if n_players == Match.PLAYERS_IN_MATCH:
-            self._is_ready.set()
+            self._is_ready = True
+            self._to_be_ready.set()
         return n_players - 1  # player index
-
-    async def is_ready(self):
-        await self._is_ready.wait()
 
     def check_password(self, password):
         return self.password == password

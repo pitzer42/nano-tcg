@@ -2,8 +2,6 @@ from unittest.mock import AsyncMock
 
 import pytest
 
-from gameplay.nano_magic.use_cases.select_match import select_match
-
 
 @pytest.mark.asyncio
 async def test_request_match_new():
