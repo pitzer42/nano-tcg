@@ -12,6 +12,8 @@ WAITING_OTHER_PLAYERS = 'waiting_other_players'
 START = 'start'
 MAIN_PHASE = 'main_phase'
 SET_HAND = 'set_hand'
+REQUEST_PLAY = 'request_play'
+SET_BOARD = 'set_board'
 POSITIVES = ['', 'y', 'yes']
 
 
@@ -21,6 +23,10 @@ def prompt_mulligan(hand: list):
 
 def set_hand(hand: list):
     return f'{SET_HAND} {json.dumps(hand)}'
+
+
+def set_board(board: list):
+    return f'{SET_BOARD} {json.dumps(board)}'
 
 
 def is_positive(response: str):

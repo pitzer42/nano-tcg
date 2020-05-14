@@ -7,8 +7,8 @@ from gameplay.nano_magic.entities.player import Player
 class Match:
     PLAYERS_IN_MATCH = 2
 
-    def __init__(self, id: str, password: str):
-        self.id = id
+    def __init__(self, match_id: str, password: str):
+        self.id = match_id
         self.password = password
         self.players: List[Player] = list()
         self._is_ready: Event = Event()

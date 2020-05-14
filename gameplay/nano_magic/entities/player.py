@@ -10,6 +10,7 @@ class Player(Channel):
         self.id = player_id
         self.deck: List[str] = list()
         self.hand: List[str] = list()
+        self.board: List[str] = list()
 
     async def connect(self):
         await self.channel.connect()
