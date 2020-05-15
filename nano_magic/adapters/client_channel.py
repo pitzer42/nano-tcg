@@ -1,4 +1,4 @@
-from typing import Iterable
+from typing import Iterable, List
 
 from channels import Channel
 from nano_magic.adapters import messages
@@ -44,6 +44,10 @@ class ClientChannel(Client):
                 return int(card_i)
             except ValueError:
                 pass
+
+    async def set_hand(self, hand: List[str]):
+        message = messages.set_hand(hand)
+        await self._channel.send(message)
 
     async def send_wait(self):
         await self._channel.send(messages.WAITING_OTHER_PLAYERS)

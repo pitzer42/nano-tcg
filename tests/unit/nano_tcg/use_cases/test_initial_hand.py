@@ -2,57 +2,41 @@ from unittest.mock import AsyncMock
 
 import pytest
 
-from nano_magic.adapters import messages
-from nano_magic.use_cases import _prompt_mulligan, draw_initial_hand
+from nano_magic.use_cases.initial_hand import draw_initial_hand, INITIAL_HAND_SIZE
 
 
 @pytest.mark.asyncio
 async def test_draw_initial_hand():
-    player = AsyncMock()
-    player.deck = list(range(60))
-    original_deck = list(player.deck)
-    hand_size = 7
-    hand = await draw_initial_hand(player, hand_size)
-    assert len(hand) == hand_size
-    assert len(player.deck) == len(original_deck) - hand_size
+    client = AsyncMock()
+    client.prompt_mulligan.return_value = False
+    deck = list(range(60))
+    original_deck = list(deck)
+    hand = await draw_initial_hand(client, deck)
+    client.prompt_mulligan.assert_awaited_with(hand)
+    assert len(hand) == INITIAL_HAND_SIZE
+    assert len(deck) == len(original_deck) - INITIAL_HAND_SIZE
 
 
 @pytest.mark.asyncio
+async def test_mulligan_more_than_initial_hand_size_times():
+    client = AsyncMock()
+    client.prompt_mulligan.side_effect = [True] * INITIAL_HAND_SIZE
+    deck = list(range(60))
+    original_deck = list(deck)
+    hand = await draw_initial_hand(client, deck)
+    assert len(hand) == 0
+    assert client.prompt_mulligan.await_count == INITIAL_HAND_SIZE
+    assert len(deck) == len(original_deck)
+
+
+@pytest.mark.asyncio
+@pytest.mark.skip
 async def test_hand_size_zero_is_stop_condition():
-    player = AsyncMock()
-    player.deck = [1, 2, 3]
-    original_deck = list(player.deck)
+    client = AsyncMock()
+    deck = [1, 2, 3]
+    original_deck = list(deck)
     hand_size = 0
-    await draw_initial_hand(player, hand_size)
-    player.send.assert_not_called()
-    player.receive.assert_not_called()
-    assert player.deck == original_deck
-
-
-
-
-
-@pytest.mark.asyncio
-async def test_prompt_mulligan_accept():
-    player = AsyncMock()
-    player.hand = [1, 2, 3]
-    message = messages.prompt_mulligan(player.hand)
-    player.receive.return_value = messages.POSITIVES[0]
-    accepted_mulligan = await _prompt_mulligan(player, player.hand)
-    assert accepted_mulligan
-    player.send.was_called_with(message)
-
-
-@pytest.mark.asyncio
-async def test_prompt_mulligan_reject():
-    player = AsyncMock()
-    player.hand = [1, 2, 3]
-    message = messages.prompt_mulligan(player.hand)
-    """
-    the sum of all elements in a set does not belong to the set.
-    sum(range(10)) not in range(10)
-    """
-    player.receive.return_value = ''.join(messages.POSITIVES)
-    accepted_mulligan = await _prompt_mulligan(player, player.hand)
-    assert not accepted_mulligan
-    player.send.was_called_with(message)
+    await draw_initial_hand(client, deck, hand_size)
+    client.send.assert_not_called()
+    client.receive.assert_not_called()
+    assert client.deck == original_deck

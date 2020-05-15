@@ -1,4 +1,4 @@
-from nano_magic.entities import Player
+from nano_magic.entities.player import Player
 
 from nano_magic.use_cases.client import Client
 

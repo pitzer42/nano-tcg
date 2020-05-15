@@ -18,7 +18,6 @@ class Match:
     def is_ready(self):
         return self._is_ready
 
-    @property
     async def to_be_ready(self):
         await self._to_be_ready.wait()
 

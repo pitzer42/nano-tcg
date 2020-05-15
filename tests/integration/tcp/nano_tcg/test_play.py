@@ -23,7 +23,6 @@ async def test_play_card(tcp_bot_factory):
                 *deck,
                 messages.END_DECK,
                 READ_FLAG,
-                READ_FLAG,
                 match,
                 READ_FLAG,
                 password,
@@ -32,11 +31,10 @@ async def test_play_card(tcp_bot_factory):
 
             logs_b = await client_b.send(
                 READ_FLAG,
-                client_b_name,
+                client_a_name,
                 READ_FLAG,
                 *deck,
                 messages.END_DECK,
-                READ_FLAG,
                 READ_FLAG,
                 match,
                 READ_FLAG,
@@ -57,8 +55,7 @@ async def test_play_card(tcp_bot_factory):
             logs_a = await client_a.send(
                 READ_FLAG,
                 '0',
-                READ_FLAG
+                '-1'
             )
 
             assert messages.REQUEST_PLAY == logs_a[0]
-            assert logs_a[1].startswith(messages.SET_HAND)

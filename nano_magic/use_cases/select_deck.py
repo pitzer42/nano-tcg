@@ -1,4 +1,4 @@
-from nano_magic.entities import deck_parser
+from nano_magic.entities.deck import deck_parser
 
 from nano_magic.use_cases.client import Client
 

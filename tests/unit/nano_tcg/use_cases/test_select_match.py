@@ -2,37 +2,40 @@ from unittest.mock import AsyncMock
 
 import pytest
 
+from nano_magic.entities.match import Match
+from nano_magic.use_cases.select_match import select_match
+
 
 @pytest.mark.asyncio
 async def test_request_match_new():
-    id = test_request_match_new.__name__
-    password = test_request_match_new.__name__ + '123'
-    channel = AsyncMock()
-    channel.receive.side_effect = [id, password]
-
-    _id, _password = await request_match(
-        channel,
-        lambda _: True,
-        lambda _: True)
-
-    assert _id == id
-    assert _password == password
+    expected_id = 'match0'
+    expected_password = 'password0'
+    matches = dict()
+    client = AsyncMock()
+    client.request_match_id.return_value = expected_id
+    client.request_match_password.return_value = expected_password
+    match = await select_match(client, matches)
+    assert match.id == expected_id
+    assert match.check_password(expected_password)
 
 
 @pytest.mark.asyncio
 async def test_request_match_n_wrong_passwords():
     n_mistakes = 3
-    id = test_request_match_n_wrong_passwords.__name__
-    wrong_password = test_request_match_n_wrong_passwords.__name__ + '123'
-    correct_password = test_request_match_n_wrong_passwords.__name__ + '456'
-
-    channel = AsyncMock()
-    channel.receive.side_effect = ([id, wrong_password] * n_mistakes) + [id, correct_password]
-
-    _id, _password = await request_match(
-        channel,
-        lambda _: False,
-        lambda _: correct_password)
-
-    assert _id == id
-    assert _password == correct_password
+    expected_id = 'match0'
+    expected_password = 'password0'
+    wrong_password = 'password1'
+    matches = dict()
+    matches[expected_id] = Match(
+        expected_id,
+        expected_password
+    )
+    client = AsyncMock()
+    client.request_match_id.return_value = expected_id
+    provided_passwords = [wrong_password] * n_mistakes
+    provided_passwords.append(expected_password)
+    client.request_match_password.side_effect = provided_passwords
+    match = await select_match(client, matches)
+    assert client.request_match_password.await_count == n_mistakes + 1
+    assert match.id == expected_id
+    assert match.check_password(expected_password)

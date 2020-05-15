@@ -1,9 +1,9 @@
 import asyncio
 import sys
 
-from channels.aio_stream import AioStreamChannel
 import nano_magic
-from nano_magic.adapters import ClientChannel
+from channels.aio_stream import AioStreamChannel
+from nano_magic.adapters.client_channel import ClientChannel
 
 
 async def start(port, accept):

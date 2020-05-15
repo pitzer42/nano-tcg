@@ -1,6 +1,5 @@
-from typing import Iterable, List
-
 from abc import ABC
+from typing import Iterable, List
 
 
 class Client(ABC):
@@ -18,6 +17,9 @@ class Client(ABC):
         raise NotImplementedError()
 
     async def prompt_mulligan(self, hand: List[str]) -> bool:
+        raise NotImplementedError()
+
+    async def set_hand(self, hand: List[str]):
         raise NotImplementedError()
 
     async def request_card_in_hand(self) -> int:

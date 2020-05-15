@@ -1,29 +1,32 @@
-from unittest.mock import AsyncMock
+from unittest.mock import MagicMock
 
 import pytest
 
-from nano_magic.adapters import END_DECK
-from nano_magic.use_cases import select_deck
+from nano_magic.use_cases.select_deck import select_deck
 
 
 @pytest.mark.asyncio
-async def test_request_deck_single_response_quantity_and_blank_lines(deck_list, cards, deck_length):
-    response = deck_list + END_DECK + '\n'
-    channel = AsyncMock()
-    channel.receive.return_value = response
-    _cards = await select_deck(channel)
-    assert END_DECK not in cards
-    assert _cards == cards
-    channel.send_was_called_with(deck_length)
+async def test_select_deck(deck_list, cards):
+    class AsyncIterator:
+        """
+        https://stackoverflow.com/questions/36695256/python-asyncio-how-to-mock-aiter-method
+        """
 
+        def __init__(self, seq):
+            self.iter = iter(seq)
 
-@pytest.mark.asyncio
-async def test_request_deck_iterative_response_quantity_and_blank_lines(deck_list, cards, deck_length):
-    response = deck_list.split('\n')
-    response.append(END_DECK + '\n')
-    channel = AsyncMock()
-    channel.receive.side_effect = response
-    _cards = await select_deck(channel)
-    assert END_DECK not in cards
-    assert _cards == cards
-    channel.send_was_called_with(deck_length)
+        def __aiter__(self):
+            return self
+
+        async def __anext__(self):
+            try:
+                return next(self.iter)
+            except StopIteration:
+                raise StopAsyncIteration
+
+    client = MagicMock()
+    client.request_deck.return_value = AsyncIterator(
+        deck_list.split('\n')
+    )
+    deck = await select_deck(client)
+    assert cards == deck
