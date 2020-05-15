@@ -5,10 +5,7 @@ from nano_magic.use_cases.client import Client
 
 async def login(client: Client, players):
     player_id = await request_available_user_id(client, players)
-    player = Player(
-        client,
-        player_id
-    )
+    player = Player(player_id)
     players[player_id] = player
     return player
 
