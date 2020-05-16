@@ -8,8 +8,8 @@ from ui.components.mulligan import MulliganView
 from ui.components.wait import WaitView
 from ui.events import WSEvents
 
-# SERVER_ADDRESS = 'ws://https://nano-tcg.herokuapp.com/ws:8080'
-SERVER_ADDRESS = 'ws://0.0.0.0:8080/ws'
+SERVER_ADDRESS = 'ws://nano-tcg.herokuapp.com:8080/ws'
+# SERVER_ADDRESS = 'ws://0.0.0.0:8080/ws'
 
 
 def send_name(*args, **kwargs):
