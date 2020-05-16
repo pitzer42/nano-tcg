@@ -1,1 +1,1 @@
-[![Build Status](https://travis-ci.com/pitzer42/nano-tcg.svg?branch=develop)](https://travis-ci.com/pitzer42/nano-tcg)
+[![Build Status](https://travis-ci.com/pitzer42/nano-tcg.svg?branch=master)](https://travis-ci.com/pitzer42/nano-tcg)
