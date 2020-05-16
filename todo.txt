@@ -1,14 +1,5 @@
 todo
-parse .dck
-
-todo
 log spector
-
-todo
-template based ui
-
-todo
-model based gameplay
 
 todo
 quickly clicking on "mulligan" button breaks the ui
