@@ -2,13 +2,17 @@ from aiohttp import web
 
 from channels.web_socket import WebSocketChannel
 from nano_magic import play
+from nano_magic.adapters.client_channel import ClientChannel
 
 
 async def ws_server(request):
     ws = web.WebSocketResponse()
     await ws.prepare(request)
-    channel = WebSocketChannel(ws)
-    await play(channel)
+    await play(
+        ClientChannel(
+            WebSocketChannel(ws)
+        )
+    )
     print('websocket connection closed')
 
 

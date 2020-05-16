@@ -1,0 +1,1 @@
+python ws.py & python server.py
