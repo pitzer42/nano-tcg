@@ -7,4 +7,3 @@ install:
 script:
   - ./scripts/brython_build.sh
   - pytest
-  - ./scripts/run.sh
