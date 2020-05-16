@@ -8,7 +8,7 @@ from ui.components.mulligan import MulliganView
 from ui.components.wait import WaitView
 from ui.events import WSEvents
 
-# SERVER_ADDRESS = 'ws://nano-tcg.herokuapp.com:8080/ws'
+# SERVER_ADDRESS = 'ws://nano-tcg.herokuapp.com/ws'
 SERVER_ADDRESS = 'ws://0.0.0.0:8080/ws'
 
 
@@ -25,8 +25,8 @@ login_component.set_action(send_name)
 def send_deck(*args, **kwargs):
     deck_component.hide()
     deck = deck_component.get_deck()
-    deck += '\nend_deck'
     ws.send(deck)
+    ws.send('end_deck')
 
 
 deck_component = DeckView(document)
