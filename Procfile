@@ -1,1 +1,1 @@
-web: python ws.py
+web: python foo.py
