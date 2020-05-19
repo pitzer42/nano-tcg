@@ -5,22 +5,25 @@ from ui.scryfall import get_images_url
 
 
 class BoardView(Component):
-    hand = 'BoardHandContainer'
+    board_container = 'boardContainer'
 
     def __init__(self, document):
         super(BoardView, self).__init__(document)
-        self.hand = document[BoardView.hand]
+        self._board_container = document[BoardView.board_container]
 
-    def set_hand(self, cards):
-        self.hand.innerHTML = ''
+    def set_board(self, cards):
+        self._board_container.innerHTML = ''
+        cards = json.loads(cards)
 
-        def display_image(image_url):
+        def display_option(image_url):
             img = self._document.createElement('img')
             img.src = image_url
-            self.hand.appendChild(img)
+            self._board_container.appendChild(img)
 
-        cards = json.loads(cards)
         for card in cards:
-            get_images_url(card, display_image)
+            get_images_url(
+                card,
+                display_option
+            )
 
         super(BoardView, self).show()

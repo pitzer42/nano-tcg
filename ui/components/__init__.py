@@ -18,3 +18,4 @@ class Component:
 
     def show(self):
         self._element.style.display = self._default_display_style
+        self._element.focus()

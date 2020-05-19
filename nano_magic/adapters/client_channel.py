@@ -36,9 +36,10 @@ class ClientChannel(Client):
         mulligan = await self._channel.receive()
         return mulligan in messages.POSITIVES
 
-    async def request_card_in_hand(self) -> int:
+    async def request_card_in_hand(self, cards) -> int:
         while True:
-            await self._channel.send(messages.REQUEST_PLAY)
+            message = messages.request_play(cards)
+            await self._channel.send(message)
             card_i = await self._channel.receive()
             try:
                 return int(card_i)
@@ -51,3 +52,9 @@ class ClientChannel(Client):
 
     async def send_wait(self):
         await self._channel.send(messages.WAITING_OTHER_PLAYERS)
+
+    async def set_board(self, board: List[str]):
+        message = messages.set_board(board)
+        await self._channel.send(message)
+
+

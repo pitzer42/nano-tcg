@@ -1,5 +1,7 @@
 import json
 
+from typing import List
+
 INITIAL_HAND_SIZE = 7
 
 REQUEST_PLAYER_ID = 'request_name'
@@ -31,3 +33,7 @@ def set_board(board: list):
 
 def is_positive(response: str):
     return response.lower() in POSITIVES
+
+
+def request_play(cards: List[str]):
+    return f'{REQUEST_PLAY} {json.dumps(cards)}'

@@ -5,11 +5,12 @@ from ui.components.deck import DeckView
 from ui.components.login import LoginView
 from ui.components.match import MatchView
 from ui.components.mulligan import MulliganView
+from ui.components.play import PlayView
 from ui.components.wait import WaitView
 from ui.events import WSEvents
 
-SERVER_ADDRESS = 'wss://nano-tcg.herokuapp.com/ws'
-# SERVER_ADDRESS = 'ws://0.0.0.0:8080/ws'
+# SERVER_ADDRESS = 'wss://nano-tcg.herokuapp.com/ws'
+SERVER_ADDRESS = 'ws://0.0.0.0:8080/ws'
 
 
 def send_name(*args, **kwargs):
@@ -74,10 +75,31 @@ mulligan_component.set_keep_action(send_keep)
 
 def set_hand(hand):
     wait_component.hide()
-    board_view.set_hand(hand)
+    board_view.set_board(hand)
 
 
 board_view = BoardView(document)
+
+
+def show_board(cards):
+    board_view.set_board(cards)
+    board_view.show()
+
+
+playView = PlayView(document)
+
+
+def play_dialog(options):
+    wait_component.hide()
+    playView.set_options(options)
+
+    def on_choice(index):
+        ws.send(str(index))
+        playView.hide()
+
+    playView.on_choice = on_choice
+    playView.show()
+
 
 events = WSEvents(SERVER_ADDRESS)
 
@@ -88,8 +110,7 @@ events.on('request_match_password', send_match_password)
 events.on('waiting_other_players', wait_component.show)
 events.on('mulligan', show_mulligan_component)
 events.on('start', console.log)
-
-events.on('set_hand', set_hand)
-events.on('update_board', console.log)
+events.on('request_play', play_dialog)
+events.on('set_board', show_board)
 
 ws = events._ws  # TODO fix

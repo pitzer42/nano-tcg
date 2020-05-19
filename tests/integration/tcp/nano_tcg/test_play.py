@@ -58,4 +58,4 @@ async def test_play_card(tcp_bot_factory):
                 '-1'
             )
 
-            assert messages.REQUEST_PLAY == logs_a[0]
+            assert messages.REQUEST_PLAY in logs_a[0]

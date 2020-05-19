@@ -27,3 +27,4 @@ class LoginView(Component):
             self.name_input.classList.add('is-outlined')
         self._first_try = False
         self.name_input.value = ''
+        self.name_input.focus()

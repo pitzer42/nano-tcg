@@ -2,6 +2,7 @@ from browser import ajax
 
 
 def get_images_url(card: str, on_result):
+    # TODO Cache
     def parse(response):
         start = response.text.index('small')
         start += len('small') + 3

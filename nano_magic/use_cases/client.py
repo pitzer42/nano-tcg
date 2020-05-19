@@ -27,3 +27,6 @@ class Client(ABC):
 
     async def send_wait(self):
         raise NotImplementedError()
+
+    async def set_board(self, board: List[str]):
+        raise NotImplementedError()

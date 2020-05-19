@@ -64,19 +64,30 @@
     </template>
 
     <template id="MulliganViewComponent">
-        <div id="MulliganView">
-            <div id="cardsMulliganContainer">
-            </div>
+        <div class="box is-primary" id="MulliganView">
+            <h4 class="subtitle is-4">Initial Hand</h4>
             <div>
                 <button class="button is-success" id="ḱeepButton">Keep</button>
                 <button class="button is-danger" id="mulliganButton">Mulligan</button>
+            </div>
+            <br>
+            <div id="cardsMulliganContainer">
             </div>
         </div>
     </template>
 
     <template id="BoardViewComponent">
-        <div id="BoardView">
-            <div id="BoardHandContainer">
+        <div class="box is-primary" id="BoardView">
+            <h4 class="subtitle is-4">Board</h4>
+            <div id="boardContainer">
+            </div>
+        </div>
+    </template>
+
+    <template id="PlayViewComponent">
+        <div class="box is-primary" id="PlayView">
+            <h4 class="subtitle is-4">Hand</h4>
+            <div id="handContainer">
             </div>
         </div>
     </template>
@@ -85,7 +96,7 @@
 
 </head>
 
-<body onload="brython()">
+<body onload="brython({debug: 1})">
 
 <section class="section">
     <div class="container" id="ViewRoot">
@@ -99,6 +110,12 @@
 <script src="static/ui.brython.js"></script>
 <script type="text/python">
 import ui
+
+
+
+
+
+
 
 
 
