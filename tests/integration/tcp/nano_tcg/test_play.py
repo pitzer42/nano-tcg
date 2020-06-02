@@ -54,8 +54,10 @@ async def test_play_card(tcp_bot_factory):
 
             logs_a = await client_a.send(
                 READ_FLAG,
+                READ_FLAG,
                 '0',
                 '-1'
             )
 
-            assert messages.REQUEST_PLAY in logs_a[0]
+            assert messages.SET_BOARD in logs_a[0]
+            assert messages.REQUEST_PLAY in logs_a[1]
