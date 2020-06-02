@@ -1,3 +1,3 @@
 cd ui
 rm ui.brython.js
-python -m brython --make_package ui
+python3 -m brython --make_package ui

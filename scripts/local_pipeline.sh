@@ -2,4 +2,4 @@
 # pytest
 # ./scripts/viz.sh
 # ./scripts/run.sh
-python ws.py
+python3 ws.py
