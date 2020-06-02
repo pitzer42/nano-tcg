@@ -1,4 +1,6 @@
 from asyncio import Event
+from asyncio import Lock
+from asyncio import sleep
 from typing import List
 
 from nano_magic.entities.player import Player
@@ -11,8 +13,11 @@ class Match:
         self.id = match_id
         self.password = password
         self.players: List[Player] = list()
+        self.board: List[str] = list()
         self._is_ready = False
         self._to_be_ready: Event = Event()
+        self._turn_index = 0
+        self._to_be_turn: Lock = Lock()
 
     @property
     def is_ready(self):
@@ -31,3 +36,12 @@ class Match:
 
     def check_password(self, password):
         return self.password == password
+
+    async def next_turn(self):
+        self._turn_index = 1 - self._turn_index
+        self._to_be_turn.release()
+
+    async def to_be_turn(self, player_index: int):
+        while self._turn_index != player_index:
+            await sleep(1)
+        await self._to_be_turn.acquire()

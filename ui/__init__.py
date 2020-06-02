@@ -9,8 +9,8 @@ from ui.components.play import PlayView
 from ui.components.wait import WaitView
 from ui.events import WSEvents
 
-SERVER_ADDRESS = 'wss://nano-tcg.herokuapp.com/ws'
-# SERVER_ADDRESS = 'ws://0.0.0.0:8080/ws'
+# SERVER_ADDRESS = 'wss://nano-tcg.herokuapp.com/ws'
+SERVER_ADDRESS = 'ws://0.0.0.0:8080/ws'
 
 
 def send_name(*args, **kwargs):
@@ -94,9 +94,17 @@ def play_dialog(options):
     playView.set_options(options)
 
     def on_choice(index):
-        ws.send(str(index))
+        message = str(index)
+        ws.send(message)
         playView.hide()
 
+    def end_turn(event):
+        message = '-1'
+        ws.send(message)
+        playView.hide()
+        console.log(event)
+
+    playView.on_pass = end_turn
     playView.on_choice = on_choice
     playView.show()
 

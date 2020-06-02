@@ -37,14 +37,10 @@ class ClientChannel(Client):
         return mulligan in messages.POSITIVES
 
     async def request_card_in_hand(self, cards) -> int:
-        while True:
-            message = messages.request_play(cards)
-            await self._channel.send(message)
-            card_i = await self._channel.receive()
-            try:
-                return int(card_i)
-            except ValueError:
-                pass
+        message = messages.request_play(cards)
+        await self._channel.send(message)
+        card_i = await self._channel.receive()
+        return int(card_i)
 
     async def set_hand(self, hand: List[str]):
         message = messages.set_hand(hand)

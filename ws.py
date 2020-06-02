@@ -5,14 +5,29 @@ from nano_magic import play
 from nano_magic.adapters.client_channel import ClientChannel
 
 
+async def play2(channel: WebSocketChannel):
+    i = 0
+    while True:
+        s = await channel.receive()
+        print(f'{i} -> {s}')
+        i += 1
+
+
 async def ws_server(request):
     ws = web.WebSocketResponse()
     await ws.prepare(request)
+    """
+    await play2(
+        WebSocketChannel(ws)
+    )
+    """
+    #"""
     await play(
         ClientChannel(
             WebSocketChannel(ws)
         )
     )
+    #"""
     print('websocket connection closed')
 
 

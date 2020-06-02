@@ -4,6 +4,7 @@ from nano_magic.entities.player import Player
 
 
 async def join(client: Client, player: Player, match: Match):
-    match.join(player)
+    player_index = match.join(player)
     await client.send_wait()
     await match.to_be_ready()
+    return player_index
