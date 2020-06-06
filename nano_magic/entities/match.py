@@ -13,7 +13,7 @@ class Match:
         self.id = match_id
         self.password = password
         self.players: List[Player] = list()
-        self.board: List[str] = list()
+        self.board: List = list()
         self._is_ready = False
         self._to_be_ready: Event = Event()
         self._turn_index = 0

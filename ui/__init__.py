@@ -9,8 +9,8 @@ from ui.components.play import PlayView
 from ui.components.wait import WaitView
 from ui.events import WSEvents
 
-SERVER_ADDRESS = 'wss://nano-tcg.herokuapp.com/ws'
-# SERVER_ADDRESS = 'ws://0.0.0.0:8080/ws'
+# SERVER_ADDRESS = 'wss://nano-tcg.herokuapp.com/ws'
+SERVER_ADDRESS = 'ws://0.0.0.0:8080/ws'
 
 
 def send_name(*args, **kwargs):

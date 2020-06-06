@@ -8,6 +8,7 @@ async def play_card(client: Client, hand: List[str], board: List[str]):
     while True:
         await client.set_board(board)
         card_index = await client.request_card_in_hand(hand)
+        card = hand[card_index]
         if card_index > -1:
             move(card_index, hand, board)
         else:

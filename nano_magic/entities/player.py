@@ -8,3 +8,4 @@ class Player:
         self.deck: List[str] = list()
         self.hand: List[str] = list()
         self.board: List[str] = list()
+        self.resources: dict = dict()
