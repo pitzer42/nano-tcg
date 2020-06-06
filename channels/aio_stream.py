@@ -1,12 +1,14 @@
+from asyncio import StreamReader, StreamWriter
+
 from channels import Channel
 
 
 class AioStreamChannel(Channel):
 
-    def __init__(self, reader, writer):
+    def __init__(self, reader: StreamReader, writer: StreamWriter):
         super(AioStreamChannel, self).__init__()
-        self._reader = reader
-        self._writer = writer
+        self._reader: StreamReader = reader
+        self._writer: StreamWriter = writer
 
     async def connect(self):
         pass
