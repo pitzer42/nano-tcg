@@ -1,0 +1,57 @@
+sequenceDiagram
+	Client->>Server: Connect
+
+    Server->>Login: Create
+    activate Login
+    loop while user not logged in
+        Login->>Client: Request User Id
+        Client-->>Login: <user id>
+        Login ->> User Repository: create User with <user id>
+        alt <user id> is available
+            User Repository->>User Repository: make <user id> unavailable
+            User Repository-->>Login: Success
+            Login ->> Login: user logged in = True
+        else
+            User Repository -->> Login: Raise Error
+        end
+    end
+    deactivate Login
+
+    Server->>Select Deck: Create
+    activate Select Deck
+    Select Deck ->> Client: Request Deck
+    loop while card_name != end_deck
+        Client -->> Select Deck: card name
+        Select Deck ->> Select Deck: parse and store
+    end
+    Select Deck ->> Client: Acknowledge Deck Size
+    deactivate Select Deck
+
+
+    Server->> Select Match: Create
+    loop while match is not selected
+        activate Select Match
+        Select Match ->> Client: Request Match Id
+        Client -->> Select Match: <match_id>
+        Select Match ->> Client: Request Match Password
+        Client -->> Select Match: <password>
+        Select Match ->> Match Repository: fetch match <match id>
+        alt match id exists
+            Match Repository -->> Select Match: match
+            Select Match ->> Select Match: check password
+            alt correct password
+                Select Match ->> Server :match
+            end
+        else
+            Match Repository -->> Select Match: Raise Exception
+            Select Match ->> Select Match: create match
+            Select Match ->> Server :match
+        end
+        deactivate Select Match
+    end
+
+    Server->>Join: Create
+    activate Join
+    Join ->> Join: append player to match
+    Join -->> Server: player index
+    deactivate Join

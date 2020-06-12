@@ -2,6 +2,7 @@ from asyncio import Event
 from asyncio import Lock
 from asyncio import sleep
 from typing import List
+from channels import Channel
 
 from nano_magic.entities.player import Player
 
@@ -9,11 +10,12 @@ from nano_magic.entities.player import Player
 class Match:
     PLAYERS_IN_MATCH = 2
 
-    def __init__(self, match_id: str, password: str):
+    def __init__(self, match_id: str, password: str, channel: Channel):
         self.id = match_id
         self.password = password
         self.players: List[Player] = list()
         self.board: List = list()
+        self._channel = channel
         self._is_ready = False
         self._to_be_ready: Event = Event()
         self._turn_index = 0

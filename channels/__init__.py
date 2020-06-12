@@ -1,4 +1,7 @@
-class Channel:
+from abc import ABC
+
+
+class Channel(ABC):
 
     async def __aenter__(self):
         await self.connect()

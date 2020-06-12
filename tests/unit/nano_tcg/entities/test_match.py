@@ -2,6 +2,8 @@ import pytest
 
 from nano_magic.entities.match import Match
 
+from channels.memory import MemoryChannel
+
 
 @pytest.fixture
 def right_password():
@@ -12,7 +14,8 @@ def right_password():
 def match(right_password):
     return Match(
         'match_1',
-        right_password
+        right_password,
+        MemoryChannel()
     )
 
 
