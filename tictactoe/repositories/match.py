@@ -1,7 +1,8 @@
 from abc import ABC
 from typing import List
 
-from nano_magic.entities.match import Match
+from tictactoe.entities.match import Match
+from tictactoe.entities.player import Player
 
 
 class MatchRepository(ABC):
@@ -13,4 +14,10 @@ class MatchRepository(ABC):
         raise NotImplementedError()
 
     async def all(self) -> List[Match]:
+        raise NotImplementedError()
+
+    async def all_waiting(self) -> List[Match]:
+        raise NotImplementedError()
+
+    async def join(self, match: Match, player: Player):
         raise NotImplementedError()
