@@ -77,11 +77,48 @@ class Match:
 if __name__ == '__main__':
     from tictactoe.entities.player import Player
 
-    m = Match(1, 2, 3)
-    a = Player(1)
-    b = Player(2)
-    m.players = [a, b]
 
-    m.board[0] = [1, 1, 1]
+    def test(board):
+        m = Match(1, 2, 3)
+        a = Player('1')
+        b = Player('2')
+        m.players = [a, b]
+        m.board = board
+        print(m.game_over())
 
-    assert m.game_over()
+
+    b = [
+        ['1', '1', '1'],
+        ['*', '*', '*'],
+        ['*', '*', '*'],
+    ]
+
+    test(b)
+    print('a')
+
+    b = [
+        ['1', '*', '*'],
+        ['1', '*', '*'],
+        ['1', '*', '*'],
+    ]
+
+    test(b)
+    print('b')
+
+    b = [
+        ['1', '*', '*'],
+        ['*', '1', '*'],
+        ['*', '*', '1'],
+    ]
+
+    test(b)
+    print('c')
+
+    b = [
+        ['*', '*', '1'],
+        ['*', '*', '*'],
+        ['1', '*', '*'],
+    ]
+
+    test(b)
+    print('d')

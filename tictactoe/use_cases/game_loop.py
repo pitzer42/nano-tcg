@@ -8,7 +8,6 @@ from tictactoe.use_cases.play import play
 from tictactoe.use_cases.priority import has_priority
 from tictactoe.use_cases.select_match import select_match
 from tictactoe.use_cases.sync import sync
-from tictactoe.use_cases.use_case import UseCase
 
 
 async def game_loop(client: Client, matches: MatchRepository, players: PlayerRepository, channel_factory):
@@ -23,9 +22,18 @@ async def game_loop(client: Client, matches: MatchRepository, players: PlayerRep
             await client.failed_to_join_match(match)
         match = joined
 
-    while not await game_over(match, matches, client, player):
+    _game_over = False
+    while not _game_over:
         await sync(client, player, match)
-        while await has_priority(client, player, match, matches, match_channel):
+        if await has_priority(client, player, match, matches, match_channel):
             await sync(client, player, match)
+            _game_over = await game_over(match, matches, client, player)
+            if _game_over:
+                break
+
             await play(client, player, match, match_channel, matches)
+
             await sync(client, player, match)
+            _game_over = await game_over(match, matches, client, player)
+            if _game_over:
+                break
