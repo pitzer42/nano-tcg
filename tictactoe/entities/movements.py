@@ -8,4 +8,10 @@ class Movement:
         self._column = column
 
     def apply(self, player: Player, match):
-        match.board[self._row][self._column] = player.code
+        match.board[self._row][self._column] = player.id
+
+    def to_dict(self):
+        return dict(
+            row=self._row,
+            column=self._column
+        )

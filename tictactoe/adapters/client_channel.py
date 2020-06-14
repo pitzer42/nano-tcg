@@ -10,6 +10,27 @@ from tictactoe.use_cases.client import Client
 
 class ClientChannel(Client):
 
+    async def winner(self):
+        request = dict(
+            message='you won!'
+        )
+        json_request = json.dumps(request)
+        await self._channel.send(json_request)
+
+    async def loser(self):
+        request = dict(
+            message='you lost...'
+        )
+        json_request = json.dumps(request)
+        await self._channel.send(json_request)
+
+    async def draw(self):
+        request = dict(
+            message='draw'
+        )
+        json_request = json.dumps(request)
+        await self._channel.send(json_request)
+
     def __init__(self, channel: Channel):
         self._channel = channel
 
@@ -67,4 +88,6 @@ class ClientChannel(Client):
         await self._channel.send(json_request)
         json_response = await self._channel.receive()
         response = json.loads(json_response)
-        return response['movement_index']
+        movement_index = int(response['movement_index'])
+        return options[movement_index]
+

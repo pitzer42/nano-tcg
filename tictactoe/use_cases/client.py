@@ -27,3 +27,12 @@ class Client(ABC):
 
     async def request_move(self, options: List[Movement]):
         raise NotImplementedError()
+
+    async def winner(self):
+        raise NotImplementedError()
+
+    async def loser(self):
+        raise NotImplementedError()
+
+    async def draw(self):
+        raise NotImplementedError()
