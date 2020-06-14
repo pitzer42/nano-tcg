@@ -4,10 +4,9 @@ from functools import partial
 
 from channels.aio_stream import AioStreamChannel
 from channels.redis import RedisChannel
-
-from tictactoe.use_cases.game_loop import game_loop as game_loop
 from tictactoe.adapters.client_channel import ClientChannel
 from tictactoe.storage.memory import MemoryMatchRepository, MemoryPlayerRepository
+from tictactoe.use_cases.game_loop import game_loop as game_loop
 
 """
 from nano_magic import play as game_play
@@ -20,6 +19,7 @@ async def create_redis_channel(topic):
         topic,
         'redis://localhost:6379'
     )
+
 
 async def accept_streams(accept, reader, writer):
     await accept(

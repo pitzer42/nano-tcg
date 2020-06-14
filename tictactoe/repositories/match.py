@@ -3,9 +3,10 @@ from typing import List
 
 from tictactoe.entities.match import Match
 from tictactoe.entities.player import Player
+from features.select_match.repositories import WaitingMatchRepository
 
 
-class MatchRepository(ABC):
+class MatchRepository(WaitingMatchRepository):
 
     async def get_by_id(self, match_id) -> Match:
         raise NotImplementedError()
@@ -14,9 +15,6 @@ class MatchRepository(ABC):
         raise NotImplementedError()
 
     async def all(self) -> List[Match]:
-        raise NotImplementedError()
-
-    async def all_waiting(self) -> List[Match]:
         raise NotImplementedError()
 
     async def join(self, match: Match, player: Player):

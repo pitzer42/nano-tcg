@@ -12,6 +12,9 @@ class MemoryMatchRepository(MatchRepository):
     async def get_by_id(self, match_id) -> Match:
         return MemoryMatchRepository.__memory__.get(match_id)
 
+    async def create_match(self, match: Match):
+        MemoryMatchRepository.__memory__[match.id] = match
+
     async def save(self, match: Match):
         MemoryMatchRepository.__memory__[match.id] = match
 
@@ -20,7 +23,7 @@ class MemoryMatchRepository(MatchRepository):
             MemoryMatchRepository.__memory__.values()
         )
 
-    async def all_waiting(self) -> List[Match]:
+    async def get_waiting_matches(self) -> List[Match]:
         return [m for m in MemoryMatchRepository.__memory__.values() if not m.is_ready()]
 
     async def join(self, match: Match, player: Player):
@@ -42,3 +45,9 @@ class MemoryPlayerRepository(PlayerRepository):
         return list(
             MemoryPlayerRepository.__memory__.values()
         )
+
+    async def is_client_id_available(self, client_id):
+        return client_id not in MemoryPlayerRepository.__memory__
+
+    async def make_client_id_unavailable(self, client_id):
+        MemoryPlayerRepository.__memory__[client_id] = client_id

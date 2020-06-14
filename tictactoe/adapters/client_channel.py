@@ -8,7 +8,88 @@ from tictactoe.entities.player import Player
 from tictactoe.use_cases.client import Client
 
 
-class ClientChannel(Client):
+class ClientChannel(Client, ):
+
+    async def request_select_or_create_match(self) -> bool:
+        request = dict(
+            message='request_select_or_create_match',
+            template=dict(option='select or create')
+        )
+        json_request = json.dumps(request)
+        await self._channel.send(json_request)
+        json_response = await self._channel.receive()
+        response = json.loads(json_response)
+        return response['option'] == 'select'
+
+    async def choose_one(self, options: List[Match]) -> Match:
+        request = dict(
+            message='choose_match',
+            options=[m.to_dict() for m in options],
+            template=dict(
+                option_index=f'[0:{len(options) - 1}]'
+            )
+        )
+        json_request = json.dumps(request)
+        await self._channel.send(json_request)
+        json_response = await self._channel.receive()
+        response = json.loads(json_response)
+        index = response['option_index']
+        return options[index]
+
+    async def request_match_password(self, match: Match) -> str:
+        request = dict(
+            message='request_match_password',
+            match=match.to_dict(),
+            template=dict(
+                password='plain_text'
+            )
+        )
+        json_request = json.dumps(request)
+        await self._channel.send(json_request)
+        json_response = await self._channel.receive()
+        response = json.loads(json_response)
+        return response['password']
+
+    async def alert_wrong_match_password(self, match: Match):
+        request = dict(
+            message='alert_wrong_match_password',
+            match=match.to_dict()
+        )
+        json_request = json.dumps(request)
+        await self._channel.send(json_request)
+
+    async def request_new_match_id(self) -> str:
+        request = dict(
+            message='request_new_match_id',
+            template=dict(
+                match_id='plain_text'
+            )
+        )
+        json_request = json.dumps(request)
+        await self._channel.send(json_request)
+        json_response = await self._channel.receive()
+        response = json.loads(json_response)
+        return response['match_id']
+
+    async def request_new_match_password(self) -> str:
+        request = dict(
+            message='request_new_match_password',
+            template=dict(
+                password='plain_text'
+            )
+        )
+        json_request = json.dumps(request)
+        await self._channel.send(json_request)
+        json_response = await self._channel.receive()
+        response = json.loads(json_response)
+        return response['password']
+
+    async def alert_match_creation_exception(self, exception):
+        request = dict(
+            message='alert_match_creation_exception',
+        )
+        json_request = json.dumps(request)
+        await self._channel.send(json_request)
 
     async def winner(self):
         request = dict(
@@ -34,7 +115,7 @@ class ClientChannel(Client):
     def __init__(self, channel: Channel):
         self._channel = channel
 
-    async def request_player_id(self):
+    async def request_client_id(self):
         request = dict(
             message='request_player_id',
             template=dict(player_id='foo')
@@ -90,4 +171,3 @@ class ClientChannel(Client):
         response = json.loads(json_response)
         movement_index = int(response['movement_index'])
         return options[movement_index]
-

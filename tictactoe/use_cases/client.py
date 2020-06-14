@@ -3,18 +3,19 @@ from typing import List
 from typing import Tuple
 
 from channels import Channel
+from features.create_match.clients import CreateMatchClient
+from features.indentify_client.clients import IdentifiableClient
+from features.select_match.clients import SelectMatchClient
+from features.select_or_create_match.clients import SelectOrCreateMatchClient
 from tictactoe.entities.match import Match
 from tictactoe.entities.movements import Movement
 from tictactoe.entities.player import Player
 
 
-class Client(ABC):
+class Client(IdentifiableClient, SelectOrCreateMatchClient, SelectMatchClient, CreateMatchClient):
 
     def __init__(self, channel: Channel):
         self._channel = channel
-
-    async def request_player_id(self):
-        raise NotImplementedError()
 
     async def choose_match(self, matches: List[Match]) -> Tuple[str, str]:
         raise NotImplementedError()
