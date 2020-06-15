@@ -1,9 +1,16 @@
 from abc import ABC
 from typing import List
 
-from features.select_match.entities import Match
+from entities.match import Match
 
 
-class WaitingMatchRepository(ABC):
+class SelectOrCreateMatchRepository(ABC):
     async def get_waiting_matches(self) -> List[Match]:
         raise NotImplementedError()
+
+    async def create_match(self, match):
+        raise NotImplementedError()
+
+
+class CreateMatchException(Exception):
+    pass

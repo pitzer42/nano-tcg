@@ -1,5 +1,6 @@
 from typing import List
 
+from features.join_match.repositories import MatchAlreadyReadyException
 from tictactoe.entities.match import Match
 from tictactoe.entities.player import Player
 from tictactoe.repositories.match import MatchRepository
@@ -29,6 +30,13 @@ class MemoryMatchRepository(MatchRepository):
     async def join(self, match: Match, player: Player):
         await match.join(player)
         await self.save(match)
+        return match
+
+    async def join_and_get_if_still_waiting(self, match: Match, player):
+        match = MemoryMatchRepository.__memory__[match.id]
+        if match.is_ready():
+            raise MatchAlreadyReadyException()
+        match.join(player)
         return match
 
 

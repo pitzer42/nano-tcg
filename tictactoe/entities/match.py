@@ -14,7 +14,7 @@ class Match:
         self.board = [['*', '*', '*'], ['*', '*', '*'], ['*', '*', '*']]
         self.current_player = None
 
-    async def join(self, player):
+    def join(self, player):
         if self.is_ready():
             return False
         self.players.append(player)

@@ -1,12 +1,12 @@
-from abc import ABC
 from typing import List
 
+from features.join_match.repositories import JoinMatchRepository
+from features.select_or_create_match.repositories import SelectOrCreateMatchRepository
 from tictactoe.entities.match import Match
 from tictactoe.entities.player import Player
-from features.select_match.repositories import WaitingMatchRepository
 
 
-class MatchRepository(WaitingMatchRepository):
+class MatchRepository(SelectOrCreateMatchRepository, JoinMatchRepository):
 
     async def get_by_id(self, match_id) -> Match:
         raise NotImplementedError()
