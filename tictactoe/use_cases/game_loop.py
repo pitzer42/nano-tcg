@@ -68,3 +68,5 @@ async def game_loop(client: Client, matches: MatchRepository, players: PlayerRep
             _game_over = await game_over(match, matches, client, player)
             if _game_over:
                 break
+
+    await client.close()
