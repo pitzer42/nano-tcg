@@ -16,6 +16,8 @@ class RedisChannel(Channel):
 
     async def send(self, message: str):
         # XADD self._topic * message {message}
+        if self._redis is None:
+            await self.connect()
         await self._redis.xadd(
             self._topic,
             dict(
@@ -24,6 +26,8 @@ class RedisChannel(Channel):
         )
 
     async def receive(self) -> str:
+        if self._redis is None:
+            await self.connect()
         messages = await self._redis.xread([self._topic])
         message = messages[0]
         topic, message_hash, body = message

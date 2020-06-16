@@ -17,9 +17,10 @@ class SelectOrCreateMatch:
         while True:
             waiting_matches = await self.matches.get_waiting_matches()
             match_id, password = await self.client.request_match_id_and_password(waiting_matches)
-            select = self.select(match_id, password)
-            create = self.create(match_id, password)
-            match = await select or await create
+            match = await self.select(match_id, password)
+            if match:
+                return match
+            match = await self.create(match_id, password)
             if match:
                 return match
 

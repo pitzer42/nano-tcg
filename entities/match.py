@@ -6,8 +6,8 @@ class Match:
     SIZE = 2
 
     def __init__(self, match_id, password, channel):
-        self.match_id = match_id
-        self.password = password
+        self.id = match_id
+        self.check_password = lambda a: a == password
         self.channel = channel
         self.players: List = list()
 

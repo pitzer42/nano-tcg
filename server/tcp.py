@@ -29,7 +29,7 @@ async def accept_streams(accept, reader, writer):
                 writer
             )
         ),
-        MemoryMatchRepository(),
+        MemoryMatchRepository(create_redis_channel),
         MemoryPlayerRepository(),
         create_redis_channel
     )

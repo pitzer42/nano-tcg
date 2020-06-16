@@ -10,8 +10,14 @@ from tictactoe.repositories.player import PlayerRepository
 class MemoryMatchRepository(MatchRepository):
     __memory__ = dict()
 
+    def __init__(self, channel_factory):
+        self.channel_factory = channel_factory
+
     async def get_by_id(self, match_id) -> Match:
-        return MemoryMatchRepository.__memory__.get(match_id)
+        match = MemoryMatchRepository.__memory__.get(match_id)
+        if match:
+            match.channel = await self.channel_factory(match_id)
+        return match
 
     async def create_match(self, match: Match):
         MemoryMatchRepository.__memory__[match.id] = match
@@ -33,7 +39,7 @@ class MemoryMatchRepository(MatchRepository):
         return match
 
     async def join_and_get_if_still_waiting(self, match: Match, player):
-        match = MemoryMatchRepository.__memory__[match.id]
+        match = await self.get_by_id(match.id)
         if match.is_ready():
             raise MatchAlreadyReadyException()
         match.join(player)

@@ -1,28 +1,25 @@
 from channels import Channel
+from entities.match import Match as BaseMatch
 from tictactoe.entities.movements import Movement
 from tictactoe.entities.player import Player
 
 
-class Match:
+class Match(BaseMatch):
     SIZE = 2
 
     def __init__(self, match_id, password, channel: Channel):
-        self.id = match_id
-        self.players = list()
-        self.channel = channel
-        self.check_password = lambda a: a == password
+        super(Match, self).__init__(
+            match_id,
+            password,
+            channel)
         self.board = [['*', '*', '*'], ['*', '*', '*'], ['*', '*', '*']]
         self.current_player = None
 
     def join(self, player):
-        if self.is_ready():
-            return False
-        self.players.append(player)
+        success = super(Match, self).join(player)
         if self.is_ready():
             self.current_player = self.players[0].id
-
-    def is_ready(self) -> bool:
-        return len(self.players) == Match.SIZE
+        return success
 
     def get_possible_moves(self, player: Player):
         movements = list()
@@ -72,53 +69,3 @@ class Match:
             remaining_players=Match.SIZE - len(self.players),
             board=self.board
         )
-
-
-if __name__ == '__main__':
-    from tictactoe.entities.player import Player
-
-
-    def test(board):
-        m = Match(1, 2, 3)
-        a = Player('1')
-        b = Player('2')
-        m.players = [a, b]
-        m.board = board
-        print(m.game_over())
-
-
-    b = [
-        ['1', '1', '1'],
-        ['*', '*', '*'],
-        ['*', '*', '*'],
-    ]
-
-    test(b)
-    print('a')
-
-    b = [
-        ['1', '*', '*'],
-        ['1', '*', '*'],
-        ['1', '*', '*'],
-    ]
-
-    test(b)
-    print('b')
-
-    b = [
-        ['1', '*', '*'],
-        ['*', '1', '*'],
-        ['*', '*', '1'],
-    ]
-
-    test(b)
-    print('c')
-
-    b = [
-        ['*', '*', '1'],
-        ['*', '*', '*'],
-        ['1', '*', '*'],
-    ]
-
-    test(b)
-    print('d')
