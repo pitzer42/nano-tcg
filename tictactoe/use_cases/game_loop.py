@@ -1,4 +1,4 @@
-from features.indentify_client.feature import IdentifyClient
+from features.identify_client.feature import IdentifyClient
 from features.join_match.feature import JoinMatch
 from features.join_match.repositories import MatchAlreadyReadyException
 from features.select_or_create_match.feature import SelectOrCreateMatch
@@ -56,13 +56,13 @@ async def game_loop(client: Client, matches: MatchRepository, players: PlayerRep
     _game_over = False
     while not _game_over:
         await sync(client, player, match)
-        if await has_priority(client, player, match, matches, match_channel):
+        if await has_priority(client, player, match, matches, match.channel):
             await sync(client, player, match)
             _game_over = await game_over(match, matches, client, player)
             if _game_over:
                 break
 
-            await play(client, player, match, match_channel, matches)
+            await play(client, player, match, match.channel, matches)
 
             await sync(client, player, match)
             _game_over = await game_over(match, matches, client, player)

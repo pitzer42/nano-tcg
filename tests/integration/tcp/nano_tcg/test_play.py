@@ -4,6 +4,7 @@ from nano_magic.adapters import messages
 from tests.integration.tcp.bot import READ_FLAG
 
 
+@pytest.mark.skip
 @pytest.mark.asyncio
 async def test_play_card(tcp_bot_factory):
     client_a_name = test_play_card.__name__ + '_a'

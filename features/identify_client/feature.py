@@ -1,5 +1,5 @@
-from features.indentify_client.clients import IdentifiableClient
-from features.indentify_client.repositories import IdentityRepository
+from features.identify_client.clients import IdentifiableClient
+from features.identify_client.repositories import IdentityRepository
 
 
 class IdentifyClient:

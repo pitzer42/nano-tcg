@@ -4,6 +4,7 @@ from nano_magic.adapters import messages
 from tests.integration.tcp.bot import READ_FLAG
 
 
+@pytest.mark.skip
 @pytest.mark.asyncio
 async def test_full(tcp_bot_factory):
     client_a_name = test_full.__name__ + '_a'
@@ -63,6 +64,7 @@ async def test_full(tcp_bot_factory):
             assert messages.PROMPT_MULLIGAN in logs_b[-1]
 
 
+@pytest.mark.skip
 @pytest.mark.asyncio
 async def test_retry_request_name(tcp_bot_factory):
     client_a_name = test_retry_request_name.__name__ + '_a'

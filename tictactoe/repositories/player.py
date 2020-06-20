@@ -1,4 +1,4 @@
-from features.indentify_client.repositories import IdentityRepository
+from features.identify_client.repositories import IdentityRepository
 
 
 class PlayerRepository(IdentityRepository):

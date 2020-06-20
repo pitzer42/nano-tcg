@@ -1,5 +1,5 @@
 from channels import Channel
-from features.indentify_client.clients import IdentifiableClient
+from features.identify_client.clients import IdentifiableClient
 from features.join_match.client import JoinMatchClient
 from features.select_or_create_match.clients import SelectOrCreateMatchClient
 
