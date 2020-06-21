@@ -1,6 +1,7 @@
 from entities.match import Match
-from features.select_or_create_match.clients import SelectOrCreateMatchClient
-from features.select_or_create_match.repositories import SelectOrCreateMatchRepository, CreateMatchException
+from features.basic_onboard.select_or_create_match.clients import SelectOrCreateMatchClient
+from features.basic_onboard.select_or_create_match.repositories import SelectOrCreateMatchRepository, \
+    CreateMatchException
 
 
 class SelectOrCreateMatch:
@@ -8,25 +9,28 @@ class SelectOrCreateMatch:
     def __init__(self,
                  client: SelectOrCreateMatchClient,
                  matches: SelectOrCreateMatchRepository,
-                 match_factory):
+                 match_factory,
+                 match_client_factory):
         self.client = client
         self.matches = matches
         self.match_factory = match_factory
+        self.match_client_factory = match_client_factory
 
     async def execute(self):
         while True:
             waiting_matches = await self.matches.get_waiting_matches()
             match_id, password = await self.client.request_match_id_and_password(waiting_matches)
+
             try:
                 match = await self.select(match_id, password)
             except WrongMatchPasswordException:
+                continue  # retry
 
-                continue
+            if not match:
+                match = await self.create(match_id, password)
+
             if match:
-                return match
-            match = await self.create(match_id, password)
-            if match:
-                return match
+                return match, await self.match_client_factory(match_id)
 
     async def select(self, match_id, password: str) -> Match:
         match: Match = await self.matches.get_by_id(match_id)
@@ -39,11 +43,11 @@ class SelectOrCreateMatch:
 
     async def create(self, match_id, password):
         try:
-            match = await self.match_factory(
+            match = self.match_factory(
                 match_id,
                 password
             )
-            await self.matches.create_match(match)
+            await self.matches.save_match(match)
             return match
         except CreateMatchException as exception:
             await self.client.alert_match_creation_exception(exception)

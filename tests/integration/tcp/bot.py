@@ -1,4 +1,4 @@
-from channels.tcp import TcpChannel
+from channels.bases.tcp import TcpChannel
 
 READ_FLAG = '$read'
 

@@ -1,25 +1,16 @@
-from channels import Channel
-from entities.match import Match as BaseMatch
+from entities.match import Match
+from entities.player import Player
 from tictactoe.entities.movements import Movement
-from tictactoe.entities.player import Player
 
 
-class Match(BaseMatch):
-    SIZE = 2
+class TicTacToeMatch(Match):
 
-    def __init__(self, match_id, password, channel: Channel):
-        super(Match, self).__init__(
+    def __init__(self, match_id, password):
+        super(TicTacToeMatch, self).__init__(
             match_id,
-            password,
-            channel)
+            password)
         self.board = [['*', '*', '*'], ['*', '*', '*'], ['*', '*', '*']]
         self.current_player = None
-
-    def join(self, player):
-        success = super(Match, self).join(player)
-        if self.is_ready():
-            self.current_player = self.players[0].id
-        return success
 
     def get_possible_moves(self, player: Player):
         movements = list()
@@ -62,10 +53,3 @@ class Match(BaseMatch):
             return 'draw'
 
         return False
-
-    def to_dict(self):
-        return dict(
-            match_id=self.id,
-            remaining_players=Match.SIZE - len(self.players),
-            board=self.board
-        )

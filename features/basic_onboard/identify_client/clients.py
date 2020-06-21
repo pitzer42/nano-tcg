@@ -1,7 +1,4 @@
-from abc import ABC
-
-
-class IdentifiableClient(ABC):
+class IdentifiableClient:
 
     async def request_client_id(self) -> str:
         raise NotImplementedError()

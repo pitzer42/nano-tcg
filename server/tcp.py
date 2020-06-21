@@ -1,17 +1,12 @@
 import asyncio
 import sys
-from functools import partial
 
-from channels.aio_stream import AioStreamChannel
-from channels.redis import RedisChannel
-from tictactoe.adapters.client_channel import ClientChannel
+from channels.bases.aio_stream import AioStreamChannel
+from channels.bases.redis import RedisChannel
+from tictactoe.adapters.client_channel import TicTacToeClientChannel
+from tictactoe.adapters.match_channel import TicTacToeMatchClient
+from tictactoe.game_loop import TicTacToeGameLoop
 from tictactoe.storage.memory import MemoryMatchRepository, MemoryPlayerRepository
-from tictactoe.use_cases.game_loop import game_loop as game_loop
-
-"""
-from nano_magic import play as game_play
-from nano_magic.adapters.client_channel import ClientChannel
-"""
 
 
 async def create_redis_channel(topic):
@@ -21,25 +16,35 @@ async def create_redis_channel(topic):
     )
 
 
-async def accept_streams(accept, reader, writer):
-    await accept(
-        ClientChannel(
-            AioStreamChannel(
-                reader,
-                writer
-            )
-        ),
-        MemoryMatchRepository(create_redis_channel),
-        MemoryPlayerRepository(),
-        create_redis_channel
+async def create_match_client(match_id):
+    inner_channel = await create_redis_channel(match_id)
+    return TicTacToeMatchClient(inner_channel)
+
+
+async def start_game_loop(reader, writer):
+    client_channel = TicTacToeClientChannel(
+        AioStreamChannel(
+            reader,
+            writer
+        )
+    )
+    players = MemoryPlayerRepository()
+    matches = MemoryMatchRepository()
+    game_loop = TicTacToeGameLoop(
+        client_channel,
+        create_match_client,
+        players,
+        matches
     )
 
+    await game_loop.execute()
 
-async def start_server(accept, host, port):
+
+async def start_server(host, port):
     print(f'starting {host}:{port}')
-    accept = partial(accept_streams, accept)
+
     server = await asyncio.start_server(
-        accept,
+        start_game_loop,
         host,
         port
     )
@@ -52,14 +57,12 @@ if __name__ == '__main__':
 
     _host = '127.0.0.1'
     _port = 8888
-    _accept = game_loop
 
     if len(sys.argv) > 1:
         _port = int(sys.argv[1])
 
     asyncio.run(
         start_server(
-            _accept,
             _host,
             _port
         )

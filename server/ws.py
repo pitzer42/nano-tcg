@@ -3,7 +3,7 @@ from functools import partial
 
 from aiohttp import web
 
-from channels.web_socket import WebSocketChannel
+from channels.bases.web_socket import WebSocketChannel
 from nano_magic import play as game_play
 from nano_magic.adapters.client_channel import ClientChannel
 

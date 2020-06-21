@@ -1,10 +1,11 @@
-from tictactoe.entities.match import Match
-from tictactoe.entities.player import Player
+from tictactoe.entities.match import TicTacToeMatch
+from entities.player import Player
 from tictactoe.repositories.match import MatchRepository
-from tictactoe.use_cases.client import Client
+
+from tictactoe.adapters.client_channel import TicTacToeClientChannel as Client
 
 
-async def game_over(match: Match, matches: MatchRepository, client: Client, player: Player):
+async def game_over(match: TicTacToeMatch, matches: MatchRepository, client: Client, player: Player):
     match = await matches.get_by_id(match.id)
     winner = match.game_over()
     if winner:
@@ -14,4 +15,5 @@ async def game_over(match: Match, matches: MatchRepository, client: Client, play
             await client.draw()
         else:
             await client.loser()
+        await match.update()
     return winner

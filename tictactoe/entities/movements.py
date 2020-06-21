@@ -1,4 +1,4 @@
-from tictactoe.entities.player import Player
+from entities.player import Player
 
 
 class Movement:

@@ -8,7 +8,7 @@ class SelectOrCreateMatchRepository(ABC):
     async def get_waiting_matches(self) -> List[Match]:
         raise NotImplementedError()
 
-    async def create_match(self, match):
+    async def save_match(self, match):
         raise NotImplementedError()
 
 

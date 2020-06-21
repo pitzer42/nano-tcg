@@ -2,7 +2,7 @@ import pytest
 
 from nano_magic.entities.match import Match
 
-from channels.memory import MemoryChannel
+from channels.bases.memory import MemoryChannel
 
 
 @pytest.fixture

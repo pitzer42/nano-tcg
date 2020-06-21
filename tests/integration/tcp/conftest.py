@@ -9,12 +9,6 @@ from tests.integration.tcp.bot import TcpBot
 
 
 @pytest.fixture
-def game_play():
-    import nano_magic
-    return nano_magic.play
-
-
-@pytest.fixture
 def tcp_bot_factory(running_server):
     host, port = running_server
     return partial(TcpBot, host, port)

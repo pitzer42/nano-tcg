@@ -1,8 +1,8 @@
 from typing import List
 
-from features.join_match.repositories import MatchAlreadyReadyException
-from tictactoe.entities.match import Match
-from tictactoe.entities.player import Player
+from entities.player import Player
+from features.basic_onboard.join_match.repositories import MatchAlreadyReadyException
+from tictactoe.entities.match import TicTacToeMatch
 from tictactoe.repositories.match import MatchRepository
 from tictactoe.repositories.player import PlayerRepository
 
@@ -10,35 +10,37 @@ from tictactoe.repositories.player import PlayerRepository
 class MemoryMatchRepository(MatchRepository):
     __memory__ = dict()
 
-    def __init__(self, channel_factory):
-        self.channel_factory = channel_factory
-
-    async def get_by_id(self, match_id) -> Match:
+    async def get_by_id(self, match_id) -> TicTacToeMatch:
         match = MemoryMatchRepository.__memory__.get(match_id)
         if match:
-            match.channel = await self.channel_factory(match_id)
+            _copy = TicTacToeMatch(match_id, None)
+            _copy.check_password = match.check_password
+            _copy.board = match.board
+            _copy.players = match.players
+            _copy.priority = match.priority
+            _copy._priority_index = match._priority_index
         return match
 
-    async def create_match(self, match: Match):
+    async def save_match(self, match: TicTacToeMatch):
         MemoryMatchRepository.__memory__[match.id] = match
 
-    async def save(self, match: Match):
+    async def save(self, match: TicTacToeMatch):
         MemoryMatchRepository.__memory__[match.id] = match
 
-    async def all(self) -> List[Match]:
+    async def all(self) -> List[TicTacToeMatch]:
         return list(
             MemoryMatchRepository.__memory__.values()
         )
 
-    async def get_waiting_matches(self) -> List[Match]:
+    async def get_waiting_matches(self) -> List[TicTacToeMatch]:
         return [m for m in MemoryMatchRepository.__memory__.values() if not m.is_ready()]
 
-    async def join(self, match: Match, player: Player):
+    async def join(self, match: TicTacToeMatch, player: Player):
         await match.join(player)
         await self.save(match)
         return match
 
-    async def join_and_get_if_still_waiting(self, match: Match, player):
+    async def join_and_get_if_still_waiting(self, match: TicTacToeMatch, player):
         match = await self.get_by_id(match.id)
         if match.is_ready():
             raise MatchAlreadyReadyException()

@@ -1,6 +1,6 @@
 import asyncio
 
-from channels.aio_stream import AioStreamChannel
+from channels.bases.aio_stream import AioStreamChannel
 
 
 class TcpChannel(AioStreamChannel):

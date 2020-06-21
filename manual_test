@@ -1,9 +1,11 @@
+todo memory repo must return new references
+
 telnet 127.0.0.1 8888
 
-{"player_id": "foo"}
+{"client_id": "foo"}
 {"match_id": "str", "password": "str"}
 
-{"player_id": "bar"}
+{"client_id": "bar"}
 {"match_id": "str", "password": "str"}
 
 {"movement_index": 0}

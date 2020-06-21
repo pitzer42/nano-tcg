@@ -2,7 +2,7 @@ from unittest.mock import AsyncMock
 
 import pytest
 
-from features.identify_client.feature import IdentifyClient
+from features.basic_onboard.identify_client.feature import IdentifyClient
 
 
 @pytest.mark.asyncio

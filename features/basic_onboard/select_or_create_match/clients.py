@@ -1,10 +1,9 @@
-from abc import ABC
 from typing import Tuple
 
 from entities.match import Match
 
 
-class SelectOrCreateMatchClient(ABC):
+class SelectOrCreateMatchClient:
 
     async def request_match_id_and_password(self, waiting_matches) -> Tuple[str, str]:
         raise NotImplementedError()
