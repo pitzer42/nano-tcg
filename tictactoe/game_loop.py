@@ -1,5 +1,5 @@
 from features.basic_onboard.feature import BasicOnboard
-from features.basic_onboard.identify_client.feature import IdentifyClient
+from features.identify_client.feature import IdentifyClient
 from features.basic_onboard.join_match.feature import JoinMatch
 from features.basic_onboard.select_or_create_match.feature import SelectOrCreateMatch
 from features.game_loop.feature import GameLoop

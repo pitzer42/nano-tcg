@@ -23,23 +23,23 @@ class SelectOrCreateMatch:
 
             try:
                 match = await self.select(match_id, password)
-            except WrongMatchPasswordException:
-                continue  # retry
-
-            if not match:
+            except AttributeError:
+                # there is no match with id == match_id
                 match = await self.create(match_id, password)
+            except WrongMatchPasswordException:
+                # wrong password was provided, retry
+                continue
 
-            if match:
-                return match, await self.match_client_factory(match_id)
+            match_client = await self.match_client_factory(match_id)
+            return match, match_client
 
     async def select(self, match_id, password: str) -> Match:
         match: Match = await self.matches.get_by_id(match_id)
-        if match:
-            if match.check_password(password):
-                return match
+        if match.check_password(password):
+            return match
+        else:
             await self.client.alert_wrong_match_password(match)
             raise WrongMatchPasswordException()
-        return False
 
     async def create(self, match_id, password):
         try:

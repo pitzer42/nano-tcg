@@ -2,7 +2,7 @@ from unittest.mock import AsyncMock
 
 import pytest
 
-from features.basic_onboard.identify_client.feature import IdentifyClient
+from features.identify_client.feature import IdentifyClient
 
 
 @pytest.mark.asyncio
@@ -52,7 +52,7 @@ async def test_identify_client_with_unavailable_id():
 
 @pytest.mark.asyncio
 async def test_repeat_identify_client_until_available_id_is_provided():
-    repeat = 2
+    repeat = 10
     available_id = 42
     unavailable_id = 41
 

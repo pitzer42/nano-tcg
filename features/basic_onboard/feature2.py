@@ -8,16 +8,12 @@ from features.basic_onboard.select_or_create_match.feature import SelectOrCreate
 class BasicOnboard:
 
     def __init__(self,
-                 identify_client: IdentifyClient,
-                 select_or_create_match: SelectOrCreateMatch,
-                 join_match: JoinMatch):
-        self.identify_client = identify_client
-        self.select_or_create_match = select_or_create_match
-        self.join_match = join_match
+                 login):
+        self.login = login
 
     async def execute(self):
-        client_id = await self.identify_client.execute()
-        player = Player(client_id)
+        player = await self.login.execute()
+
         while True:
             match, match_client = await self.select_or_create_match.execute()
             self.join_match.match_client = match_client

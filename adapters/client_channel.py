@@ -5,7 +5,7 @@ from channels import Channel
 from channels.decorators.json import JsonChannel
 from entities.match import Match
 from entities.player import Player
-from features.basic_onboard.identify_client.clients import IdentifiableClient
+from features.identify_client.clients import IdentifiableClient
 from features.basic_onboard.join_match.clients import JoinMatchClient
 from features.basic_onboard.select_or_create_match.clients import SelectOrCreateMatchClient
 from features.sync.clients import SyncClient
