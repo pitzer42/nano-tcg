@@ -1,12 +1,12 @@
 import json
 from typing import List
 
-from adapters.client_channel import ClientChannel
+from adapters.client_channel import PlayerClientChannel
 from tictactoe.entities.match import TicTacToeMatch
 from tictactoe.entities.movements import Movement
 
 
-class TicTacToeClientChannel(ClientChannel):
+class TicTacToeClientChannel(PlayerClientChannel):
 
     def __init__(self, inner_channel):
         super(TicTacToeClientChannel, self).__init__(inner_channel)

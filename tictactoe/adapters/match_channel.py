@@ -1,8 +1,7 @@
-from adapters.match_channel import MatchChannel
-from channels import Channel
+from abc import ABC
+
+from adapters.match_channel import MatchClientChannel
 
 
-class TicTacToeMatchClient(MatchChannel):
-
-    def __init__(self, inner_channel: Channel):
-        super(TicTacToeMatchClient, self).__init__(inner_channel)
+class TicTacToeMatchClient(MatchClientChannel):
+    pass

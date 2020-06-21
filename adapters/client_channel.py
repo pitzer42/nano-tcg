@@ -1,27 +1,22 @@
-from typing import Tuple, List
-
 from adapters import messages
 from channels import Channel
 from channels.decorators.json import JsonChannel
+from clients.player_client import PlayerClient
 from entities.match import Match
 from entities.player import Player
-from features.identify_client.clients import IdentifiableClient
-from features.basic_onboard.join_match.clients import JoinMatchClient
-from features.basic_onboard.select_or_create_match.clients import SelectOrCreateMatchClient
-from features.sync.clients import SyncClient
 
 
-class ClientChannel(JsonChannel, IdentifiableClient, SelectOrCreateMatchClient, JoinMatchClient, SyncClient):
+class PlayerClientChannel(JsonChannel, PlayerClient):
 
     def __init__(self, base_channel: Channel):
-        JsonChannel.__init__(self, base_channel)
+        super(PlayerClientChannel, self).__init__(base_channel)
 
-    async def request_client_id(self) -> str:
+    async def request_player_id(self):
         await self.send(message=messages.request_client_id)
         response = await self.receive()
         return response[messages.client_id]
 
-    async def request_match_id_and_password(self, waiting_matches: List[Match]) -> Tuple[str, str]:
+    async def request_match_id_and_password(self, waiting_matches):
         await self.send(
             message=messages.request_match_id_and_password,
             options=[m.to_dict() for m in waiting_matches],
@@ -32,9 +27,15 @@ class ClientChannel(JsonChannel, IdentifiableClient, SelectOrCreateMatchClient, 
             response[messages.password]
         )
 
-    async def alert_wrong_match_password(self, match: Match):
+    async def alert_unavailable_player_id(self, player_id):
         await self.send(
-            message=messages.alert_wrong_match_password,
+            message=messages.alert_unavailable_player_id,
+            player_id=player_id
+        )
+
+    async def alert_match_has_already_started(self, match):
+        await self.send(
+            message=messages.alert_match_has_already_started,
             match=match.to_dict()
         )
 
@@ -44,4 +45,3 @@ class ClientChannel(JsonChannel, IdentifiableClient, SelectOrCreateMatchClient, 
             player=player.to_dict(),
             match=match.to_dict()
         )
-

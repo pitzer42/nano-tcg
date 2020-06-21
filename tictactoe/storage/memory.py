@@ -1,69 +1,31 @@
-from typing import List
-
-from entities.player import Player
-from features.basic_onboard.join_match.repositories import MatchAlreadyReadyException
-from tictactoe.entities.match import TicTacToeMatch
-from tictactoe.repositories.match import MatchRepository
-from tictactoe.repositories.player import PlayerRepository
+from tictactoe.repositories.match import TicTacToeMatchRepository
+from tictactoe.repositories.player import TicTacToePlayerRepository
 
 
-class MemoryMatchRepository(MatchRepository):
+class TicTacToeMatchMemoryRepository(TicTacToeMatchRepository):
     __memory__ = dict()
 
-    async def get_by_id(self, match_id) -> TicTacToeMatch:
-        match = MemoryMatchRepository.__memory__.get(match_id)
-        if match:
-            _copy = TicTacToeMatch(match_id, None)
-            _copy.check_password = match.check_password
-            _copy.board = match.board
-            _copy.players = match.players
-            _copy.priority = match.priority
-            _copy._priority_index = match._priority_index
-        return match
+    async def get_match_by_id(self, match_id):
+        return TicTacToeMatchMemoryRepository.__memory__.get(match_id)
 
-    async def save_match(self, match: TicTacToeMatch):
-        MemoryMatchRepository.__memory__[match.id] = match
+    async def insert_match(self, match):
+        TicTacToeMatchMemoryRepository.__memory__[match.id] = match
 
-    async def save(self, match: TicTacToeMatch):
-        MemoryMatchRepository.__memory__[match.id] = match
+    async def get_waiting_matches(self):
+        return [m for m in TicTacToeMatchMemoryRepository.__memory__.values() if not m.is_ready()]
 
-    async def all(self) -> List[TicTacToeMatch]:
-        return list(
-            MemoryMatchRepository.__memory__.values()
-        )
-
-    async def get_waiting_matches(self) -> List[TicTacToeMatch]:
-        return [m for m in MemoryMatchRepository.__memory__.values() if not m.is_ready()]
-
-    async def join(self, match: TicTacToeMatch, player: Player):
-        await match.join(player)
-        await self.save(match)
-        return match
-
-    async def join_and_get_if_still_waiting(self, match: TicTacToeMatch, player):
-        match = await self.get_by_id(match.id)
+    async def join_if_still_waiting(self, player, match):
         if match.is_ready():
-            raise MatchAlreadyReadyException()
+            return False
         match.join(player)
-        return match
+        TicTacToeMatchMemoryRepository.__memory__[match.id] = match
 
 
-class MemoryPlayerRepository(PlayerRepository):
+class TicTacToePlayerMemoryRepository(TicTacToePlayerRepository):
     __memory__ = dict()
 
-    async def get_by_id(self, user_id) -> Player:
-        return MemoryPlayerRepository.__memory__.get(user_id)
-
-    async def save(self, user: Player):
-        MemoryPlayerRepository.__memory__[user.id] = user
-
-    async def all(self) -> List[Player]:
-        return list(
-            MemoryPlayerRepository.__memory__.values()
-        )
-
-    async def is_client_id_available(self, client_id):
-        return client_id not in MemoryPlayerRepository.__memory__
-
-    async def make_client_id_unavailable(self, client_id):
-        MemoryPlayerRepository.__memory__[client_id] = client_id
+    async def make_player_id_unavailable_if_is_available(self, player_id) -> bool:
+        if player_id in TicTacToePlayerMemoryRepository.__memory__:
+            return False
+        TicTacToePlayerMemoryRepository.__memory__[player_id] = True
+        return True

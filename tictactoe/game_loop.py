@@ -1,42 +1,29 @@
-from features.basic_onboard.feature import BasicOnboard
-from features.identify_client.feature import IdentifyClient
-from features.basic_onboard.join_match.feature import JoinMatch
-from features.basic_onboard.select_or_create_match.feature import SelectOrCreateMatch
+from entities.player import Player
 from features.game_loop.feature import GameLoop
+from features.onboard.feature import Onboard
 from features.sync.feature import Sync
 from tictactoe.adapters.client_channel import TicTacToeClientChannel
+from tictactoe.adapters.match_channel import TicTacToeMatchClient
 from tictactoe.entities.match import TicTacToeMatch
-from tictactoe.repositories.match import MatchRepository
-from tictactoe.repositories.player import PlayerRepository
+from tictactoe.repositories.match import TicTacToeMatchRepository
+from tictactoe.repositories.player import TicTacToePlayerRepository
 from tictactoe.use_cases.play import Play
 
 
 class TicTacToeGameLoop:
 
     def __init__(self,
-                 client_channel: TicTacToeClientChannel,
-                 match_channel_factory,
-                 players: PlayerRepository,
-                 matches: MatchRepository):
-        self.client_channel = client_channel
-        self.players = players
-        self.matches = matches
-
-        self.onboard = BasicOnboard(
-            IdentifyClient(
-                client_channel,
-                players
-            ),
-            SelectOrCreateMatch(
-                client_channel,
-                matches,
-                TicTacToeMatch,
-                match_channel_factory
-            ),
-            JoinMatch(
-                client_channel,
-                matches
-            )
+                 player_client: TicTacToeClientChannel,
+                 player_repo: TicTacToePlayerRepository,
+                 match_repo: TicTacToeMatchRepository,
+                 match_client_factory):
+        self.onboard = Onboard(
+            player_client,
+            Player,
+            player_repo,
+            TicTacToeMatch,
+            match_repo,
+            match_client_factory
         )
 
     async def execute(self):

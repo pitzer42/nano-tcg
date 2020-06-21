@@ -1,10 +1,10 @@
-from features.game_loop.clients import BaseMatchClient
+from clients.match_client import MatchClient
 from features.sync.feature import Sync
 
 
 class GameLoop:
 
-    def __init__(self, match_client: BaseMatchClient, sync: Sync, play):
+    def __init__(self, match_client: MatchClient, sync: Sync, play):
         self.match_client = match_client
         self.sync = sync
         self.play = play

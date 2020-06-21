@@ -1,5 +1,7 @@
-from features.identify_client.repositories import IdentityRepository
+from abc import ABC
+
+from repositories.player import PlayerRepository
 
 
-class PlayerRepository(IdentityRepository):
+class TicTacToePlayerRepository(PlayerRepository, ABC):
     pass

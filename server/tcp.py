@@ -6,7 +6,7 @@ from channels.bases.redis import RedisChannel
 from tictactoe.adapters.client_channel import TicTacToeClientChannel
 from tictactoe.adapters.match_channel import TicTacToeMatchClient
 from tictactoe.game_loop import TicTacToeGameLoop
-from tictactoe.storage.memory import MemoryMatchRepository, MemoryPlayerRepository
+from tictactoe.storage.memory import TicTacToeMatchMemoryRepository, TicTacToePlayerMemoryRepository
 
 
 async def create_redis_channel(topic):
@@ -28,13 +28,13 @@ async def start_game_loop(reader, writer):
             writer
         )
     )
-    players = MemoryPlayerRepository()
-    matches = MemoryMatchRepository()
+    players = TicTacToePlayerMemoryRepository()
+    matches = TicTacToeMatchMemoryRepository()
     game_loop = TicTacToeGameLoop(
         client_channel,
-        create_match_client,
         players,
-        matches
+        matches,
+        create_match_client
     )
 
     await game_loop.execute()
