@@ -27,13 +27,13 @@ class PlayerClientChannel(JsonChannel, PlayerClient):
             response[messages.password]
         )
 
-    async def alert_unavailable_player_id(self, player_id):
+    async def notify_unavailable_player_id(self, player_id):
         await self.send(
             message=messages.alert_unavailable_player_id,
             player_id=player_id
         )
 
-    async def alert_match_has_already_started(self, match):
+    async def notify_match_has_already_started(self, match):
         await self.send(
             message=messages.alert_match_has_already_started,
             match=match.to_dict()

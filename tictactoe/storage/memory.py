@@ -19,6 +19,7 @@ class TicTacToeMatchMemoryRepository(TicTacToeMatchRepository):
             return False
         match.join(player)
         TicTacToeMatchMemoryRepository.__memory__[match.id] = match
+        return True
 
 
 class TicTacToePlayerMemoryRepository(TicTacToePlayerRepository):

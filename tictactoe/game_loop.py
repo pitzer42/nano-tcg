@@ -1,3 +1,4 @@
+from functools import partial
 from entities.player import Player
 from features.game_loop.feature import GameLoop
 from features.onboard.feature import Onboard
@@ -17,6 +18,21 @@ class TicTacToeGameLoop:
                  player_repo: TicTacToePlayerRepository,
                  match_repo: TicTacToeMatchRepository,
                  match_client_factory):
+
+        self.player_client = player_client
+
+        def create_game_loop(match_channel):
+            return GameLoop(
+                match_channel,
+                Sync(player_client),
+                Play(
+                    player_client,
+                    match_repo
+                )
+            )
+
+        self.create_game_loop = create_game_loop
+
         self.onboard = Onboard(
             player_client,
             Player,
@@ -28,19 +44,8 @@ class TicTacToeGameLoop:
 
     async def execute(self):
         player, match, match_channel = await self.onboard.execute()
-
-        loop = GameLoop(
-            match_channel,
-            Sync(
-                self.client_channel
-            ),
-            Play(
-                self.client_channel,
-                self.matches
-            )
-        )
-
+        loop = self.create_game_loop(match_channel)
         await loop.execute(player, match)
-
-        await self.client_channel.close()
+        await self.player_client.notify_game_over(match.winner())
+        await self.player_client.close()
         await match_channel.close()

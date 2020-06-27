@@ -61,3 +61,11 @@ class TicTacToeClientChannel(PlayerClientChannel):
         response = json.loads(json_response)
         movement_index = int(response['movement_index'])
         return options[movement_index]
+
+    async def notify_game_over(self, winner):
+        message = dict(
+            message='notify_game_over',
+            winner=winner
+        )
+        json_message = json.dumps(message)
+        await self.inner_channel.send(json_message)

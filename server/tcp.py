@@ -16,8 +16,8 @@ async def create_redis_channel(topic):
     )
 
 
-async def create_match_client(match_id):
-    inner_channel = await create_redis_channel(match_id)
+async def create_match_client(match):
+    inner_channel = await create_redis_channel(match.id)
     return TicTacToeMatchClient(inner_channel)
 
 

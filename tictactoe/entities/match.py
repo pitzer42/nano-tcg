@@ -1,27 +1,30 @@
 from entities.match import Match
-from entities.player import Player
 from tictactoe.entities.movements import Movement
 
 
 class TicTacToeMatch(Match):
+    EMPTY = '*'
 
     def __init__(self, match_id, password):
         super(TicTacToeMatch, self).__init__(
             match_id,
             password)
-        self.board = [['*', '*', '*'], ['*', '*', '*'], ['*', '*', '*']]
-        self.current_player = None
+        self.board = [
+            [TicTacToeMatch.EMPTY, TicTacToeMatch.EMPTY, TicTacToeMatch.EMPTY],
+            [TicTacToeMatch.EMPTY, TicTacToeMatch.EMPTY, TicTacToeMatch.EMPTY],
+            [TicTacToeMatch.EMPTY, TicTacToeMatch.EMPTY, TicTacToeMatch.EMPTY],
+        ]
 
-    def get_possible_moves(self, player: Player):
+    def get_possible_moves(self):
         movements = list()
-        for row, column in self._get_available_cells():
+        for row, column in self._available_cells():
             movements.append(Movement(row, column))
         return movements
 
-    def _get_available_cells(self):
+    def _available_cells(self):
         for i, row in enumerate(self.board):
             for j, column in enumerate(row):
-                if self.board[i][j] == '*':
+                if self.board[i][j] == TicTacToeMatch.EMPTY:
                     yield i, j
 
     def game_over(self) -> bool:
@@ -49,7 +52,15 @@ class TicTacToeMatch(Match):
                 if vertical == 3:
                     return player_id
 
-        if len(list(self._get_available_cells())) == 0:
+        if len(list(self._available_cells())) == 0:
             return 'draw'
 
         return False
+
+    def winner(self):
+        return self.game_over()
+
+    def to_dict(self) -> dict:
+        _dict = super(TicTacToeMatch, self).to_dict()
+        _dict['board'] = self.board
+        return _dict

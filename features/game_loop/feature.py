@@ -4,31 +4,25 @@ from features.sync.feature import Sync
 
 class GameLoop:
 
-    def __init__(self, match_client: MatchClient, sync: Sync, play):
+    def __init__(self,
+                 match_client: MatchClient,
+                 sync: Sync,
+                 play):
         self.match_client = match_client
         self.sync = sync
         self.play = play
 
     async def execute(self, player, match):
-
-        game_over = False
-
-        while not game_over:
-
+        while True:
             await self.sync.execute(player, match)
-            print(f'{player.id} has {self.match_client.inner_channel}')
-            await self.match_client.wait_update()
+            await self.match_client.wait_notification()
             await self.sync.execute(player, match)
-
             if match.has_priority(player):
-
-                game_over = match.game_over()
-                if game_over:
+                if match.game_over():
                     break
-
                 await self.play.execute(player, match)
-                await self.match_client.update()
-
-                game_over = match.game_over()
-                if game_over:
+                await self.match_client.notify_play(player)
+                if match.game_over():
                     break
+
+        await self.match_client.notify_game_over(match)

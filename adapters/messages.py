@@ -7,6 +7,8 @@ alert_match_has_already_started = 'alert_match_has_already_started'
 
 notify_new_player_join = 'notify_new_player_join'
 notify_match_start = 'notify_match_start'
+notify_play = 'notify_play'
+notify_game_over = 'notify_game_over'
 
 match_update = 'match_update'
 sync = 'sync'

@@ -1,15 +1,22 @@
 from abc import ABC
 
+from entities.match import Match
+from entities.player import Player
+
 
 class MatchClient(ABC):
-    async def notify_new_player_join(self, player):
+
+    async def wait_notification(self):
         raise NotImplementedError()
 
-    async def notify_match_start(self, match):
+    async def notify_new_player_join(self, player: Player):
         raise NotImplementedError()
 
-    def wait_update(self):
+    async def notify_match_start(self, match: Match):
         raise NotImplementedError()
 
-    def update(self):
+    async def notify_play(self, player: Player):
+        raise NotImplementedError()
+
+    async def notify_game_over(self, match: Match):
         raise NotImplementedError()
