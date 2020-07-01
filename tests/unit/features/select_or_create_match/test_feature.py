@@ -3,7 +3,7 @@ from unittest.mock import Mock
 
 import pytest
 
-from features.basic_onboard.select_or_create_match.feature import SelectOrCreateMatch
+from features.onboard.feature import Onboard
 
 
 @pytest.mark.asyncio

@@ -1,0 +1,61 @@
+import json
+
+from browser import document
+from browser.websocket import WebSocket
+
+from tictactoe_ui.component import swap_view
+from tictactoe_ui.views.loading import LoadingView
+from tictactoe_ui.views.login import LoginView
+from tictactoe_ui.views.match_selector import MatchSelectorView
+
+loading = LoadingView(document)
+loading.show()
+
+login = LoginView(document)
+
+match_selector = MatchSelectorView(document)
+
+ws = WebSocket('ws://0.0.0.0:8080/ws')
+
+
+def on_ws_event(event):
+    data = json.loads(event.data)
+    if 'message' in data:
+        message = data['message']
+        if message == 'request_client_id':
+            def send_user_name(user_name):
+                json_response = json.dumps(dict(
+                    client_id=user_name
+                ))
+                ws.send(json_response)
+                swap_view(login, loading)
+
+            login.on_login(send_user_name)
+            swap_view(loading, login)
+        elif message == 'alert_unavailable_player_id':
+            login.login_error()
+            swap_view(loading, login)
+        elif message == 'request_match_id_and_password':
+            options = data['options']
+            match_selector.display_match_list(options)
+
+            def join_match(match_id, match_password):
+                json_response = json.dumps(dict(
+                    match_id=match_id,
+                    password=match_password
+                ))
+                ws.send(json_response)
+                swap_view(match_selector, loading)
+
+            match_selector.on_join(join_match)
+            swap_view(loading, match_selector)
+        else:
+            print(data['message'])
+
+
+ws.bind('message', on_ws_event)
+
+"""
+
+login.show()
+"""
