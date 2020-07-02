@@ -47,12 +47,20 @@
                     <button class="button is-dark is-small" name="join_button">Join</button>
                     <br>
                     <br>
-                    <div>
-                        <ol name="match_list">
-                        </ol>
-                    </div>
+                    <table class="table" name="match_table">
+                    </table>
                 </div>
+            </div>
+        </div>
+    </template>
 
+    <template id="BoardView">
+        <div class="box is-primary">
+            <div class="columns">
+                <div class="column">
+                    <table class="table" name="board_table">
+                    </table>
+                </div>
             </div>
         </div>
     </template>
@@ -69,9 +77,12 @@
 
     </div>
 </section>
-<script src="tictactoe_ui.brython.js"></script>
+<script src="static/tictactoe_ui.brython.js"></script>
 <script type="text/python">
 import tictactoe_ui
+
+
+
 </script>
 </body>
 </html>

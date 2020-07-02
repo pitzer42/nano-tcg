@@ -4,6 +4,7 @@ from browser import document
 from browser.websocket import WebSocket
 
 from tictactoe_ui.component import swap_view
+from tictactoe_ui.views.board import BoardView
 from tictactoe_ui.views.loading import LoadingView
 from tictactoe_ui.views.login import LoginView
 from tictactoe_ui.views.match_selector import MatchSelectorView
@@ -15,11 +16,14 @@ login = LoginView(document)
 
 match_selector = MatchSelectorView(document)
 
+board = BoardView(document)
+
 ws = WebSocket('ws://0.0.0.0:8080/ws')
 
 
 def on_ws_event(event):
     data = json.loads(event.data)
+    print(f'{event}:{data}')
     if 'message' in data:
         message = data['message']
         if message == 'request_client_id':
@@ -49,8 +53,12 @@ def on_ws_event(event):
 
             match_selector.on_join(join_match)
             swap_view(loading, match_selector)
-        else:
-            print(data['message'])
+        elif message == 'sync':
+            board.display(data['match']['board'])
+            board.show()
+        elif message == 'request_move':
+            board.display(data['match']['board'])
+            board.show()
 
 
 ws.bind('message', on_ws_event)

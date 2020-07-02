@@ -1,3 +1,35 @@
+def create_table(doc, data_dicts, table=None, **header_aliases):
+    table = table or doc.createElement('table')
+    if len(data_dicts) == 0 and len(header_aliases) == 0:
+        return table
+
+    if len(header_aliases) == 0:
+        header_aliases = {key: key for key in data_dicts[0].keys()}
+
+    tr = doc.createElement('tr')
+    for alias in header_aliases.values():
+        th = doc.createElement('th')
+        th.innerText = alias
+        tr.appendChild(th)
+
+    thead = doc.createElement('thead')
+    thead.appendChild(tr)
+
+    table.appendChild(thead)
+
+    tbody = doc.createElement('tbody')
+    for data in data_dicts:
+        tr = doc.createElement('tr')
+        for header in header_aliases.keys():
+            td = doc.createElement('td')
+            td.innerText = data[header]
+            tr.appendChild(td)
+        tbody.appendChild(tr)
+    table.appendChild(tbody)
+
+    return table
+
+
 def instantiate_template(document, template_id):
     template = document[template_id]
     instance = template.content.cloneNode(True)

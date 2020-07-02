@@ -41,7 +41,7 @@ class PlayerClientChannel(JsonChannel, PlayerClient):
 
     async def sync(self, player: Player, match: Match):
         await self.send(
-            messages=messages.sync,
+            message=messages.sync,
             player=player.to_dict(),
             match=match.to_dict()
         )
