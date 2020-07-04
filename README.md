@@ -4,7 +4,7 @@ https://nano-tcg.herokuapp.com/
 
 
 ### Doing
-tictactoe ui
+
 
 ### To Do
 reusable server
