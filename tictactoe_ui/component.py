@@ -1,3 +1,8 @@
+def remove_children(element):
+    for child in element.children:
+        child.remove()
+
+
 def create_table(doc, data_dicts, table=None, **header_aliases):
     table = table or doc.createElement('table')
     if len(data_dicts) == 0 and len(header_aliases) == 0:

@@ -1,6 +1,6 @@
 import json
 
-from browser import document
+from browser import document, alert
 from browser.websocket import WebSocket
 
 from tictactoe_ui.component import swap_view
@@ -56,14 +56,21 @@ def on_ws_event(event):
         elif message == 'sync':
             board.display(data['match']['board'])
             board.show()
+            loading.hide()
         elif message == 'request_move':
-            board.display(data['match']['board'])
+            def send_play(index):
+                print(index)
+                print(data['options'][index])
+                json_response = json.dumps(dict(
+                    movement_index=index
+                ))
+                ws.send(json_response)
+
+            board.enable_play(data['options'], send_play)
             board.show()
+        elif message == 'notify_game_over':
+            winner = data['winner']
+            alert(f'{winner} won')
 
 
 ws.bind('message', on_ws_event)
-
-"""
-
-login.show()
-"""

@@ -24,5 +24,5 @@ class GameLoop:
                 await self.match_client.notify_play(player)
                 if match.game_over():
                     break
-
+        await self.sync.execute(player, match)
         await self.match_client.notify_game_over(match)
