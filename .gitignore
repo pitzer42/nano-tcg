@@ -5,3 +5,4 @@ venv
 *~
 *.swp
 *.svg
+*.brython.js
