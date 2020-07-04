@@ -13,7 +13,7 @@ from tictactoe.use_cases.game_loop import TicTacToeGameLoop
 async def create_redis_channel(topic):
     return RedisChannel(
         topic,
-        'redis://localhost:6379'
+        os.environ.get('REDIS_URL', 'redis://localhost:6379')
     )
 
 
@@ -43,7 +43,7 @@ async def ws_server(request):
 
 if __name__ == '__main__':
     port = os.environ.get('PORT', 8080)
-    statics_path = 'tictactoe/ui'
+    statics_path = './tictactoe/ui'
     page = statics_path + '/app.html'
 
     app = web.Application()
