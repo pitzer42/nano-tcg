@@ -17,7 +17,7 @@ match_selector = MatchSelectorView(document)
 
 board = BoardView(document)
 
-ws = WebSocket('ws://0.0.0.0:8080/ws')
+ws = WebSocket('wss://nano0.0.0.0:8080/ws')  # ws = WebSocket('ws://0.0.0.0:8080/ws')
 
 
 def on_ws_event(event):

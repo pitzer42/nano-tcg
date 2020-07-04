@@ -5,5 +5,5 @@ python:
 install:
   - pip install -r requirements.txt
 script:
-  - ./scripts/brython_build.sh
+  - ./scripts/build_brython.sh
   - pytest

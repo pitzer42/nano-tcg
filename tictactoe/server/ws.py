@@ -43,7 +43,7 @@ async def ws_server(request):
 
 if __name__ == '__main__':
     port = os.environ.get('PORT', 8080)
-    statics_path = '../tictactoe/ui'
+    statics_path = 'tictactoe/ui'
     page = statics_path + '/app.html'
 
     app = web.Application()
