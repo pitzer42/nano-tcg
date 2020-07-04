@@ -1,6 +1,6 @@
 import pytest
 
-from tictactoe.game_loop import game_loop
+from tictactoe.use_cases.game_loop import game_loop
 
 
 @pytest.fixture

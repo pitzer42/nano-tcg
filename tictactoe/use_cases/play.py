@@ -1,7 +1,7 @@
-from entities.player import Player
+from gloop.entities.player import Player
 from tictactoe.adapters.client_channel import TicTacToeClientChannel as Client
 from tictactoe.entities.match import TicTacToeMatch
-from tictactoe.repositories.match import MatchRepository, TicTacToeMatchRepository
+from tictactoe.repositories.match import TicTacToeMatchRepository
 
 
 class Play:

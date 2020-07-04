@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <link href="https://cdn.jsdelivr.net/npm/bulma@0.8.2/css/bulma.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/brython@3.8.8/brython.min.js" type="text/javascript"></script>
+    <script src="https://cdn.jsdelivr.net/npm/brython@3.8.8/brython_stdlib.js" type="text/javascript"></script>
+
+    <title>TicTacToe</title>
+
+    <!-- <templates> -->
+
+    <template id="LoginView">
+        <div class="box is-primary">
+            <div class="columns">
+                <div class="column">
+                    <h4 class="subtitle is-4">User Name</h4>
+                    <input class="input is-small" name="user_name_input">
+                    <br>
+                    <br>
+                    <button class="button is-dark is-small" name="login_button">Login</button>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="LoadingView">
+        <div class="columns is-centered" id="WaitView">
+            <div class="column is-narrow">
+                <p class="button is-loading is-info"></p>
+            </div>
+        </div>
+    </template>
+
+    <template id="MatchSelectorView">
+        <div class="box is-primary">
+            <div class="columns">
+                <div class="column">
+                    <h4 class="subtitle is-4">Match</h4>
+                    name <input class="input" name="match_id_input" label="name" type="text">
+                    <br>
+                    <br>
+                    password <input class="input" name="match_password_input" label="password" type="password">
+                    <br>
+                    <br>
+                    <button class="button is-dark is-small" name="join_button">Join</button>
+                    <br>
+                    <br>
+                    <table class="table is-hoverover" name="match_table">
+                    </table>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="BoardView">
+        <div class="box is-primary">
+            <div class="columns">
+                <div class="column">
+                    <table class="table is-bordered" name="board_table">
+                    </table>
+                </div>
+            </div>
+        </div>
+    </template>
+
+
+</head>
+<body onload="brython({debug: 1})">
+<section class="section">
+    <div class="container" id="root">
+        <h1 class="title">
+            Tic Tac Toe
+        </h1>
+        <hr>
+
+    </div>
+</section>
+<script src="static/tictactoe.brython.js"></script>
+<script type="text/python">
+import tictactoe
+
+</script>
+</body>
+</html>

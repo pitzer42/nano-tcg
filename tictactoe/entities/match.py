@@ -1,4 +1,4 @@
-from entities.match import Match
+from gloop.entities.match import Match
 from tictactoe.entities.movements import Movement
 
 
@@ -9,11 +9,7 @@ class TicTacToeMatch(Match):
         super(TicTacToeMatch, self).__init__(
             match_id,
             password)
-        self.board = [
-            [TicTacToeMatch.EMPTY, TicTacToeMatch.EMPTY, TicTacToeMatch.EMPTY],
-            [TicTacToeMatch.EMPTY, TicTacToeMatch.EMPTY, TicTacToeMatch.EMPTY],
-            [TicTacToeMatch.EMPTY, TicTacToeMatch.EMPTY, TicTacToeMatch.EMPTY],
-        ]
+        self.board = [[TicTacToeMatch.EMPTY for i in range(3)] for j in range(3)]
 
     def get_possible_moves(self):
         movements = list()

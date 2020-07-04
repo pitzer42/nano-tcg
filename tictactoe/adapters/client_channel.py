@@ -1,7 +1,7 @@
 import json
 from typing import List
 
-from adapters.client_channel import PlayerClientChannel
+from gloop.adapters.client_channel import PlayerClientChannel
 from tictactoe.entities.match import TicTacToeMatch
 from tictactoe.entities.movements import Movement
 

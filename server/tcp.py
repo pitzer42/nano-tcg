@@ -1,11 +1,11 @@
 import asyncio
 import sys
 
-from channels.bases.aio_stream import AioStreamChannel
-from channels.bases.redis import RedisChannel
+from gloop.channels import AioStreamChannel
+from gloop.channels import RedisChannel
 from tictactoe.adapters.client_channel import TicTacToeClientChannel
 from tictactoe.adapters.match_channel import TicTacToeMatchClient
-from tictactoe.game_loop import TicTacToeGameLoop
+from tictactoe.use_cases.game_loop import TicTacToeGameLoop
 from tictactoe.storage.memory import TicTacToeMatchMemoryRepository, TicTacToePlayerMemoryRepository
 
 

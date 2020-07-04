@@ -1,4 +1,4 @@
-from entities.player import Player
+from gloop.entities.player import Player
 
 
 class Movement:

@@ -1,0 +1,1 @@
+python -m brython --make_package tictactoe

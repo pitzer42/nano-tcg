@@ -2,8 +2,8 @@ from unittest.mock import Mock, AsyncMock
 
 import pytest
 
-from features.basic_onboard.join_match.feature import JoinMatch
-from features.basic_onboard.join_match.repositories import MatchAlreadyReadyException
+from gloop.features import JoinMatch
+from gloop.features import MatchAlreadyReadyException
 
 
 @pytest.mark.asyncio

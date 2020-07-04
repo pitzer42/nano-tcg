@@ -1,6 +1,6 @@
 from typing import Iterable, List
 
-from channels import Channel
+from gloop.channels import Channel
 from nano_magic.adapters import messages
 from nano_magic.use_cases.client import Client
 

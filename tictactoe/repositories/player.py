@@ -1,6 +1,6 @@
 from abc import ABC
 
-from repositories.player import PlayerRepository
+from gloop.repositories.player import PlayerRepository
 
 
 class TicTacToePlayerRepository(PlayerRepository, ABC):

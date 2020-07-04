@@ -1,4 +1,4 @@
-from channels.bases.tcp import TcpChannel
+from gloop.channels import TcpChannel
 
 READ_FLAG = '$read'
 

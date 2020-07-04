@@ -2,7 +2,7 @@ from unittest.mock import AsyncMock
 
 import pytest
 
-from channels.bases.memory import MemoryChannel
+from gloop.channels import MemoryChannel
 from nano_magic.entities.match import Match
 from nano_magic.storage.memory import MemoryMatchRepository
 from nano_magic.use_cases.select_match import select_match

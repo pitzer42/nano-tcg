@@ -3,8 +3,6 @@ from unittest.mock import Mock
 
 import pytest
 
-from features.onboard.feature import Onboard
-
 
 @pytest.mark.asyncio
 async def test_create_match():

@@ -1,6 +1,6 @@
 from abc import ABC
 
-from repositories.match import MatchRepository
+from gloop.repositories.match import MatchRepository
 
 
 class TicTacToeMatchRepository(MatchRepository, ABC):

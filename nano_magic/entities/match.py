@@ -2,7 +2,7 @@ from asyncio import Event
 from asyncio import Lock
 from asyncio import sleep
 from typing import List
-from channels import Channel
+from gloop.channels import Channel
 
 from nano_magic.entities.player import Player
 

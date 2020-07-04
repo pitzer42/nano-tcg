@@ -3,7 +3,7 @@ from unittest.mock import Mock
 
 import pytest
 
-from features.onboard.feature import Onboard
+from gloop.features.onboard import Onboard
 
 
 @pytest.fixture

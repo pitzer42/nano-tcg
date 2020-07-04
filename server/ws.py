@@ -3,7 +3,7 @@ from functools import partial
 
 from aiohttp import web
 
-from channels.bases.web_socket import WebSocketChannel
+from gloop.channels.bases.web_socket import WebSocketChannel
 from nano_magic import play as game_play
 from nano_magic.adapters.client_channel import ClientChannel
 
@@ -26,8 +26,8 @@ if __name__ == '__main__':
 
     app.add_routes([
         web.get('/ws', server),
-        web.get('/', lambda request: web.FileResponse('../ui/front.html')),
-        web.static('/static', '../ui')
+        web.get('/', lambda request: web.FileResponse('../nano_magic/ui/front.html')),
+        web.static('/static', '../nano_magic/ui')
     ])
 
     web.run_app(

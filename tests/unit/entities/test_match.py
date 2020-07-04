@@ -1,6 +1,6 @@
 import pytest
 
-from entities.match import Match
+from gloop.entities.match import Match
 
 
 @pytest.fixture
